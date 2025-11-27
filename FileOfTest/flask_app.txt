@@ -1,0 +1,61 @@
+from flask import Flask, render_template, request, redirect
+from flask_sqlalchemy import SQLAlchemy
+import os
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///products.db'
+app.config['UPLOAD_FOLDER'] = 'static/uploads'
+db = SQLAlchemy(app)
+
+
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+#========= DATABASE MODEL ==========
+class Product(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    price = db.Column(db.Float)
+    description = db.Column(db.Text)
+    image = db.Column(db.String(200))
+
+
+@app.route('/add', methods=['GET', 'POST'])
+def add_product():
+    if request.method == 'POST':
+
+        name = request.form['name']
+        price = request.form['price']
+        description = request.form['description']
+
+        image_file = request.files['image']
+        filename = image_file.filename
+        image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        image_file.save(image_path)
+
+        # ---------------- Database storage ---------------
+        new_product = Product(
+            name=name,
+            price=price,
+            description=description,
+            image=filename
+        )
+
+        db.session.add(new_product)
+        db.session.commit()
+
+        return redirect('/add')
+
+    return render_template('add_product.html')
+
+#========= START APP =============
+if __name__ == "__main__":
+
+    if not os.path.exists('static/uploads'):
+        os.makedirs('static/uploads')
+
+    with app.app_context():
+        db.create_all()
+
+    app.run(debug=True)
