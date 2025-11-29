@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ product.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <a href="/" class="back-btn"> Go Back</a>
+
+    <div class="details-container">
+
+        <img class="details-img" src="{{ url_for('static', filename='uploads/' + product.image) }}">
+
+        <div class="details-info">
+            <h1>{{ product.name }}</h1>
+            <h3 class="details-price">price: {{ product.price }} $</h3>
+
+            <p class="details-description">{{ product.description }}</p>
+
+
+            <form action="/delete/{{ product.id }}" method="POST" onsubmit="return confirm('هل أنت متأكد من الحذف؟');">
+                <button class="delete-btn"> Delete</button>
+            </form>
+        </div>
+
+    </div>
+
+</body>
+</html>
