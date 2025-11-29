@@ -141,7 +141,7 @@ JINJA_COMMENT_OPEN_IN_ATTR : '{#' -> pushMode(JINJA_COMMENT_MODE) ;
 
 HTML_ATTR_VALUE_TEXT
     : ( '{' ~[#%]
-      | ~["'\r\n]
+      | ~["\r\n]
       )+
     ;
 

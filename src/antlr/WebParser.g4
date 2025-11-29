@@ -65,7 +65,7 @@ htmlNormalElement
 // =====================================================
 
 htmlAttribute
-    : HTML_IDENTIFIER EQUALS htmlAttributeValue
+    : HTML_IDENTIFIER EQUALS htmlAttributeValue |HTML_IDENTIFIER
     ;
 
 htmlAttributeValue
