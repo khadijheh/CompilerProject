@@ -5,40 +5,25 @@ options { tokenVocab=WebCombinedLexer; }
 // ===========================
 // ROOT
 // ===========================
-template
-    : (contentItem)* EOF
-    ;
-// ---------------------- CSS FILE ENTRY ----------------------
-cssFile
-    : (cssRule | CSS_WS | CSS_BLOCK_WS  | CSS_BLOCK_OTHER)* EOF
-    ;
-//cssFilePreview
-//    : ( CSS_SELECTOR
-//      | CSS_CLASS
-//      | CSS_ID
-//      | CSS_PSEUDO
-//      | CSS_PROPERTY
-//      | CSS_VALUE
-//      | CSS_IMPORTANT
-//      | CSS_BRACE_OPEN
-//      | CSS_BLOCK_END
-//      | CSS_SEMICOLON
-//      | CSS_WS
-//      | CSS_BLOCK_WS
-//      | CSS_TEXT
-//      | CSS_BLOCK_OTHER
-//      )* EOF
+//cssFile
+//    : (cssRule | CSS_WS | CSS_BLOCK_WS | CSS_BLOCK_OTHER)* EOF   #CssFileNode
 //    ;
+
+template
+    : contentItem* EOF                           #TemplateNode
+    ;
+
+// ---------------------- CSS FILE ENTRY ----------------------
 
 // ===========================
 // CONTENT ITEMS
 // ===========================
 contentItem
-    : htmlElement
-    | htmlText
-    | jinjaExpression
-    | jinjaBlock
-    | jinjaComment
+    : htmlElement                                 #ContentHtmlElement
+    | htmlText                                     #ContentHtmlText
+    | jinjaExpression                              #ContentJinjaExpression
+    | jinjaBlock                                   #ContentJinjaBlock
+    | jinjaComment                                 #ContentJinjaComment
     ;
 
 // =====================================================
@@ -46,18 +31,18 @@ contentItem
 // =====================================================
 
 htmlElement
-    : htmlVoidElement
-    | htmlNormalElement
+    : htmlVoidElement                              #HtmlElementVoid
+    | htmlNormalElement                            #HtmlElementNormal
     ;
 
 htmlVoidElement
-    : HTML_OPEN HTML_IDENTIFIER (htmlAttribute)* HTML_TAG_SELF_CLOSE
+    : HTML_OPEN HTML_IDENTIFIER htmlAttribute* HTML_TAG_SELF_CLOSE   #VoidElementNode
     ;
 
 htmlNormalElement
-    : HTML_OPEN HTML_IDENTIFIER (htmlAttribute)* HTML_TAG_CLOSE
+    : HTML_OPEN HTML_IDENTIFIER htmlAttribute* HTML_TAG_CLOSE
       contentItem*
-      HTML_CLOSE_OPEN HTML_IDENTIFIER HTML_TAG_CLOSE
+      HTML_CLOSE_OPEN HTML_IDENTIFIER HTML_TAG_CLOSE                 #NormalElementNode
     ;
 
 // =====================================================
@@ -65,27 +50,28 @@ htmlNormalElement
 // =====================================================
 
 htmlAttribute
-    : HTML_IDENTIFIER EQUALS htmlAttributeValue |HTML_IDENTIFIER
+    : HTML_IDENTIFIER EQUALS htmlAttributeValue    #HtmlAttributeAssignment
+    | HTML_IDENTIFIER                              #HtmlAttributeBoolean
     ;
 
 htmlAttributeValue
-    : dqValue
-    | sqValue
+    : dqValue                                      #AttrDoubleQuoted
+    | sqValue                                      #AttrSingleQuoted
     ;
 
 dqValue
-    : HTML_ATTR_VALUE_OPEN_DQ (htmlAttrValueItem)* HTML_ATTR_VALUE_CLOSE_DQ
+    : HTML_ATTR_VALUE_OPEN_DQ htmlAttrValueItem* HTML_ATTR_VALUE_CLOSE_DQ   #DoubleQuotedValue
     ;
 
 sqValue
-    : HTML_ATTR_VALUE_OPEN_SQ (htmlAttrValueItem)* HTML_ATTR_VALUE_CLOSE_SQ
+    : HTML_ATTR_VALUE_OPEN_SQ htmlAttrValueItem* HTML_ATTR_VALUE_CLOSE_SQ   #SingleQuotedValue
     ;
 
 htmlAttrValueItem
-    : HTML_ATTR_VALUE_TEXT
-    | jinjaExpression
-    | jinjaBlock
-    | jinjaComment
+    : HTML_ATTR_VALUE_TEXT                         #AttrTextNode
+    | jinjaExpression                              #AttrJinjaExpressionNode
+    | jinjaBlock                                   #AttrJinjaBlockNode
+    | jinjaComment                                 #AttrJinjaCommentNode
     ;
 
 // =====================================================
@@ -93,51 +79,52 @@ htmlAttrValueItem
 // =====================================================
 
 htmlText
-    : TEXT
+    : TEXT                                         #HtmlTextNode
     ;
 
 // ===========================
 // CSS (<style> ... </style>)
 // ===========================
 cssStyleBlock
-    : CSS_STYLE_TAG cssBody CSS_STYLE_CLOSE               #CssStyle
+    : CSS_STYLE_TAG cssBody CSS_STYLE_CLOSE        #CssStyleNode
     ;
 
 cssBody
-    : ( cssRule | CSS_BLOCK_WS | CSS_BLOCK_OTHER )*
+    : ( cssRule | CSS_BLOCK_WS | CSS_BLOCK_OTHER )*    #CssBodyNode
     ;
 
 cssRule
-    : cssSelector CSS_BRACE_OPEN cssDeclarations CSS_BLOCK_END  #Css_Rule
+    : cssSelector CSS_BRACE_OPEN cssDeclarations CSS_BLOCK_END   #CssRuleNode
     ;
 
 cssSelector
-    : CSS_SELECTOR
-    | CSS_CLASS
-    | CSS_ID
-    | CSS_PSEUDO
+    : CSS_SELECTOR                                  #SelectorSimpleNode
+    | CSS_CLASS                                     #SelectorClassNode
+    | CSS_ID                                        #SelectorIdNode
+    | CSS_PSEUDO                                    #SelectorPseudoNode
     ;
 
 cssDeclarations
-    : ( cssDeclaration | CSS_BLOCK_WS )*
+    : (cssDeclaration | CSS_BLOCK_WS)*              #CssDeclarationsNode
     ;
 
 cssDeclaration
-    : CSS_PROPERTY CSS_COLON CSS_VALUE CSS_SEMICOLON?  #Css_Declaration
+    : CSS_PROPERTY CSS_COLON CSS_VALUE CSS_SEMICOLON?   #CssDeclarationNode
     ;
 
 // ===========================
 // JINJA EXPRESSION {{ ... }}
 // ===========================
 jinjaExpression
-    : JINJA_EXPR_OPEN jinjaExprBody JINJA_EXPR_CLOSE    #Jinja_Expression
+    : JINJA_EXPR_OPEN jinjaExprBody JINJA_EXPR_CLOSE    #JinjaExpressionNode
     ;
 
 jinjaExprBody
-    : ( JINJA_IDENT
+    : (
+        JINJA_IDENT
       | JINJA_NUMBER
       | JINJA_STRING
-      | JINJA_OP        // some lexers provide JINJA_OP in expr mode
+      | JINJA_OP
       | JINJA_LP
       | JINJA_RP
       | JINJA_LB
@@ -146,83 +133,77 @@ jinjaExprBody
       | JINJA_COLON
       | JINJA_DOT
       | JINJA_OTHER
-      )*
+      )*                                            #JinjaExprBodyNode
     ;
 
 // ===========================
-// JINJA BLOCK {# ... #} wrapper
-// We parse a single jinja block token (an opening or closing directive).
-// Control flow is represented by sequences: a start jinjaBlock (e.g. {% if ... %})
-// then contentItems... then a separate jinjaBlock for the corresponding end (e.g. {% endif %}).
+// JINJA BLOCK {% ... %}
 // ===========================
 jinjaBlock
-    : JINJA_BLOCK_OPEN jinjaBlockInner JINJA_BLOCK_CLOSE    #Jinja_Block
+    : JINJA_BLOCK_OPEN jinjaBlockInner JINJA_BLOCK_CLOSE    #JinjaBlockNode
     ;
 
-// inner alternatives: start / end / elif / else / set / simple identifiers
 jinjaBlockInner
-    : forStart                                              #For_Start
-    | forEnd                                                #For_End
-    | ifStart                                               #If_Start
-    | elifPart                                              #Elif_Part
-    | elsePart                                              #Else_Part
-    | endIfPart                                             #EndIf_Part
-    | setStmt                                               #Set_Stmt
-    | simpleStmt                                            #Simple_Stmt
+    : forStart               #BlockForStartNode
+    | forEnd                 #BlockForEndNode
+    | ifStart                #BlockIfStartNode
+    | elifPart               #BlockElifNode
+    | elsePart               #BlockElseNode
+    | endIfPart              #BlockEndIfNode
+    | setStmt                #BlockSetNode
+    | simpleStmt             #BlockSimpleNode
     ;
 
 // ---------------------------
-// FOR block tokens (start / end)
+// FOR BLOCK
 // ---------------------------
 forStart
-    : JINJA_FOR jinjaBlockExpr* JINJA_IN jinjaBlockExpr*                                // e.g. "for item in items" tokens captured in jinjaBlockExpr*
+    : JINJA_FOR jinjaBlockExpr* JINJA_IN jinjaBlockExpr*     #ForStartNode
     ;
 
 forEnd
-    : JINJA_ENDFOR
+    : JINJA_ENDFOR                                            #ForEndNode
     ;
 
 // ---------------------------
-// IF / ELIF / ELSE / ENDIF tokens
+// IF / ELSEIF / ELSE / ENDIF
 // ---------------------------
 ifStart
-    : JINJA_IF jinjaBlockExpr*
+    : JINJA_IF jinjaBlockExpr*                                #IfStartNode
     ;
 
 elifPart
-    : JINJA_ELIF jinjaBlockExpr*
+    : JINJA_ELIF jinjaBlockExpr*                              #ElifPartNode
     ;
 
 elsePart
-    : JINJA_ELSE
+    : JINJA_ELSE                                              #ElsePartNode
     ;
 
 endIfPart
-    : JINJA_ENDIF
+    : JINJA_ENDIF                                             #EndIfPartNode
     ;
 
 // ---------------------------
-// SET (assignment) inside block
-// {% set name = expr %}
+// SET STATEMENT
 // ---------------------------
 setStmt
-    : JINJA_SET jinjaBlockExpr*
+    : JINJA_SET jinjaBlockExpr*                               #SetStmtNode
     ;
 
 // ---------------------------
-// Simple block (custom tags, raw, etc.)
+// SIMPLE CUSTOM BLOCK
 // ---------------------------
 simpleStmt
-    : JINJA_BLOCK_IDENT jinjaBlockExpr*
+    : JINJA_BLOCK_IDENT jinjaBlockExpr*                       #SimpleStmtNode
     ;
 
 // ---------------------------
-// jinjaBlockExpr
-// Accept many block tokens (identifiers, numbers, strings, punctuation, operators, other)
-// This is intentionally permissive so conditions like "price > 5" parse even if lexer maps '>' to OTHER.
+// BLOCK EXPR
 // ---------------------------
 jinjaBlockExpr
-    : ( JINJA_BLOCK_IDENT
+    : (
+        JINJA_BLOCK_IDENT
       | JINJA_BLOCK_NUMBER
       | JINJA_BLOCK_STRING
       | JINJA_BLOCK_EQ
@@ -234,20 +215,13 @@ jinjaBlockExpr
       | JINJA_BLOCK_LB
       | JINJA_BLOCK_RB
       | JINJA_BLOCK_OTHER
-      | JINJA_OP        // include if lexer defines it in block mode
-      )+
+      | JINJA_OP
+      )+                                                   #JinjaBlockExprNode
     ;
 
 // ===========================
-// JINJA COMMENT {# ... #}
+// JINJA COMMENT
 // ===========================
 jinjaComment
-    : JINJA_COMMENT_OPEN (JINJA_COMMENT_TEXT)? JINJA_COMMENT_CLOSE    #Jinja_Comment
+    : JINJA_COMMENT_OPEN JINJA_COMMENT_TEXT? JINJA_COMMENT_CLOSE    #JinjaCommentNode
     ;
-
-// ===========================
-// FOOTER: forward TEXT and OTHER tokens (lexer)
- // (these two forwardings let parser refer to lexer tokens named TEXT/OTHER)
-// ===========================
-//text: TEXT ;
-

@@ -26,11 +26,9 @@ class Product(db.Model):
 @app.route('/add', methods=['GET', 'POST'])
 def add_product():
     if request.method == 'POST':
-
         name = request.form['name']
         price = request.form['price']
         description = request.form['description']
-
         image_file = request.files['image']
         if image_file.filename != "":
             filename = secure_filename(image_file.filename)
@@ -82,5 +80,3 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
     app.run(debug=True)
-
-
