@@ -6,217 +6,198 @@ options { tokenVocab=PythonLexer; }
 // Root
 // ---------------------------
 file_input
-    : (stmt | decorated_def | NEWLINE)* EOF
+    : (stmt | decorated_def | NEWLINE)* EOF      #file_inputNode
     ;
 
 // ---------------------------
-// Decorators & decorated defs
+// Decorators
 // ---------------------------
 decorator
-    : AT dottedName (LPAREN decoratorArgs? RPAREN)? NEWLINE
+    : AT dottedName (LPAREN decoratorArgs? RPAREN)? NEWLINE   #decoratorNode
     ;
+
 decoratorArgs
-    : expr (COMMA expr)* (COMMA namedDecoratorArgs)?
-    | namedDecoratorArgs
+    : expr (COMMA expr)* (COMMA namedDecoratorArgs)?          #decoratorArgsNode
+    | namedDecoratorArgs                                      #decoratorArgsNamedNode
     ;
 
 namedDecoratorArgs
-    : NAME ASSIGN expr (COMMA NAME ASSIGN expr)*
+    : NAME ASSIGN expr (COMMA NAME ASSIGN expr)*              #namedDecoratorArgsNode
     ;
 
 decorated_def
-    : decorator+ (function_def | class_def)
+    : decorator+ (function_def | class_def)                   #decorated_defNode
     ;
 
 // ---------------------------
 // Statements
 // ---------------------------
 stmt
-    : simple_stmt
-    | compound_stmt
+    : simple_stmt        #stmtSimpleNode
+    | compound_stmt      #stmtCompoundNode
     ;
 
 simple_stmt
-    : small_stmt (COMMA small_stmt)* NEWLINE
+    : small_stmt (SEMICOLON small_stmt)* NEWLINE              #simple_stmtNode
     ;
 
 small_stmt
-    : expr_stmt
-    | return_stmt
-    | import_stmt
-    | pass_stmt
-    | break_stmt
-    | continue_stmt
+    : expr_stmt                  #small_stmtExprNode
+    | return_stmt NEWLINE?       #small_stmtReturnNode
+    | import_stmt                #small_stmtImportNode
+    | pass_stmt NEWLINE?         #small_stmtPassNode
+    | break_stmt NEWLINE?        #small_stmtBreakNode
+    | continue_stmt NEWLINE?     #small_stmtContinueNode
     ;
 
 expr_stmt
-    : target ASSIGN expr               #AssignNode
-    | expr                             #ExprStatementNode
+    : target ASSIGN expr         #expr_stmtAssignNode
+    | expr                       #expr_stmtExprOnlyNode
     ;
 
 target
-    : NAME                             #TargetNameNode
-    | atom index                       #TargetIndexNode
+    : NAME                       #targetNameNode
+    | atom index                 #targetIndexNode
     ;
 
-// control small stmts
-pass_stmt   : PASS ;
-break_stmt  : BREAK ;
-continue_stmt : CONTINUE ;
-return_stmt : RETURN expr? ;
+pass_stmt     : PASS NEWLINE?        #pass_stmtNode ;
+break_stmt    : BREAK NEWLINE?       #break_stmtNode ;
+continue_stmt : CONTINUE NEWLINE?    #continue_stmtNode ;
+return_stmt   : RETURN expr? NEWLINE? #return_stmtNode ;
 
 // ---------------------------
 // Compound statements
 // ---------------------------
 compound_stmt
-    : if_stmt
-    | while_stmt
-    | for_stmt
-    | function_def
-    | class_def
-    | with_stmt
+    : if_stmt        #compound_ifNode
+    | while_stmt     #compound_whileNode
+    | for_stmt       #compound_forNode
+    | function_def   #compound_functionNode
+    | class_def      #compound_classNode
+    | with_stmt      #compound_withNode
     ;
 
 function_def
-    : DEF NAME LPAREN parameterList? RPAREN COLON NEWLINE INDENT suite DEDENT
+    : DEF NAME LPAREN parameterList? RPAREN COLON suite    #function_defNode
     ;
 
 parameterList
-    : NAME (COMMA NAME)*
+    : NAME (COMMA NAME)*                                   #parameterListNode
     ;
 
 class_def
-    : CLASS NAME (LPAREN argList? RPAREN)? COLON NEWLINE INDENT suite DEDENT
+    : CLASS NAME (LPAREN argList? RPAREN)? COLON suite     #class_defNode
     ;
 
 with_stmt
-    : WITH expr (AS NAME)? COLON NEWLINE INDENT suite DEDENT
+    : WITH expr (AS NAME)? COLON suite                     #with_stmtNode
     ;
 
 if_stmt
-    : IF expr COLON NEWLINE INDENT suite DEDENT
-      (ELIF expr COLON NEWLINE INDENT suite DEDENT)*
-      (ELSE COLON NEWLINE INDENT suite DEDENT)?
+    : IF expr COLON suite
+      (ELIF expr COLON suite)*
+      (ELSE COLON suite)?                                 #if_stmtNode
     ;
 
 for_stmt
-    : FOR target IN expr COLON NEWLINE INDENT suite DEDENT
+    : FOR target IN expr COLON suite                       #for_stmtNode
     ;
 
 while_stmt
-    : WHILE expr COLON NEWLINE INDENT suite DEDENT
+    : WHILE expr COLON suite                               #while_stmtNode
     ;
 
-// suite can be one or more stmts (simple or compound)
+// ---------------------------
+// Suite
+// ---------------------------
 suite
-    : stmt+
+    : simple_stmt                               #suiteSimpleNode
+    | NEWLINE (stmt | NEWLINE)+ NEWLINE         #suiteBlockNode
     ;
 
 // ---------------------------
 // Imports
 // ---------------------------
 import_stmt
-    : IMPORT dottedName (COMMA dottedName)*
-    | FROM (DOT* | dottedName) IMPORT (MUL | importTargets)
+    : IMPORT dottedName (COMMA dottedName)*         #import_stmtSimpleNode
+    | FROM (DOT* | dottedName) IMPORT (MUL | importTargets)   #import_stmtFromNode
     ;
 
-dottedName : NAME (DOT NAME)* ;
-importTargets : NAME (AS NAME)? (COMMA NAME (AS NAME)? )* ;
+dottedName : NAME (DOT NAME)*                       #dottedNameNode ;
+importTargets : NAME (AS NAME)? (COMMA NAME (AS NAME)? )*   #importTargetsNode ;
 
 // ---------------------------
-// Expressions (safe postfix handling)
+// Expressions
 // ---------------------------
-
-// top-level expression
-expr
-    : or_test
-    ;
+expr : or_test                       #exprNode ;
 
 or_test
-    : and_test (OR and_test)*
+    : and_test (OR and_test)*        #or_testNode
     ;
 
 and_test
-    : not_test (AND not_test)*
+    : not_test (AND not_test)*       #and_testNode
     ;
 
 not_test
-    : NOT not_test
-    | comparison
+    : NOT not_test                   #not_testNode
+    | comparison                     #not_testCmpNode
     ;
 
-// comparisons
 comparison
-    : arithExpr (compOp arithExpr)*
+    : arithExpr (compOp arithExpr)*  #comparisonNode
     ;
 
-compOp
-    : EQ | NEQ | LT | GT | LE | GE
-    ;
+compOp : EQ | NEQ | LT | GT | LE | GE   #compOpNode ;
 
-// arithmetic
 arithExpr
-    : term ( (ADD | SUB) term )*
+    : term ( (ADD | SUB) term )*        #arithExprNode
     ;
 
 term
-    : factor ( (MUL | DIV | MOD) factor )*
+    : factor ( (MUL | DIV | MOD) factor )*   #termNode
     ;
 
 factor
-    : (ADD | SUB | NOT)? power
+    : (ADD | SUB | NOT)? power          #factorNode
     ;
 
 power
-    : atom (MUL MUL factor)?
+    : atom (MUL MUL factor)?            #powerNode
     ;
 
-// atom + trailers (avoids left recursion explosion)
 atom
-    : atom_base trailer*
+    : atom_base trailer*                #atomNode
     ;
 
 atom_base
-    : NAME
-    | NUMBER
-    | STRING
-    | list_literal
-    | LPAREN expr RPAREN
-    | TRUE
-    | FALSE
-    | NONE
+    : NAME                              #atomBaseNameNode
+    | NUMBER                            #atomBaseNumberNode
+    | STRING                            #atomBaseStringNode
+    | list_literal                      #atomBaseListNode
+    | LPAREN expr RPAREN                #atomBaseParNode
+    | TRUE                              #atomBaseTrueNode
+    | FALSE                             #atomBaseFalseNode
+    | NONE                              #atomBaseNoneNode
     ;
 
-// trailer: attribute, call, indexing
 trailer
-    : DOT NAME
-    | LPAREN argList? RPAREN
-    | index
+    : DOT NAME                          #trailerAttrNode
+    | LPAREN NEWLINE? argList? NEWLINE? RPAREN   #trailerCallNode
+    | index                             #trailerIndexNode
     ;
 
-// indexing
-index
-    : LBRACK expr RBRACK
-    ;
+index : LBRACK expr RBRACK              #indexNode ;
 
-// arguments
 argList
-    : expr (COMMA expr)* (COMMA namedArgList)?
-    | namedArgList
+    : expr (COMMA expr)* (COMMA namedArgList)?  #argListNode
+    | namedArgList                              #argListNamedOnlyNode
     ;
 
 namedArgList
-    : NAME ASSIGN expr (COMMA NAME ASSIGN expr)*
+    : NAME ASSIGN expr (COMMA NEWLINE? NAME ASSIGN expr)*   #namedArgListNode
     ;
 
-// list literal (used e.g. methods=['GET','POST'])
 list_literal
-    : LBRACK (expr (COMMA expr)*)? RBRACK
+    : LBRACK (expr (COMMA expr)*)? RBRACK         #list_literalNode
     ;
-
-// helper to keep compatibility
-primary : atom ;
-
-// ---------------------------
-// End of grammar
-// ---------------------------
