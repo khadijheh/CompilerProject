@@ -1,8 +1,5 @@
-// Generated from C:/Users/User/Desktop/comp/CompilerProject/src/antlr/WebParser.g4 by ANTLR 4.13.2
-
-package antlr.generated;
-
-import ast.web.ContentHtmlText;
+// Generated from C:/Users/scc/IdeaProjects/CompilerProject/src/antlr/WebParser.g4 by ANTLR 4.13.2
+package antlr;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -1173,10 +1170,7 @@ public class WebParser extends Parser {
 		public void copyFrom(HtmlTextContext ctx) {
 			super.copyFrom(ctx);
 		}
-
-        public ContentHtmlText TEXT() {
-        }
-    }
+	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class HtmlTextNodeContext extends HtmlTextContext {
 		public TerminalNode TEXT() { return getToken(WebParser.TEXT, 0); }

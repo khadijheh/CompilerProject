@@ -1,8 +1,8 @@
 package ast.python.expressions;
 
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 
-public abstract class IndexNode extends ExprNode {
+public class IndexNode extends ExprNode {
     private ExprNode object;
     private ExprNode index;
 

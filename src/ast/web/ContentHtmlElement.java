@@ -1,6 +1,6 @@
 package ast.web;
 
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 import ast.base.BaseNode;
 
 public abstract class ContentHtmlElement extends ContentItemNode {

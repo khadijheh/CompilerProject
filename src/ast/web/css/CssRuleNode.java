@@ -1,7 +1,7 @@
 package ast.web.css;
 
 import ast.base.BaseNode;
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 import java.util.List;
 
 public abstract class CssRuleNode extends BaseNode {

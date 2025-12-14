@@ -1,8 +1,8 @@
 package ast.python.expressions;
 
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 
-public abstract class BoolNode extends ExprNode {
+public class BoolNode extends ExprNode {
     private boolean value;
 
     public BoolNode(boolean value, int line, int column) {

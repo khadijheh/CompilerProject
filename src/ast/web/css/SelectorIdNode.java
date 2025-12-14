@@ -1,6 +1,6 @@
 package ast.web.css;
 
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 
 public abstract class SelectorIdNode extends SelectorNode {
     private String id;

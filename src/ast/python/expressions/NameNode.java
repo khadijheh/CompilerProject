@@ -1,8 +1,8 @@
 package ast.python.expressions;
 
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 
-public abstract class NameNode extends ExprNode {
+public class NameNode extends ExprNode {
     private String name;
 
     public NameNode(String name, int line, int column) {

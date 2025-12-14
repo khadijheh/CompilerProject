@@ -1,8 +1,8 @@
 package ast.python.expressions;
 
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 
-public abstract class UnaryOpNode extends ExprNode {
+public class UnaryOpNode extends ExprNode {
     private String operator;
     private ExprNode operand;
 

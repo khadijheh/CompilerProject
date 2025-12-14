@@ -1,16 +1,20 @@
 package ast.python.statements;
 
 import ast.base.BaseNode;
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 
-public abstract class CompoundStmtNode extends BaseNode {
+import java.util.List;
+
+public  class CompoundStmtNode extends BaseNode {
     private BaseNode stmt;
 
     public CompoundStmtNode(BaseNode stmt, int line, int column) {
         super(line, column);
         this.stmt = stmt;
     }
-
+    public List<BaseNode> getStatements() {
+        return List.of(stmt);
+    }
     public BaseNode getStmt() { return stmt; }
 
     @Override

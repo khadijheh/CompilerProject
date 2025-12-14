@@ -1,11 +1,11 @@
 package ast.python.statements;
 
 import ast.base.BaseNode;
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 import java.util.List;
 import java.util.ArrayList;
 
-public abstract class IfStmtNode extends BaseNode {
+public  class IfStmtNode extends BaseNode {
     private BaseNode condition;
     private List<BaseNode> thenBody;
     private List<IfBranch> elifBranches;

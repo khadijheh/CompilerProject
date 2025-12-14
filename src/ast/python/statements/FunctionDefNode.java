@@ -1,11 +1,11 @@
 package ast.python.statements;
 
 import ast.base.BaseNode;
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 import ast.python.other.ParameterListNode;
 import java.util.List;
 
-public abstract class FunctionDefNode extends BaseNode {
+public  class FunctionDefNode extends BaseNode {
     private String name;
     private ParameterListNode params;
     private List<BaseNode> body;

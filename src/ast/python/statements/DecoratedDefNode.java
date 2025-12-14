@@ -1,10 +1,10 @@
 package ast.python.statements;
 
 import ast.base.BaseNode;
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 import java.util.List;
 
-public abstract class DecoratedDefNode extends BaseNode {
+public  class DecoratedDefNode extends BaseNode {
     private List<DecoratorNode> decorators;
     private BaseNode definition;
 

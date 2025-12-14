@@ -1,6 +1,6 @@
 package ast.base;
 
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 
 public abstract class BaseNode implements ASTNode {
     protected int line;

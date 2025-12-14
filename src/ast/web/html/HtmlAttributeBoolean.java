@@ -1,6 +1,6 @@
 package ast.web.html;
 
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 
 public abstract class HtmlAttributeBoolean extends HtmlAttributeNode {
     private String name;

@@ -1,6 +1,6 @@
 package ast.web.html;
 
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 import ast.web.jinja.JinjaCommentNode;
 
 public abstract class AttrJinjaCommentNode extends AttrValueItemNode {

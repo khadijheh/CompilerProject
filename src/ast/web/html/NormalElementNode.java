@@ -1,6 +1,6 @@
 package ast.web.html;
 
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 import ast.base.BaseNode;
 import ast.web.ContentItemNode;
 import java.util.List;

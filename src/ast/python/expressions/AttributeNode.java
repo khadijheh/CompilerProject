@@ -1,8 +1,8 @@
 package ast.python.expressions;
 
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 
-public abstract class AttributeNode extends ExprNode {
+public class AttributeNode extends ExprNode {
     private ExprNode object;
     private String attribute;
 
@@ -14,7 +14,9 @@ public abstract class AttributeNode extends ExprNode {
 
     public ExprNode getObject() { return object; }
     public String getAttribute() { return attribute; }
-
+    public void setObject(ExprNode object) {
+        this.object = object;
+    }
     @Override
     public <T> T accept(ASTVisitor<T> visitor) {
         return visitor.visit(this);

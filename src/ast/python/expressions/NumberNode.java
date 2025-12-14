@@ -1,8 +1,8 @@
 package ast.python.expressions;
 
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 
-public abstract class NumberNode extends ExprNode {
+public class NumberNode extends ExprNode {
     private String value;
 
     public NumberNode(String value, int line, int column) {

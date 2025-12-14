@@ -1,9 +1,9 @@
 package ast.python.expressions;
 
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 import java.util.List;
 
-public abstract class NamedArgListNode extends ExprNode {
+public class NamedArgListNode extends ExprNode {
     private List<String> names;
     private List<ExprNode> values;
 

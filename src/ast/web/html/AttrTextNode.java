@@ -1,6 +1,6 @@
 package ast.web.html;
 
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 
 public abstract class AttrTextNode extends AttrValueItemNode {
     private String text;

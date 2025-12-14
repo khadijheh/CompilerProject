@@ -1,6 +1,6 @@
 package ast.web;
 
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 
 public abstract class ContentHtmlText extends ContentItemNode {
     private final String text;

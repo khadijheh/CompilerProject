@@ -1,9 +1,9 @@
 package ast.python.statements;
 
 import ast.base.BaseNode;
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 
-public abstract class ReturnStmtNode extends BaseNode {
+public  class ReturnStmtNode extends BaseNode {
     private BaseNode value;
 
     public ReturnStmtNode(BaseNode value, int line, int column) {

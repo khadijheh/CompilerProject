@@ -1,8 +1,7 @@
 package ast.web.css;
 
 import ast.base.BaseNode;
-import ast.ASTVisitor;
-import ast.web.css.CssBodyNode;
+import visitor.ASTVisitor;
 
 public abstract class CssStyleNode extends BaseNode {
     private CssBodyNode body;

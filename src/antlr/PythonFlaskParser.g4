@@ -6,8 +6,15 @@ options { tokenVocab=PythonLexer; }
 // Root
 // ---------------------------
 file_input
-    : (stmt | decorated_def | NEWLINE)* EOF      #FileInputNode
-    ;
+    : NEWLINE*
+      ( decorated_def
+      | stmt
+      | NEWLINE
+      )*
+      EOF
+        #FileInputNode
+        ;
+
 
 // ---------------------------
 // Decorators
@@ -38,7 +45,7 @@ stmt
     ;
 
 simple_stmt
-    : small_stmt (SEMICOLON small_stmt)* NEWLINE              #SimpleStmtLineNode
+    : small_stmt (SEMICOLON small_stmt)* (NEWLINE)?           #SimpleStmtLineNode
     ;
 
 small_stmt

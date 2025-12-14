@@ -1,7 +1,5 @@
-// Generated from C:/Users/User/Desktop/comp/CompilerProject/src/antlr/WebParser.g4 by ANTLR 4.13.2
-
-package antlr.generated;
-
+// Generated from C:/Users/scc/IdeaProjects/CompilerProject/src/antlr/WebParser.g4 by ANTLR 4.13.2
+package antlr;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -13,7 +11,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
  * of the available methods.
  */
 @SuppressWarnings("CheckReturnValue")
-public abstract class WebParserBaseListener implements WebParserListener {
+public class WebParserBaseListener implements WebParserListener {
 	/**
 	 * {@inheritDoc}
 	 *
@@ -651,8 +649,4 @@ public abstract class WebParserBaseListener implements WebParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void visitErrorNode(ErrorNode node) { }
-
-    public abstract void exitTemplate(antlr.generated.WebParser.TemplateContext ctx);
-
-    public abstract void exitHtmlText(antlr.generated.WebParser.HtmlTextContext ctx);
 }

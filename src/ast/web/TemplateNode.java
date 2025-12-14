@@ -1,7 +1,7 @@
 package ast.web;
 
 import ast.base.BaseNode;
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 import java.util.List;
 
 public class TemplateNode extends BaseNode {

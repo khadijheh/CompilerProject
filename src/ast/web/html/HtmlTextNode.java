@@ -1,7 +1,7 @@
 package ast.web.html;
 
 import ast.base.BaseNode;
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 
 public class HtmlTextNode extends BaseNode {
     private String text;

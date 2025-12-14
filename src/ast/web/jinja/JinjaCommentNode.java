@@ -1,7 +1,7 @@
 package ast.web.jinja;
 
 import ast.base.BaseNode;
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 
 public abstract class JinjaCommentNode extends BaseNode {
     private String comment;

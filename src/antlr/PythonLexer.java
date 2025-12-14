@@ -1,8 +1,8 @@
-// Generated from C:/Users/User/Desktop/comp/CompilerProject/src/antlr/PythonLexer.g4 by ANTLR 4.13.2
+// Generated from C:/Users/scc/IdeaProjects/CompilerProject/src/antlr/PythonLexer.g4 by ANTLR 4.13.2
+package antlr;
 
-package antlr.generated;
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.misc.*;
+import org.antlr.v4.runtime.misc.Pair;
 
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
@@ -109,12 +109,26 @@ public class PythonLexer extends Lexer {
 	    java.util.LinkedList<Token> tokens = new java.util.LinkedList<>();
 	    int opened = 0;
 
+	    // *****************************************************************
+	    // تم التعديل لحل مشكلة NullPointerException (يتم توفير مصدر الرمز)
+	    // *****************************************************************
 	    Token createToken(int type, String text) {
-	        CommonToken t = new CommonToken(type, text);
-	        t.setStartIndex(-1);
-	        t.setStopIndex(-1);
+	        // نستخدم Pair و this (_input) لربط الرمز بمصدره، وهو أمر ضروري لآلية معالجة الأخطاء
+	        CommonToken t = new CommonToken(
+	            new org.antlr.v4.runtime.misc.Pair<TokenSource, CharStream>(this, _input),
+	            type,
+	            0,
+	            -1, // startIndex
+	            -1  // stopIndex
+	        );
+	        t.setText(text);
+
+	        // تعيين السطر والموضع لتحسين تقارير الأخطاء
+	       t.setLine(getLine()); // <--- تم التعديل
+	       t.setCharPositionInLine(getCharPositionInLine()); // <--- تم التعديل
 	        return t;
 	    }
+	    // *****************************************************************
 
 	    @Override
 	    public Token nextToken() {
@@ -223,7 +237,7 @@ public class PythonLexer extends Lexer {
 			          }
 
 			          if (isBlankOrComment) {
-			              for (int i = 0; i < pos; i++) _input.consume();
+			              for (int i = 1; i < pos; i++) _input.consume(); // تم التعديل إلى i=1
 			              skip();
 			              return;
 			          }
@@ -242,9 +256,8 @@ public class PythonLexer extends Lexer {
 			              }
 			          }
 
-			          for (int i = 0; i < pos; i++) _input.consume();
+			          for (int i = 1; i < pos; i++) _input.consume(); // تم التعديل إلى i=1
 
-			          // أهم سطر
 			          skip();
 			      
 			break;

@@ -1,7 +1,5 @@
-// Generated from C:/Users/User/Desktop/comp/CompilerProject/src/antlr/WebCombinedLexer.g4 by ANTLR 4.13.2
-
-package antlr.generated;
-
+// Generated from C:/Users/scc/IdeaProjects/CompilerProject/src/antlr/WebCombinedLexer.g4 by ANTLR 4.13.2
+package antlr;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;

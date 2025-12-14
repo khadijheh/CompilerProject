@@ -1,9 +1,9 @@
 package ast.python.expressions;
 
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 import java.util.List;
 
-public abstract class ListLiteralNode extends ExprNode {
+public  class ListLiteralNode extends ExprNode {
     private List<ExprNode> elements;
 
     public ListLiteralNode(List<ExprNode> elements, int line, int column) {

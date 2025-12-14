@@ -1,7 +1,7 @@
 package ast.web.jinja;
 
 import ast.base.BaseNode;
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 
 public abstract class SetStmtNode extends BaseNode {
     private String assignment;

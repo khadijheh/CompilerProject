@@ -1,9 +1,9 @@
 package ast.python.expressions;
 
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 import java.util.List;
 
-public abstract class CallNode extends ExprNode {
+public class CallNode extends ExprNode {
     private ExprNode function;
     private List<ExprNode> args;
     private NamedArgListNode namedArgs;

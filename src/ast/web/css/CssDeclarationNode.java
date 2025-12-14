@@ -1,7 +1,7 @@
 package ast.web.css;
 
 import ast.base.BaseNode;
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 
 public abstract class CssDeclarationNode extends BaseNode {
     private String property;

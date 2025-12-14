@@ -1,6 +1,6 @@
 package ast.base;
 
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 
 public interface ASTNode {
     <T> T accept(ASTVisitor<T> visitor);

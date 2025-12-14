@@ -1,10 +1,10 @@
 package ast.python.statements;
 
 import ast.base.BaseNode;
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 import java.util.List;
 
-public abstract class FileInputNode extends BaseNode {
+public  class FileInputNode extends BaseNode {
     private List<BaseNode> statements;
 
     public FileInputNode(List<BaseNode> statements, int line, int column) {

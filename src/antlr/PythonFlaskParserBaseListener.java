@@ -1,7 +1,5 @@
-// Generated from C:/Users/User/Desktop/comp/CompilerProject/src/antlr/PythonFlaskParser.g4 by ANTLR 4.13.2
-
-package antlr.generated;
-
+// Generated from C:/Users/scc/IdeaProjects/CompilerProject/src/antlr/PythonFlaskParser.g4 by ANTLR 4.13.2
+package antlr;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -13,7 +11,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
  * of the available methods.
  */
 @SuppressWarnings("CheckReturnValue")
-public abstract class PythonFlaskParserBaseListener implements PythonFlaskParserListener {
+public class PythonFlaskParserBaseListener implements PythonFlaskParserListener {
 	/**
 	 * {@inheritDoc}
 	 *
@@ -567,10 +565,4 @@ public abstract class PythonFlaskParserBaseListener implements PythonFlaskParser
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void visitErrorNode(ErrorNode node) { }
-
-    public abstract void exitFileInput(antlr.generated.PythonFlaskParser.FileInputContext ctx);
-
-    public abstract void exitFunctionDef(antlr.generated.PythonFlaskParser.FunctionDefContext ctx);
-
-    public abstract void exitParameterList(antlr.generated.PythonFlaskParser.ParameterListContext ctx);
 }

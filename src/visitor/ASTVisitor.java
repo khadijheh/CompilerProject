@@ -1,4 +1,4 @@
-package ast;
+package visitor;
 
 import ast.python.statements.*;
 import ast.python.expressions.*;
@@ -88,6 +88,16 @@ public interface ASTVisitor<T> {
     T visit(WebSimpleStmtNode node);
     T visit(JinjaBlockExprNode node);
     T visit(JinjaCommentNode node);
+
+    T visit(ArgListNode argListNode);
+
+    T visit(AssignNode assignNode);
+
+    T visit(ContinueNode continueNode);
+
+    T visit(BreakNode breakNode);
+
+    T visit(PassNode passNode);
 
     //T visit(SimpleStmtNode simpleStmtNode);
 }

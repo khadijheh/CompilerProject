@@ -1,6 +1,6 @@
 package ast.web.css;
 
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 
 public abstract class SelectorPseudoNode extends SelectorNode {
     private String pseudoClass;

@@ -1,8 +1,7 @@
 package ast.web.jinja;
 
 import ast.base.BaseNode;
-import ast.web.jinja.JinjaExprBodyNode;
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 
 public class JinjaExpressionNode extends BaseNode {
     private JinjaExprBodyNode body;

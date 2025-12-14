@@ -1,6 +1,6 @@
 package ast.web;
 
-import ast.ASTVisitor;
+import visitor.ASTVisitor;
 import ast.web.jinja.JinjaCommentNode;
 
 public abstract class ContentJinjaComment extends ContentItemNode {
