@@ -132,13 +132,11 @@ CSS_BLOCK_OTHER : . ;
 // =====================================================
 mode HTML_ATTR_VALUE_MODE;
 
-HTML_ATTR_VALUE_CLOSE_DQ : '"'  -> popMode ;
-HTML_ATTR_VALUE_CLOSE_SQ : '\'' -> popMode ;
-
 JINJA_EXPR_OPEN_IN_ATTR    : '{{' -> pushMode(JINJA_EXPR_MODE) ;
 JINJA_BLOCK_OPEN_IN_ATTR   : '{%' -> pushMode(JINJA_BLOCK_MODE) ;
 JINJA_COMMENT_OPEN_IN_ATTR : '{#' -> pushMode(JINJA_COMMENT_MODE) ;
-
+HTML_ATTR_VALUE_CLOSE_DQ : '"'  -> popMode ;
+HTML_ATTR_VALUE_CLOSE_SQ : '\'' -> popMode ;
 HTML_ATTR_VALUE_TEXT
     : ( '{' ~[#%]
       | ~["\r\n]
@@ -177,9 +175,7 @@ mode JINJA_BLOCK_MODE;
 
 JINJA_BLOCK_CLOSE : '%}' -> popMode ;
 
-JINJA_BLOCK_IDENT  : LETTER (LETTER | DIGIT)* ;
-JINJA_BLOCK_NUMBER : DIGIT+ ;
-JINJA_BLOCK_STRING : STRING ;
+
 
 JINJA_FOR    : 'for' ;
 JINJA_IN     : 'in' ;
@@ -191,7 +187,9 @@ JINJA_ELSE   : 'else' ;
 JINJA_ENDIF  : 'endif' ;
 
 JINJA_SET    : 'set' ;
-
+JINJA_BLOCK_IDENT  : LETTER (LETTER | DIGIT)* ;
+JINJA_BLOCK_NUMBER : DIGIT+ ;
+JINJA_BLOCK_STRING : STRING ;
 JINJA_BLOCK_EQ    : '=' ;
 JINJA_BLOCK_DOT   : '.' ;
 JINJA_BLOCK_COMMA : ',' ;

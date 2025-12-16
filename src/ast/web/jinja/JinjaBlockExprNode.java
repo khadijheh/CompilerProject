@@ -1,17 +1,17 @@
 package ast.web.jinja;
-
 import ast.base.BaseNode;
 import visitor.ASTVisitor;
+import java.util.List;
 
-public abstract class JinjaBlockExprNode extends BaseNode {
-    private String expression;
+public class JinjaBlockExprNode extends BaseNode {
+    private List<String> parts;
 
-    public JinjaBlockExprNode(String expression, int line, int column) {
+    public JinjaBlockExprNode(List<String> parts, int line, int column) {
         super(line, column);
-        this.expression = expression;
+        this.parts = parts;
     }
 
-    public String getExpression() { return expression; }
+    public List<String> getParts() { return parts; }
 
     @Override
     public <T> T accept(ASTVisitor<T> visitor) {

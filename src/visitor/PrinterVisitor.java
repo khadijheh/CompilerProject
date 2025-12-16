@@ -13,6 +13,12 @@ import java.util.List;
 
 public class PrinterVisitor implements ASTVisitor<Void> {
 
+
+    private void printlnNode(String text, int line) {
+        for (int i = 0; i < indent; i++) System.out.print("  ");
+        if (line >= 0) System.out.println(text + " (line: " + line + ")");
+        else System.out.println(text);
+    }
     private int indent = 0;
 
     private void printIndent() {
@@ -53,19 +59,24 @@ public class PrinterVisitor implements ASTVisitor<Void> {
         indent--;
         return null;
     }
+
     @Override
     public Void visit(DecoratedDefNode node) {
         if (node == null) return null;
         println("DecoratedDefNode (line " + node.getLine() + ")");
         indent++;
-
-        // 1️⃣ زيارة الـ decorators أولاً
-        visitList(node.getDecorators());
-
-        // 2️⃣ زيارة التعريف مع التحقق من النوع
+        if (node.getDecorators() != null && !node.getDecorators().isEmpty()) {
+            println("Decorators:");
+            indent++;
+            visitList(node.getDecorators());
+            indent--;
+        }
         BaseNode def = node.getDefinition();
         if (def != null) {
+            println("Definition:");
+            indent++;
             def.accept(this);
+            indent--;
         }
         indent--;
         return null;
@@ -86,7 +97,6 @@ public class PrinterVisitor implements ASTVisitor<Void> {
         indent--;
         return null;
     }
-
 
 
     @Override
@@ -145,6 +155,7 @@ public class PrinterVisitor implements ASTVisitor<Void> {
         println("ParameterListNode (line " + node.getLine() + "): " + String.join(", ", node.getParameters()));
         return null;
     }
+
     @Override
     public Void visit(ClassDefNode node) {
         println("ClassDefNode: " + node.getName() + " (line " + node.getLine() + ")");
@@ -345,6 +356,7 @@ public class PrinterVisitor implements ASTVisitor<Void> {
         indent--;
         return null;
     }
+
     @Override
     public Void visit(ComparisonNode node) {
         if (node == null) return null;
@@ -484,7 +496,6 @@ public class PrinterVisitor implements ASTVisitor<Void> {
         return null;
     }
 
-
     @Override
     public Void visit(NamedArgListNode node) {
         if (node == null) return null;
@@ -536,56 +547,353 @@ public class PrinterVisitor implements ASTVisitor<Void> {
     }
 
     // ==================== Simple Statements ====================
-    @Override public Void visit(ContinueNode node) { println("ContinueNode (line " + node.getLine() + ")"); return null; }
-    @Override public Void visit(BreakNode node) { println("BreakNode (line " + node.getLine() + ")"); return null; }
-    @Override public Void visit(PassNode node) { println("PassNode (line " + node.getLine() + ")"); return null; }
+    @Override
+    public Void visit(ContinueNode node) {
+        println("ContinueNode (line " + node.getLine() + ")");
+        return null;
+    }
 
-    // ==================== Web / HTML / CSS / Jinja Nodes ====================
-    @Override public Void visit(TemplateNode node) { if (node != null) println("TemplateNode (line "+node.getLine()+")"); return null; }
-    @Override public Void visit(ContentHtmlElement node) { if (node!=null) println("ContentHtmlElement"); return null; }
-    @Override public Void visit(ContentHtmlText node) { if (node!=null) println("ContentHtmlText"); return null; }
-    @Override public Void visit(ContentJinjaExpression node) { if (node!=null) println("ContentJinjaExpression"); return null; }
-    @Override public Void visit(ContentJinjaBlock node) { if (node!=null) println("ContentJinjaBlock"); return null; }
-    @Override public Void visit(ContentJinjaComment node) { if (node!=null) println("ContentJinjaComment"); return null; }
-    @Override public Void visit(VoidElementNode node) { if (node!=null) println("VoidElementNode"); return null; }
-    @Override public Void visit(NormalElementNode node) { if (node!=null) println("NormalElementNode"); return null; }
-    @Override public Void visit(HtmlAttributeAssignment node) { if (node!=null) println("HtmlAttributeAssignment"); return null; }
-    @Override public Void visit(HtmlAttributeBoolean node) { if (node!=null) println("HtmlAttributeBoolean"); return null; }
-    @Override public Void visit(DoubleQuotedValue node) { if (node!=null) println("DoubleQuotedValue"); return null; }
-    @Override public Void visit(SingleQuotedValue node) { if (node!=null) println("SingleQuotedValue"); return null; }
-    @Override public Void visit(AttrTextNode node) { if (node!=null) println("AttrTextNode"); return null; }
-    @Override public Void visit(AttrJinjaExpressionNode node) { if (node!=null) println("AttrJinjaExpressionNode"); return null; }
-    @Override public Void visit(AttrJinjaBlockNode node) { if (node!=null) println("AttrJinjaBlockNode"); return null; }
-    @Override public Void visit(AttrJinjaCommentNode node) { if (node!=null) println("AttrJinjaCommentNode"); return null; }
-    @Override public Void visit(HtmlTextNode node) { if (node!=null) println("HtmlTextNode"); return null; }
-    @Override public Void visit(CssStyleNode node) { if (node!=null) println("CssStyleNode"); return null; }
-    @Override public Void visit(CssBodyNode node) { if (node!=null) println("CssBodyNode"); return null; }
-    @Override public Void visit(CssRuleNode node) { if (node!=null) println("CssRuleNode"); return null; }
-    @Override public Void visit(SelectorSimpleNode node) { if (node!=null) println("SelectorSimpleNode"); return null; }
-    @Override public Void visit(SelectorClassNode node) { if (node!=null) println("SelectorClassNode"); return null; }
-    @Override public Void visit(SelectorIdNode node) { if (node!=null) println("SelectorIdNode"); return null; }
-    @Override public Void visit(SelectorPseudoNode node) { if (node!=null) println("SelectorPseudoNode"); return null; }
-    @Override public Void visit(CssDeclarationNode node) { if (node!=null) println("CssDeclarationNode"); return null; }
-    @Override public Void visit(JinjaExpressionNode node) { if (node!=null) println("JinjaExpressionNode"); return null; }
-    @Override public Void visit(JinjaExprBodyNode node) { if (node!=null) println("JinjaExprBodyNode"); return null; }
-    @Override public Void visit(JinjaBlockNode node) { if (node!=null) println("JinjaBlockNode"); return null; }
-    @Override public Void visit(ForStartNode node) { if (node!=null) println("ForStartNode"); return null; }
-    @Override public Void visit(ForEndNode node) { if (node!=null) println("ForEndNode"); return null; }
-    @Override public Void visit(IfStartNode node) { if (node!=null) println("IfStartNode"); return null; }
-    @Override public Void visit(ElifPartNode node) { if (node!=null) println("ElifPartNode"); return null; }
-    @Override public Void visit(ElsePartNode node) { if (node!=null) println("ElsePartNode"); return null; }
-    @Override public Void visit(EndIfPartNode node) { if (node!=null) println("EndIfPartNode"); return null; }
-    @Override public Void visit(SetStmtNode node) { if (node!=null) println("SetStmtNode"); return null; }
-    @Override public Void visit(WebSimpleStmtNode node) { if (node!=null) println("WebSimpleStmtNode"); return null; }
+    @Override
+    public Void visit(BreakNode node) {
+        println("BreakNode (line " + node.getLine() + ")");
+        return null;
+    }
+
+    @Override
+    public Void visit(PassNode node) {
+        println("PassNode (line " + node.getLine() + ")");
+        return null;
+    }
+    // ==================== Template ====================
+    @Override
+    public Void visit(TemplateNode node) {
+        if (node == null) return null;
+        printlnNode("TemplateNode:", node.getLine());
+        indent++;
+        visitList(node.getContent());
+        indent--;
+        return null;
+    }
+
+    // ==================== HTML ====================
+    @Override
+    public Void visit(ContentHtmlElement node) {
+        if (node == null) return null;
+        printlnNode("ContentHtmlElement:", node.getLine());
+        indent++;
+        if (node.getElement() != null) node.getElement().accept(this);
+        indent--;
+        return null;
+    }
+
+    @Override
+    public Void visit(NormalElementNode node) {
+        if (node == null) return null;
+
+        printlnNode("NormalElement <" + node.getTagName() + ">", node.getLine());
+        indent++;
+
+        for (BaseNode attr : node.getAttributes())
+            attr.accept(this);
+
+        StringBuilder textBuffer = new StringBuilder();
+
+        for (ContentItemNode c : node.getContent()) {
+
+            // إذا كان نص HTML
+            if (c instanceof ContentHtmlText textNode) {
+                if (!textBuffer.isEmpty()) {
+                    textBuffer.append(" ");
+                }
+                textBuffer.append(textNode.getText());
+            }
+            else {
+                // اطبع النص المتجمع قبل أي عنصر آخر
+                if (!textBuffer.isEmpty()) {
+                    printlnNode("Text: " + textBuffer.toString(), c.getLine());
+                    textBuffer.setLength(0);
+                }
+                c.accept(this);
+            }
+        }
+
+        // طباعة أي نص متبقٍ
+        if (!textBuffer.isEmpty()) {
+            printlnNode("Text: " + textBuffer.toString(), node.getLine());
+        }
+
+        indent--;
+        return null;
+    }
+
+    @Override
+    public Void visit(VoidElementNode node) {
+        if (node == null) return null;
+        printlnNode("VoidElement <" + node.getTagName() + ">", node.getLine());
+        indent++;
+        for (BaseNode attr : node.getAttributes()) attr.accept(this);
+        indent--;
+        return null;
+    }
+
+    @Override
+    public Void visit(ContentHtmlText node) {
+        if (node == null) return null;
+        printlnNode("Text: " + node.getText() , node.getLine());
+        return null;
+    }
+
+    @Override
+    public Void visit(HtmlTextNode node) {
+        if (node == null) return null;
+        printlnNode("TextNode: \"" + node.getText() + "\"", node.getLine());
+        return null;
+    }
+    private String collectAttrValue(List<BaseNode> nodes) {
+        StringBuilder sb = new StringBuilder();
+
+        for (BaseNode n : nodes) {
+            if (n instanceof AttrTextNode t) {
+                sb.append(t.getText());
+            }
+            else if (n instanceof AttrJinjaExpressionNode j) {
+                sb.append(j.getExpression().getBody().getExpression());
+            }
+            else if (n instanceof AttrJinjaBlockNode b) {
+                sb.append("[JINJA_BLOCK]");
+            }
+        }
+        return sb.toString();
+    }
+    @Override public Void visit(DoubleQuotedValue node) { return null; }
+    @Override public Void visit(SingleQuotedValue node) { return null; }
+    @Override public Void visit(AttrTextNode node) { return null; }
+    @Override
+    public Void visit(AttrJinjaExpressionNode node) {
+        printlnNode(
+                "AttrJinjaExpr: {{ " + node.getExpression().getBody().getExpression() + " }}",
+                node.getLine()
+        );
+        return null;
+    }
+    @Override public Void visit(AttrJinjaBlockNode node) { return null; }
+
+    @Override
+    public Void visit(HtmlAttributeAssignment node) {
+        if (node == null) return null;
+
+        String value = "";
+
+        if (node.getValue() instanceof DoubleQuotedValue dq) {
+            value = collectAttrValue(dq.getContent());
+            printlnNode("Attr: " + node.getName() + " = " + value , node.getLine());
+        } else if (node.getValue() instanceof SingleQuotedValue sq) {
+            value = collectAttrValue(sq.getContent());
+            printlnNode("Attr: " + node.getName() + " = '" + value + "'", node.getLine());
+        } else {
+            printlnNode("Attr: " + node.getName(), node.getLine());
+        }
+
+        return null;
+    }
+
+
+    @Override
+    public Void visit(CssDeclarationNode node) {
+        String value = node.getValue() != null ? node.getValue().toString() : "";
+        printlnNode("CssDecl: " + node.getProperty() + " = " + value, node.getLine());
+        return null;
+    }
+
+    @Override
+    public Void visit(WebSimpleStmtNode node) {
+        printlnNode("SimpleStmt: " + node.getStatement(), node.getLine());
+        return null;
+    }
+
+
+    @Override
+    public Void visit(HtmlAttributeBoolean node) {
+        if (node == null) return null;
+        printlnNode("Attr: " + node.getName(), node.getLine());
+        return null;
+    }
+
+
+    @Override
+    public Void visit(AttrJinjaCommentNode node) {
+        printlnNode("AttrJinjaComment", node.getLine());
+        return null;
+    }
+
+    // ==================== Jinja ====================
+    @Override
+    public Void visit(ContentJinjaExpression node) {
+        printlnNode("ContentJinjaExpr:", node.getLine());
+        indent++;
+        node.getExpression().accept(this);
+        indent--;
+        return null;
+    }
+
+    @Override
+    public Void visit(ContentJinjaBlock node) {
+        printlnNode("ContentJinjaBlock:", node.getLine());
+        indent++;
+        node.getBlock().accept(this);
+        indent--;
+        return null;
+    }
+
+    @Override
+    public Void visit(ContentJinjaComment node) {
+        printlnNode("ContentJinjaComment", node.getLine());
+        return null;
+    }
+
+    @Override
+    public Void visit(JinjaExpressionNode node) {
+        if (node == null) return null;
+        printlnNode("JinjaExpr: " + node.getBody().getExpression(), node.getLine());
+        return null;
+    }
+    @Override
+    public Void visit(JinjaBlockNode node) {
+        if (node == null) return null;
+
+        printlnNode("JinjaBlock:", node.getLine());
+        indent++;
+
+        BaseNode inner = node.getInner();
+
+        if (inner != null) {
+            inner.accept(this);
+        }
+
+        indent--;
+        return null;
+    }
+
+    @Override
+    public Void visit(JinjaExprBodyNode node) {
+        printlnNode("ExprBody: " + node.getExpression(), node.getLine());
+        return null;
+    }
+
+    @Override
+    public Void visit(SetStmtNode node) {
+        printlnNode("SetStmt: " + node.getAssignment(), node.getLine());
+        return null;
+    }
 
     @Override
     public Void visit(JinjaBlockExprNode node) {
-        if (node!=null) println("JinjaBlockExprNode"); return null;
+        printlnNode(
+                "BlockExpr: " + String.join(" ", node.getParts()),
+                node.getLine()
+        );
+        return null;
     }
+
 
     @Override
     public Void visit(JinjaCommentNode node) {
-        if (node!=null) println("JinjaCommentNode"); return null;
-
+        printlnNode("JinjaComment: " + node.getComment(), node.getLine());
+        return null;
     }
+
+    // في PrinterVisitor.java
+    @Override
+    public Void visit(ForStartNode node) {
+        printlnNode("ForStart: " + node.getVariables() + " in " + node.getIterable(), node.getLine());
+        return null;
+    }
+
+
+    @Override
+    public Void visit(ForEndNode node) {
+        printlnNode("ForEnd", node.getLine());
+        return null;
+    }
+
+    @Override
+    public Void visit(IfStartNode node) {
+        printlnNode("IfStart: " + node.getCondition(), node.getLine());
+        return null;
+    }
+
+    @Override
+    public Void visit(ElifPartNode node) {
+        printlnNode("Elif: " + node.getCondition(), node.getLine());
+        return null;
+    }
+
+    @Override
+    public Void visit(ElsePartNode node) {
+        printlnNode("Else", node.getLine());
+        return null;
+    }
+
+    @Override
+    public Void visit(EndIfPartNode node) {
+        printlnNode("EndIf", node.getLine());
+        return null;
+    }
+
+    // ==================== CSS ====================
+    @Override
+    public Void visit(CssStyleNode node) {
+        printlnNode("CssStyle:", node.getLine());
+        indent++;
+        node.getBody().accept(this);
+        indent--;
+        return null;
+    }
+
+    @Override
+    public Void visit(CssBodyNode node) {
+        printlnNode("CssBody:", node.getLine());
+        indent++;
+        for (BaseNode rule : node.getRules()) rule.accept(this);
+        indent--;
+        return null;
+    }
+
+    @Override
+    public Void visit(CssRuleNode node) {
+        printlnNode("CssRule:", node.getLine());
+        indent++;
+        node.getSelector().accept(this);
+        for (CssDeclarationNode decl : node.getDeclarations()) decl.accept(this);
+        indent--;
+        return null;
+    }
+
+    @Override
+    public Void visit(SelectorSimpleNode node) {
+        printlnNode("Selector: " + node.getSelector(), node.getLine());
+        return null;
+    }
+
+    @Override
+    public Void visit(SelectorClassNode node) {
+        printlnNode("SelectorClass: " + node.getClassName(), node.getLine());
+        return null;
+    }
+
+    @Override
+    public Void visit(SelectorIdNode node) {
+        printlnNode("SelectorId: " + node.getId(), node.getLine());
+        return null;
+    }
+
+    @Override
+    public Void visit(SelectorPseudoNode node) {
+        if (node.getPseudoElement() != null)
+            printlnNode("SelectorPseudo: " + node.getPseudoClass() + "::" + node.getPseudoElement(), node.getLine());
+        else
+            printlnNode("SelectorPseudo: " + node.getPseudoClass(), node.getLine());
+        return null;
+    }
+
 }

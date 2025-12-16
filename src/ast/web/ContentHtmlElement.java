@@ -3,7 +3,7 @@ package ast.web;
 import visitor.ASTVisitor;
 import ast.base.BaseNode;
 
-public abstract class ContentHtmlElement extends ContentItemNode {
+public  class ContentHtmlElement extends ContentItemNode {
     private BaseNode element;
 
     public ContentHtmlElement(BaseNode element, int line, int column) {

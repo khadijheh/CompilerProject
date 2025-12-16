@@ -3,7 +3,7 @@ package ast.web.jinja;
 import ast.base.BaseNode;
 import visitor.ASTVisitor;
 
-public abstract class JinjaBlockNode extends BaseNode {
+public  class JinjaBlockNode extends BaseNode {
     private BaseNode inner;
 
     public JinjaBlockNode(BaseNode inner, int line, int column) {

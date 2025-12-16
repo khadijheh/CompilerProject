@@ -3,7 +3,7 @@ package ast.web.jinja;
 import ast.base.BaseNode;
 import visitor.ASTVisitor;
 
-public abstract class WebSimpleStmtNode extends BaseNode {
+public  class WebSimpleStmtNode extends BaseNode {
     private String statement;
 
     public WebSimpleStmtNode(String statement, int line, int column) {

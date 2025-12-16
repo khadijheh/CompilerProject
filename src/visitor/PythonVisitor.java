@@ -1,17 +1,11 @@
 package visitor;
 
-import antlr.PythonFlaskParser;
-import antlr.PythonFlaskParserBaseVisitor;
-import ast.base.ASTNode;
-import ast.base.BaseNode;
+import antlr.*;
+import ast.base.*;
 import ast.python.statements.*;
 import ast.python.expressions.*;
 import ast.python.other.*;
-import ast.python.statements.SimpleStmtNode;
-import org.antlr.v4.runtime.tree.ParseTree;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class PythonVisitor extends PythonFlaskParserBaseVisitor<ASTNode> {
     private final List<DecoratorNode> pendingDecorators = new ArrayList<>();
@@ -444,54 +438,6 @@ public class PythonVisitor extends PythonFlaskParserBaseVisitor<ASTNode> {
 
 
     @Override
-    public ASTNode visitClassDefNode(PythonFlaskParser.ClassDefNodeContext ctx) {
-
-        if (ctx == null) return null;
-
-        String name = ctx.NAME() != null ? ctx.NAME().getText() : "";
-
-        // -------- base classes --------
-        List<BaseNode> baseClasses = new ArrayList<>();
-        if (ctx.argList() != null && ctx.argList().expr() != null) {
-            for (PythonFlaskParser.ExprContext exprCtx : ctx.argList().expr()) {
-
-                ASTNode n = visit(exprCtx);
-
-                if (n instanceof ExprNode) {
-                    baseClasses.add((BaseNode) n);
-                }
-            }
-        }
-
-
-        // -------- body --------
-        List<BaseNode> body = extractSuiteStatements(ctx.suite());
-
-        ClassDefNode classDef = new ClassDefNode(
-                name,
-                baseClasses,
-                body,
-                ctx.start.getLine(),
-                ctx.start.getCharPositionInLine()
-        );
-
-        // ⭐ ربط الـ decorators مباشرة مع الـ class
-        if (!pendingDecorators.isEmpty()) {
-            List<DecoratorNode> decorators = new ArrayList<>(pendingDecorators);
-            pendingDecorators.clear();
-
-            return new DecoratedDefNode(
-                    decorators,
-                    classDef,
-                    ctx.start.getLine(),
-                    ctx.start.getCharPositionInLine()
-            );
-        }
-
-        return classDef;
-    }
-
-    @Override
     public ASTNode visitParameterListNode(PythonFlaskParser.ParameterListNodeContext ctx) {
         List<String> parameters = new ArrayList<>();
         if (ctx == null || ctx.NAME() == null) return new ParameterListNode(parameters, -1, -1);
@@ -504,48 +450,6 @@ public class PythonVisitor extends PythonFlaskParserBaseVisitor<ASTNode> {
     }
 
 
-    @Override
-    public ASTNode visitFunctionDefNode(PythonFlaskParser.FunctionDefNodeContext ctx) {
-        if (ctx == null) return null;
-
-        // -------- اسم الدالة --------
-        String name = ctx.NAME() != null ? ctx.NAME().getText() : "";
-
-        // -------- المعاملات --------
-        ParameterListNode params = null;
-        if (ctx.parameterList() != null) {
-            params = (ParameterListNode) visit(ctx.parameterList());
-        }
-
-        // -------- جسم الدالة --------
-        List<BaseNode> body = extractSuiteStatements(ctx.suite());
-
-        // -------- أنشئ FunctionDefNode --------
-        FunctionDefNode func = new FunctionDefNode(
-                name,
-                params,
-                body,
-                ctx.start.getLine(),
-                ctx.start.getCharPositionInLine()
-        );
-
-        // 🔥🔥 هنا التعديل المهم 🔥🔥
-        // إذا كان هناك decorators قبل هذا التعريف
-        if (!pendingDecorators.isEmpty()) {
-            List<DecoratorNode> decorators = new ArrayList<>(pendingDecorators);
-            pendingDecorators.clear();
-
-            return new DecoratedDefNode(
-                    decorators,
-                    func,
-                    ctx.start.getLine(),
-                    ctx.start.getCharPositionInLine()
-            );
-        }
-
-        // -------- لا يوجد decorators --------
-        return func;
-    }
 
     @Override
     public ASTNode visitCompound_stmt(PythonFlaskParser.Compound_stmtContext ctx) {
@@ -780,30 +684,17 @@ public class PythonVisitor extends PythonFlaskParserBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitDecoratedDefNode(PythonFlaskParser.DecoratedDefNodeContext ctx) {
-        // 1️⃣ زيارة كل decorator في القائمة
+        List<DecoratorNode> decorators = new ArrayList<>();
         for (PythonFlaskParser.DecoratorContext decCtx : ctx.decorator()) {
             DecoratorNode dec = (DecoratorNode) visit(decCtx);
-            if (dec != null) {
-                pendingDecorators.add(dec);
-            }
+            if (dec != null) decorators.add(dec);
         }
 
-        // 2️⃣ تعريف الدالة أو الكلاس (قد يكون null في حالة decorator فقط)
-        ParseTree definitionContext = ctx.function_def() != null ? ctx.function_def() : ctx.class_def();
-        BaseNode definition = null;
+        BaseNode definition = ctx.function_def() != null ? (BaseNode) visit(ctx.function_def())
+                : ctx.class_def() != null ? (BaseNode) visit(ctx.class_def())
+                : null;
 
-        if (definitionContext != null) {
-            definition = (BaseNode) visit(definitionContext);
-        }
-
-        // 3️⃣ إذا لم يوجد تعريف، نترك pendingDecorators لتربط لاحقًا مع أول دالة أو كلاس يأتي لاحقًا
-        if (definition == null) {
-            return null; // لا نرجع DecoratedDefNode بدون تعريف
-        }
-
-        // 4️⃣ إنشاء DecoratedDefNode مع أي decorators تم جمعها
-        List<DecoratorNode> decorators = new ArrayList<>(pendingDecorators);
-        pendingDecorators.clear();
+        if (definition == null) return null;
 
         return new DecoratedDefNode(
                 decorators,
@@ -894,6 +785,53 @@ public class PythonVisitor extends PythonFlaskParserBaseVisitor<ASTNode> {
                 ctx.start != null ? ctx.start.getLine() : -1,
                 ctx.start != null ? ctx.start.getCharPositionInLine() : -1
         );
+    }
+    @Override
+    public ASTNode visitFunctionDefNode(PythonFlaskParser.FunctionDefNodeContext ctx) {
+        if (ctx == null) return null;
+
+        String name = ctx.NAME() != null ? ctx.NAME().getText() : "";
+
+        ParameterListNode params = ctx.parameterList() != null
+                ? (ParameterListNode) visit(ctx.parameterList())
+                : null;
+
+        List<BaseNode> body = extractSuiteStatements(ctx.suite());
+
+        FunctionDefNode func = new FunctionDefNode(
+                name,
+                params,
+                body,
+                ctx.start.getLine(),
+                ctx.start.getCharPositionInLine()
+        );
+
+        return func;  // لا حاجة للتعامل مع pendingDecorators هنا
+    }
+
+    @Override
+    public ASTNode visitClassDefNode(PythonFlaskParser.ClassDefNodeContext ctx) {
+        if (ctx == null) return null;
+
+        String name = ctx.NAME() != null ? ctx.NAME().getText() : "";
+
+        List<BaseNode> baseClasses = new ArrayList<>();
+        if (ctx.argList() != null && ctx.argList().expr() != null) {
+            for (PythonFlaskParser.ExprContext exprCtx : ctx.argList().expr()) {
+                ASTNode n = visit(exprCtx);
+                if (n instanceof ExprNode) baseClasses.add((BaseNode) n);
+            }
+        }
+
+        List<BaseNode> body = extractSuiteStatements(ctx.suite());
+
+        return new ClassDefNode(
+                name,
+                baseClasses,
+                body,
+                ctx.start.getLine(),
+                ctx.start.getCharPositionInLine()
+        ); // لا حاجة للتعامل مع pendingDecorators هنا
     }
 
 }

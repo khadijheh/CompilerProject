@@ -3,7 +3,7 @@ package ast.web.jinja;
 import ast.base.BaseNode;
 import visitor.ASTVisitor;
 
-public abstract class IfStartNode extends BaseNode {
+public  class IfStartNode extends BaseNode {
     private String condition;
 
     public IfStartNode(String condition, int line, int column) {

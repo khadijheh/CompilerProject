@@ -3,7 +3,7 @@ package ast.web.jinja;
 import ast.base.BaseNode;
 import visitor.ASTVisitor;
 
-public abstract class EndIfPartNode extends BaseNode {
+public  class EndIfPartNode extends BaseNode {
     public EndIfPartNode(int line, int column) {
         super(line, column);
     }

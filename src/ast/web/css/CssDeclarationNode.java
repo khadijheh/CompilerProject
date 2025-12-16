@@ -3,7 +3,7 @@ package ast.web.css;
 import ast.base.BaseNode;
 import visitor.ASTVisitor;
 
-public abstract class CssDeclarationNode extends BaseNode {
+public  class CssDeclarationNode extends BaseNode {
     private String property;
     private String value;
 
