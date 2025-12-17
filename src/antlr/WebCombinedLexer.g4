@@ -78,10 +78,6 @@ HTML_TAG_CLOSE      : '>'  -> popMode ;
 
 HTML_OTHER : [^a-zA-Z0-9_:/>"'= ] ;
 
-
-
-
-
 // =====================================================
 //  HTML COMMENT MODE
 // =====================================================
@@ -96,35 +92,40 @@ HTML_COMMENT_WS    : [ \t\r\n]+ -> skip ;
 // =====================================================
 mode CSS_MODE;
 
+// يغلق الـ <style>
 CSS_STYLE_CLOSE : '</' [sS][tT][yY][lL][eE] '>' -> popMode ;
 
-CSS_WS       : [ \t\r\n]+ -> skip ;
-CSS_BLOCK_WS : [ \t\r\n]+ -> skip ;
+// تجاهل المسافات
+CSS_WS : [ \t\r\n]+ -> skip ;
 
+// فتح وغلق الأقواس
 CSS_BRACE_OPEN : '{' ;
 CSS_BLOCK_END  : '}' ;
-CSS_SEMICOLON  : ';' ;
-CSS_IMPORTANT  : '!important' ;
 
-CSS_CLASS : '.' [a-zA-Z_][a-zA-Z0-9_-]* ;
-CSS_ID    : '#' [a-zA-Z_][a-zA-Z0-9_-]* ;
+// : و ; في القواعد
+CSS_COLON     : ':' ;
+CSS_SEMICOLON : ';' ;
 
-CSS_PSEUDO
-    : ':' [a-zA-Z_-]+ ( '(' (~(')'))* ')' )?
-    ;
+// !important
+CSS_IMPORTANT : '!important' ;
 
-CSS_PROPERTY : [a-zA-Z-]+ ;
-CSS_COLON    : ':' ;
+// selectors حسب الترتيب: class, id, pseudo, general
+CSS_CLASS    : '.' [a-zA-Z_][a-zA-Z0-9_-]* ;
+CSS_ID       : '#' [a-zA-Z_][a-zA-Z0-9_-]* ;
+CSS_PSEUDO   : ':' [a-zA-Z_-]+ ( '(' (~')')* ')' )? ;
 
-CSS_VALUE
-    : (~('{' | '}' | ';' | '\r' | '\n'))+
-    ;
-
+// selector عام مع السماح بالمسافات بين الكلمات (combinators)
 CSS_SELECTOR
-    : (~('{' | '\r' | '\n'))+
-    ;
+    : [a-zA-Z0-9_-]+ ( [ \t\r\n]+ [a-zA-Z0-9_-]+ )* ;
 
-// FINAL fallback per CSS mode only
+// property name
+CSS_PROPERTY : [a-zA-Z-]+ ;
+
+// قيمة بعد :
+CSS_VALUE
+    : (~(';' | '\r' | '\n' | '}'))+ ;
+
+// fallback أي شيء آخر
 CSS_BLOCK_OTHER : . ;
 
 // =====================================================

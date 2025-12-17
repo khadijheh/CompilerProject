@@ -29,6 +29,18 @@ public class WebParserBaseListener implements WebParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterContentCssStyle(WebParser.ContentCssStyleContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitContentCssStyle(WebParser.ContentCssStyleContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterContentHtmlElement(WebParser.ContentHtmlElementContext ctx) { }
 	/**
 	 * {@inheritDoc}

@@ -20,6 +20,18 @@ public interface WebParserListener extends ParseTreeListener {
 	 */
 	void exitTemplateNode(WebParser.TemplateNodeContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code ContentCssStyle}
+	 * labeled alternative in {@link WebParser#contentItem}.
+	 * @param ctx the parse tree
+	 */
+	void enterContentCssStyle(WebParser.ContentCssStyleContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ContentCssStyle}
+	 * labeled alternative in {@link WebParser#contentItem}.
+	 * @param ctx the parse tree
+	 */
+	void exitContentCssStyle(WebParser.ContentCssStyleContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code ContentHtmlElement}
 	 * labeled alternative in {@link WebParser#contentItem}.
 	 * @param ctx the parse tree

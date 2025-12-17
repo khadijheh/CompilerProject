@@ -18,6 +18,13 @@ public interface WebParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTemplateNode(WebParser.TemplateNodeContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code ContentCssStyle}
+	 * labeled alternative in {@link WebParser#contentItem}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitContentCssStyle(WebParser.ContentCssStyleContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code ContentHtmlElement}
 	 * labeled alternative in {@link WebParser#contentItem}.
 	 * @param ctx the parse tree

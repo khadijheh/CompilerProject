@@ -19,7 +19,8 @@ template
 // CONTENT ITEMS
 // ===========================
 contentItem
-    : htmlElement                                 #ContentHtmlElement
+    : cssStyleBlock                               #ContentCssStyle
+    | htmlElement                                 #ContentHtmlElement
     | htmlText                                     #ContentHtmlText
     | jinjaExpression                              #ContentJinjaExpression
     | jinjaBlock                                   #ContentJinjaBlock
@@ -90,7 +91,7 @@ cssStyleBlock
     ;
 
 cssBody
-    : ( cssRule | CSS_BLOCK_WS | CSS_BLOCK_OTHER )*    #CssBodyNode
+    : ( cssRule  | CSS_BLOCK_OTHER )*    #CssBodyNode
     ;
 
 cssRule
@@ -105,12 +106,13 @@ cssSelector
     ;
 
 cssDeclarations
-    : (cssDeclaration | CSS_BLOCK_WS)*              #CssDeclarationsNode
+    : (cssDeclaration )*              #CssDeclarationsNode
     ;
 
 cssDeclaration
     : CSS_PROPERTY CSS_COLON CSS_VALUE CSS_SEMICOLON?   #CssDeclarationNode
     ;
+
 
 // ===========================
 // JINJA EXPRESSION {{ ... }}

@@ -25,6 +25,13 @@ public class WebParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> impleme
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitContentCssStyle(WebParser.ContentCssStyleContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitContentHtmlElement(WebParser.ContentHtmlElementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
