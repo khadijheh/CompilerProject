@@ -90,43 +90,77 @@ HTML_COMMENT_WS    : [ \t\r\n]+ -> skip ;
 // =====================================================
 //  CSS MODE  (Refined + NON-BLOCKING)
 // =====================================================
+// ===========================
+// CSS MODE
+// ===========================
 mode CSS_MODE;
 
-// يغلق الـ <style>
-CSS_STYLE_CLOSE : '</' [sS][tT][yY][lL][eE] '>' -> popMode ;
+/* ---------- STYLE CLOSE ---------- */
 
-// تجاهل المسافات
-CSS_WS : [ \t\r\n]+ -> skip ;
+CSS_STYLE_CLOSE
+    : '</' [sS][tT][yY][lL][eE] '>' -> popMode
+    ;
 
-// فتح وغلق الأقواس
-CSS_BRACE_OPEN : '{' ;
-CSS_BLOCK_END  : '}' ;
+/* ---------- WHITESPACE ---------- */
 
-// : و ; في القواعد
-CSS_COLON     : ':' ;
-CSS_SEMICOLON : ';' ;
+CSS_WS
+    : [ \t\r\n]+ -> skip
+    ;
 
-// !important
-CSS_IMPORTANT : '!important' ;
+/* ---------- BRACES & SYMBOLS ---------- */
 
-// selectors حسب الترتيب: class, id, pseudo, general
-CSS_CLASS    : '.' [a-zA-Z_][a-zA-Z0-9_-]* ;
-CSS_ID       : '#' [a-zA-Z_][a-zA-Z0-9_-]* ;
-CSS_PSEUDO   : ':' [a-zA-Z_-]+ ( '(' (~')')* ')' )? ;
+CSS_LBRACE : '{' ;
+CSS_RBRACE : '}' ;
+CSS_LBRACK : '[' ;
+CSS_RBRACK : ']' ;
+CSS_COLON  : ':' ;
+CSS_SEMI   : ';' ;
+CSS_COMMA  : ',' ;
+CSS_EQUAL  : '=' ;
+CSS_LP : '(' ;
+CSS_RP : ')' ;
+/* ---------- SELECTORS ---------- */
 
-// selector عام مع السماح بالمسافات بين الكلمات (combinators)
-CSS_SELECTOR
-    : [a-zA-Z0-9_-]+ ( [ \t\r\n]+ [a-zA-Z0-9_-]+ )* ;
+CSS_DOT    : '.' ;
 
-// property name
-CSS_PROPERTY : [a-zA-Z-]+ ;
+/* ⚠️ مهم: اللون قبل # */
+CSS_COLOR_HEX
+    : '#' [0-9a-fA-F]+
+    ;
 
-// قيمة بعد :
-CSS_VALUE
-    : (~(';' | '\r' | '\n' | '}'))+ ;
 
-// fallback أي شيء آخر
-CSS_BLOCK_OTHER : . ;
+
+CSS_HASH   : '#' ;
+
+/* ---------- IDENTIFIER ---------- */
+
+CSS_IDENT
+    : [a-zA-Z_][a-zA-Z0-9_-]*
+    ;
+
+/* ---------- VALUES ---------- */
+
+CSS_NUMBER
+    : DIGIT+ ('.' DIGIT+)?
+    ;
+
+CSS_UNIT
+    : 'px' | 'em' | 'rem' | '%' | 'vh' | 'vw'
+    ;
+
+CSS_STRING
+    : STRING
+    ;
+
+
+/* ---------- FALLBACK ---------- */
+CSS_MINUS
+    : '-'
+    ;
+
+CSS_OTHER
+    : .
+    ;
 
 // =====================================================
 //  HTML ATTRIBUTE VALUE MODE

@@ -293,13 +293,13 @@ public class WebParserBaseListener implements WebParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCssBodyNode(WebParser.CssBodyNodeContext ctx) { }
+	@Override public void enterCssRulesNode(WebParser.CssRulesNodeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCssBodyNode(WebParser.CssBodyNodeContext ctx) { }
+	@Override public void exitCssRulesNode(WebParser.CssRulesNodeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -317,49 +317,157 @@ public class WebParserBaseListener implements WebParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSelectorSimpleNode(WebParser.SelectorSimpleNodeContext ctx) { }
+	@Override public void enterCssSelectorListNode(WebParser.CssSelectorListNodeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSelectorSimpleNode(WebParser.SelectorSimpleNodeContext ctx) { }
+	@Override public void exitCssSelectorListNode(WebParser.CssSelectorListNodeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSelectorClassNode(WebParser.SelectorClassNodeContext ctx) { }
+	@Override public void enterCssSelectorNode(WebParser.CssSelectorNodeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSelectorClassNode(WebParser.SelectorClassNodeContext ctx) { }
+	@Override public void exitCssSelectorNode(WebParser.CssSelectorNodeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSelectorIdNode(WebParser.SelectorIdNodeContext ctx) { }
+	@Override public void enterSelectorPartNode(WebParser.SelectorPartNodeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSelectorIdNode(WebParser.SelectorIdNodeContext ctx) { }
+	@Override public void exitSelectorPartNode(WebParser.SelectorPartNodeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSelectorPseudoNode(WebParser.SelectorPseudoNodeContext ctx) { }
+	@Override public void enterTypeSelectorNode(WebParser.TypeSelectorNodeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSelectorPseudoNode(WebParser.SelectorPseudoNodeContext ctx) { }
+	@Override public void exitTypeSelectorNode(WebParser.TypeSelectorNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterClassSelectorNode(WebParser.ClassSelectorNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitClassSelectorNode(WebParser.ClassSelectorNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIdSelectorNode(WebParser.IdSelectorNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIdSelectorNode(WebParser.IdSelectorNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPseudoSelectorNode(WebParser.PseudoSelectorNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPseudoSelectorNode(WebParser.PseudoSelectorNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAttributeSeNode(WebParser.AttributeSeNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAttributeSeNode(WebParser.AttributeSeNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTypeSelectorIdNode(WebParser.TypeSelectorIdNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTypeSelectorIdNode(WebParser.TypeSelectorIdNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterClassSelectorIdNode(WebParser.ClassSelectorIdNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitClassSelectorIdNode(WebParser.ClassSelectorIdNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIdSelectorIdNode(WebParser.IdSelectorIdNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIdSelectorIdNode(WebParser.IdSelectorIdNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPseudoSelectorIdNode(WebParser.PseudoSelectorIdNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPseudoSelectorIdNode(WebParser.PseudoSelectorIdNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAttributeSelectorNode(WebParser.AttributeSelectorNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAttributeSelectorNode(WebParser.AttributeSelectorNodeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -384,6 +492,30 @@ public class WebParserBaseListener implements WebParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCssDeclarationNode(WebParser.CssDeclarationNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCssValueNode(WebParser.CssValueNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCssValueNode(WebParser.CssValueNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCssValueAtom(WebParser.CssValueAtomContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCssValueAtom(WebParser.CssValueAtomContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

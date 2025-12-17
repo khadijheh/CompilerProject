@@ -87,31 +87,82 @@ htmlText
 // CSS (<style> ... </style>)
 // ===========================
 cssStyleBlock
-    : CSS_STYLE_TAG cssBody CSS_STYLE_CLOSE        #CssStyleNode
+    : CSS_STYLE_TAG cssRules CSS_STYLE_CLOSE       #CssStyleNode
     ;
 
-cssBody
-    : ( cssRule  | CSS_BLOCK_OTHER )*    #CssBodyNode
+cssRules
+    : cssRule*                                     #CssRulesNode
     ;
 
 cssRule
-    : cssSelector CSS_BRACE_OPEN cssDeclarations CSS_BLOCK_END   #CssRuleNode
+    : cssSelectorList CSS_LBRACE cssDeclarations CSS_RBRACE   #CssRuleNode
     ;
 
-cssSelector
-    : CSS_SELECTOR                                  #SelectorSimpleNode
-    | CSS_CLASS                                     #SelectorClassNode
-    | CSS_ID                                        #SelectorIdNode
-    | CSS_PSEUDO                                    #SelectorPseudoNode
+cssSelectorList
+    : cssSelector (CSS_COMMA cssSelector)*         #CssSelectorListNode
     ;
+cssSelector
+    : selectorPart (CSS_WS+ selectorPart)*         #CssSelectorNode
+    ;selectorPart
+         : simpleSelector+                       #SelectorPartNode
+         ;
+
+     simpleSelector
+         : typeSelector                           #TypeSelectorNode
+         | classSelector                          #ClassSelectorNode
+         | idSelector                             #IdSelectorNode
+         | pseudoSelector                          #PseudoSelectorNode
+         | attributeSelector                       #AttributeSeNode
+         ;
+
+     typeSelector
+         : CSS_IDENT                               #TypeSelectorIdNode
+         ;
+
+     classSelector
+         : CSS_DOT CSS_IDENT                        #ClassSelectorIdNode
+         ;
+
+     idSelector
+         : CSS_HASH CSS_IDENT                       #IdSelectorIdNode
+         ;
+
+     pseudoSelector
+         : CSS_COLON CSS_IDENT                      #PseudoSelectorIdNode
+         ;
+
+     attributeSelector
+         : CSS_LBRACK CSS_IDENT CSS_EQUAL (CSS_STRING | CSS_IDENT) CSS_RBRACK   #AttributeSelectorNode
+         ;
+
+
+/* ---------- DECLARATIONS ---------- */
 
 cssDeclarations
-    : (cssDeclaration )*              #CssDeclarationsNode
+    : cssDeclaration*
+      #CssDeclarationsNode
+    ;
+cssDeclaration
+    : CSS_IDENT CSS_COLON cssValue CSS_SEMI?
+      #CssDeclarationNode
+    ;
+cssValue
+    : cssValueAtom+
+      #CssValueNode
     ;
 
-cssDeclaration
-    : CSS_PROPERTY CSS_COLON CSS_VALUE CSS_SEMICOLON?   #CssDeclarationNode
+cssValueAtom
+    : CSS_COLOR_HEX
+    | CSS_NUMBER
+    | CSS_UNIT
+    | CSS_STRING
+    | CSS_IDENT
+    | CSS_COMMA
+    | CSS_LP
+    | CSS_RP
+    |CSS_MINUS
     ;
+
 
 
 // ===========================

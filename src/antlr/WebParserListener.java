@@ -284,17 +284,17 @@ public interface WebParserListener extends ParseTreeListener {
 	 */
 	void exitCssStyleNode(WebParser.CssStyleNodeContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code CssBodyNode}
-	 * labeled alternative in {@link WebParser#cssBody}.
+	 * Enter a parse tree produced by the {@code CssRulesNode}
+	 * labeled alternative in {@link WebParser#cssRules}.
 	 * @param ctx the parse tree
 	 */
-	void enterCssBodyNode(WebParser.CssBodyNodeContext ctx);
+	void enterCssRulesNode(WebParser.CssRulesNodeContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code CssBodyNode}
-	 * labeled alternative in {@link WebParser#cssBody}.
+	 * Exit a parse tree produced by the {@code CssRulesNode}
+	 * labeled alternative in {@link WebParser#cssRules}.
 	 * @param ctx the parse tree
 	 */
-	void exitCssBodyNode(WebParser.CssBodyNodeContext ctx);
+	void exitCssRulesNode(WebParser.CssRulesNodeContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code CssRuleNode}
 	 * labeled alternative in {@link WebParser#cssRule}.
@@ -308,53 +308,161 @@ public interface WebParserListener extends ParseTreeListener {
 	 */
 	void exitCssRuleNode(WebParser.CssRuleNodeContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code SelectorSimpleNode}
-	 * labeled alternative in {@link WebParser#cssSelector}.
+	 * Enter a parse tree produced by the {@code CssSelectorListNode}
+	 * labeled alternative in {@link WebParser#cssSelectorList}.
 	 * @param ctx the parse tree
 	 */
-	void enterSelectorSimpleNode(WebParser.SelectorSimpleNodeContext ctx);
+	void enterCssSelectorListNode(WebParser.CssSelectorListNodeContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code SelectorSimpleNode}
-	 * labeled alternative in {@link WebParser#cssSelector}.
+	 * Exit a parse tree produced by the {@code CssSelectorListNode}
+	 * labeled alternative in {@link WebParser#cssSelectorList}.
 	 * @param ctx the parse tree
 	 */
-	void exitSelectorSimpleNode(WebParser.SelectorSimpleNodeContext ctx);
+	void exitCssSelectorListNode(WebParser.CssSelectorListNodeContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code SelectorClassNode}
+	 * Enter a parse tree produced by the {@code CssSelectorNode}
 	 * labeled alternative in {@link WebParser#cssSelector}.
 	 * @param ctx the parse tree
 	 */
-	void enterSelectorClassNode(WebParser.SelectorClassNodeContext ctx);
+	void enterCssSelectorNode(WebParser.CssSelectorNodeContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code SelectorClassNode}
+	 * Exit a parse tree produced by the {@code CssSelectorNode}
 	 * labeled alternative in {@link WebParser#cssSelector}.
 	 * @param ctx the parse tree
 	 */
-	void exitSelectorClassNode(WebParser.SelectorClassNodeContext ctx);
+	void exitCssSelectorNode(WebParser.CssSelectorNodeContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code SelectorIdNode}
-	 * labeled alternative in {@link WebParser#cssSelector}.
+	 * Enter a parse tree produced by the {@code SelectorPartNode}
+	 * labeled alternative in {@link WebParser#selectorPart}.
 	 * @param ctx the parse tree
 	 */
-	void enterSelectorIdNode(WebParser.SelectorIdNodeContext ctx);
+	void enterSelectorPartNode(WebParser.SelectorPartNodeContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code SelectorIdNode}
-	 * labeled alternative in {@link WebParser#cssSelector}.
+	 * Exit a parse tree produced by the {@code SelectorPartNode}
+	 * labeled alternative in {@link WebParser#selectorPart}.
 	 * @param ctx the parse tree
 	 */
-	void exitSelectorIdNode(WebParser.SelectorIdNodeContext ctx);
+	void exitSelectorPartNode(WebParser.SelectorPartNodeContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code SelectorPseudoNode}
-	 * labeled alternative in {@link WebParser#cssSelector}.
+	 * Enter a parse tree produced by the {@code TypeSelectorNode}
+	 * labeled alternative in {@link WebParser#simpleSelector}.
 	 * @param ctx the parse tree
 	 */
-	void enterSelectorPseudoNode(WebParser.SelectorPseudoNodeContext ctx);
+	void enterTypeSelectorNode(WebParser.TypeSelectorNodeContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code SelectorPseudoNode}
-	 * labeled alternative in {@link WebParser#cssSelector}.
+	 * Exit a parse tree produced by the {@code TypeSelectorNode}
+	 * labeled alternative in {@link WebParser#simpleSelector}.
 	 * @param ctx the parse tree
 	 */
-	void exitSelectorPseudoNode(WebParser.SelectorPseudoNodeContext ctx);
+	void exitTypeSelectorNode(WebParser.TypeSelectorNodeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ClassSelectorNode}
+	 * labeled alternative in {@link WebParser#simpleSelector}.
+	 * @param ctx the parse tree
+	 */
+	void enterClassSelectorNode(WebParser.ClassSelectorNodeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ClassSelectorNode}
+	 * labeled alternative in {@link WebParser#simpleSelector}.
+	 * @param ctx the parse tree
+	 */
+	void exitClassSelectorNode(WebParser.ClassSelectorNodeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code IdSelectorNode}
+	 * labeled alternative in {@link WebParser#simpleSelector}.
+	 * @param ctx the parse tree
+	 */
+	void enterIdSelectorNode(WebParser.IdSelectorNodeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code IdSelectorNode}
+	 * labeled alternative in {@link WebParser#simpleSelector}.
+	 * @param ctx the parse tree
+	 */
+	void exitIdSelectorNode(WebParser.IdSelectorNodeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code PseudoSelectorNode}
+	 * labeled alternative in {@link WebParser#simpleSelector}.
+	 * @param ctx the parse tree
+	 */
+	void enterPseudoSelectorNode(WebParser.PseudoSelectorNodeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code PseudoSelectorNode}
+	 * labeled alternative in {@link WebParser#simpleSelector}.
+	 * @param ctx the parse tree
+	 */
+	void exitPseudoSelectorNode(WebParser.PseudoSelectorNodeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code AttributeSeNode}
+	 * labeled alternative in {@link WebParser#simpleSelector}.
+	 * @param ctx the parse tree
+	 */
+	void enterAttributeSeNode(WebParser.AttributeSeNodeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code AttributeSeNode}
+	 * labeled alternative in {@link WebParser#simpleSelector}.
+	 * @param ctx the parse tree
+	 */
+	void exitAttributeSeNode(WebParser.AttributeSeNodeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code TypeSelectorIdNode}
+	 * labeled alternative in {@link WebParser#typeSelector}.
+	 * @param ctx the parse tree
+	 */
+	void enterTypeSelectorIdNode(WebParser.TypeSelectorIdNodeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code TypeSelectorIdNode}
+	 * labeled alternative in {@link WebParser#typeSelector}.
+	 * @param ctx the parse tree
+	 */
+	void exitTypeSelectorIdNode(WebParser.TypeSelectorIdNodeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ClassSelectorIdNode}
+	 * labeled alternative in {@link WebParser#classSelector}.
+	 * @param ctx the parse tree
+	 */
+	void enterClassSelectorIdNode(WebParser.ClassSelectorIdNodeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ClassSelectorIdNode}
+	 * labeled alternative in {@link WebParser#classSelector}.
+	 * @param ctx the parse tree
+	 */
+	void exitClassSelectorIdNode(WebParser.ClassSelectorIdNodeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code IdSelectorIdNode}
+	 * labeled alternative in {@link WebParser#idSelector}.
+	 * @param ctx the parse tree
+	 */
+	void enterIdSelectorIdNode(WebParser.IdSelectorIdNodeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code IdSelectorIdNode}
+	 * labeled alternative in {@link WebParser#idSelector}.
+	 * @param ctx the parse tree
+	 */
+	void exitIdSelectorIdNode(WebParser.IdSelectorIdNodeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code PseudoSelectorIdNode}
+	 * labeled alternative in {@link WebParser#pseudoSelector}.
+	 * @param ctx the parse tree
+	 */
+	void enterPseudoSelectorIdNode(WebParser.PseudoSelectorIdNodeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code PseudoSelectorIdNode}
+	 * labeled alternative in {@link WebParser#pseudoSelector}.
+	 * @param ctx the parse tree
+	 */
+	void exitPseudoSelectorIdNode(WebParser.PseudoSelectorIdNodeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code AttributeSelectorNode}
+	 * labeled alternative in {@link WebParser#attributeSelector}.
+	 * @param ctx the parse tree
+	 */
+	void enterAttributeSelectorNode(WebParser.AttributeSelectorNodeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code AttributeSelectorNode}
+	 * labeled alternative in {@link WebParser#attributeSelector}.
+	 * @param ctx the parse tree
+	 */
+	void exitAttributeSelectorNode(WebParser.AttributeSelectorNodeContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code CssDeclarationsNode}
 	 * labeled alternative in {@link WebParser#cssDeclarations}.
@@ -379,6 +487,28 @@ public interface WebParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCssDeclarationNode(WebParser.CssDeclarationNodeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code CssValueNode}
+	 * labeled alternative in {@link WebParser#cssValue}.
+	 * @param ctx the parse tree
+	 */
+	void enterCssValueNode(WebParser.CssValueNodeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code CssValueNode}
+	 * labeled alternative in {@link WebParser#cssValue}.
+	 * @param ctx the parse tree
+	 */
+	void exitCssValueNode(WebParser.CssValueNodeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link WebParser#cssValueAtom}.
+	 * @param ctx the parse tree
+	 */
+	void enterCssValueAtom(WebParser.CssValueAtomContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link WebParser#cssValueAtom}.
+	 * @param ctx the parse tree
+	 */
+	void exitCssValueAtom(WebParser.CssValueAtomContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code JinjaExpressionNode}
 	 * labeled alternative in {@link WebParser#jinjaExpression}.

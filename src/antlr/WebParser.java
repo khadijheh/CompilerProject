@@ -22,38 +22,44 @@ public class WebParser extends Parser {
 		WS=10, HTML_IDENTIFIER=11, EQUALS=12, HTML_WS=13, HTML_ATTR_VALUE_OPEN_DQ=14, 
 		HTML_ATTR_VALUE_OPEN_SQ=15, HTML_TAG_SELF_CLOSE=16, HTML_TAG_CLOSE=17, 
 		HTML_OTHER=18, HTML_COMMENT_CLOSE=19, HTML_COMMENT_TEXT=20, HTML_COMMENT_WS=21, 
-		CSS_STYLE_CLOSE=22, CSS_WS=23, CSS_BRACE_OPEN=24, CSS_BLOCK_END=25, CSS_COLON=26, 
-		CSS_SEMICOLON=27, CSS_IMPORTANT=28, CSS_CLASS=29, CSS_ID=30, CSS_PSEUDO=31, 
-		CSS_SELECTOR=32, CSS_PROPERTY=33, CSS_VALUE=34, CSS_BLOCK_OTHER=35, JINJA_EXPR_OPEN_IN_ATTR=36, 
-		JINJA_BLOCK_OPEN_IN_ATTR=37, JINJA_COMMENT_OPEN_IN_ATTR=38, HTML_ATTR_VALUE_CLOSE_DQ=39, 
-		HTML_ATTR_VALUE_CLOSE_SQ=40, HTML_ATTR_VALUE_TEXT=41, HTML_ATTR_VALUE_WS=42, 
-		JINJA_EXPR_CLOSE=43, JINJA_IDENT=44, JINJA_NUMBER=45, JINJA_STRING=46, 
-		JINJA_OP=47, JINJA_DOT=48, JINJA_COMMA=49, JINJA_COLON=50, JINJA_LP=51, 
-		JINJA_RP=52, JINJA_LB=53, JINJA_RB=54, JINJA_WS=55, JINJA_OTHER=56, JINJA_BLOCK_CLOSE=57, 
-		JINJA_FOR=58, JINJA_IN=59, JINJA_ENDFOR=60, JINJA_IF=61, JINJA_ELIF=62, 
-		JINJA_ELSE=63, JINJA_ENDIF=64, JINJA_SET=65, JINJA_BLOCK_IDENT=66, JINJA_BLOCK_NUMBER=67, 
-		JINJA_BLOCK_STRING=68, JINJA_BLOCK_EQ=69, JINJA_BLOCK_DOT=70, JINJA_BLOCK_COMMA=71, 
-		JINJA_BLOCK_COLON=72, JINJA_BLOCK_LP=73, JINJA_BLOCK_RP=74, JINJA_BLOCK_LB=75, 
-		JINJA_BLOCK_RB=76, JINJA_BLOCK_WS=77, JINJA_BLOCK_OTHER=78, JINJA_COMMENT_CLOSE=79, 
-		JINJA_COMMENT_TEXT=80, JINJA_COMMENT_WS=81;
+		CSS_STYLE_CLOSE=22, CSS_WS=23, CSS_LBRACE=24, CSS_RBRACE=25, CSS_LBRACK=26, 
+		CSS_RBRACK=27, CSS_COLON=28, CSS_SEMI=29, CSS_COMMA=30, CSS_EQUAL=31, 
+		CSS_LP=32, CSS_RP=33, CSS_DOT=34, CSS_COLOR_HEX=35, CSS_HASH=36, CSS_IDENT=37, 
+		CSS_NUMBER=38, CSS_UNIT=39, CSS_STRING=40, CSS_MINUS=41, CSS_OTHER=42, 
+		JINJA_EXPR_OPEN_IN_ATTR=43, JINJA_BLOCK_OPEN_IN_ATTR=44, JINJA_COMMENT_OPEN_IN_ATTR=45, 
+		HTML_ATTR_VALUE_CLOSE_DQ=46, HTML_ATTR_VALUE_CLOSE_SQ=47, HTML_ATTR_VALUE_TEXT=48, 
+		HTML_ATTR_VALUE_WS=49, JINJA_EXPR_CLOSE=50, JINJA_IDENT=51, JINJA_NUMBER=52, 
+		JINJA_STRING=53, JINJA_OP=54, JINJA_DOT=55, JINJA_COMMA=56, JINJA_COLON=57, 
+		JINJA_LP=58, JINJA_RP=59, JINJA_LB=60, JINJA_RB=61, JINJA_WS=62, JINJA_OTHER=63, 
+		JINJA_BLOCK_CLOSE=64, JINJA_FOR=65, JINJA_IN=66, JINJA_ENDFOR=67, JINJA_IF=68, 
+		JINJA_ELIF=69, JINJA_ELSE=70, JINJA_ENDIF=71, JINJA_SET=72, JINJA_BLOCK_IDENT=73, 
+		JINJA_BLOCK_NUMBER=74, JINJA_BLOCK_STRING=75, JINJA_BLOCK_EQ=76, JINJA_BLOCK_DOT=77, 
+		JINJA_BLOCK_COMMA=78, JINJA_BLOCK_COLON=79, JINJA_BLOCK_LP=80, JINJA_BLOCK_RP=81, 
+		JINJA_BLOCK_LB=82, JINJA_BLOCK_RB=83, JINJA_BLOCK_WS=84, JINJA_BLOCK_OTHER=85, 
+		JINJA_COMMENT_CLOSE=86, JINJA_COMMENT_TEXT=87, JINJA_COMMENT_WS=88;
 	public static final int
 		RULE_template = 0, RULE_contentItem = 1, RULE_htmlElement = 2, RULE_htmlVoidElement = 3, 
 		RULE_htmlNormalElement = 4, RULE_htmlAttribute = 5, RULE_htmlAttributeValue = 6, 
 		RULE_dqValue = 7, RULE_sqValue = 8, RULE_htmlAttrValueItem = 9, RULE_htmlText = 10, 
-		RULE_cssStyleBlock = 11, RULE_cssBody = 12, RULE_cssRule = 13, RULE_cssSelector = 14, 
-		RULE_cssDeclarations = 15, RULE_cssDeclaration = 16, RULE_jinjaExpression = 17, 
-		RULE_jinjaExprBody = 18, RULE_jinjaBlock = 19, RULE_jinjaBlockInner = 20, 
-		RULE_forStart = 21, RULE_forEnd = 22, RULE_ifStart = 23, RULE_elifPart = 24, 
-		RULE_elsePart = 25, RULE_endIfPart = 26, RULE_setStmt = 27, RULE_simpleStmt = 28, 
-		RULE_jinjaBlockExpr = 29, RULE_jinjaComment = 30;
+		RULE_cssStyleBlock = 11, RULE_cssRules = 12, RULE_cssRule = 13, RULE_cssSelectorList = 14, 
+		RULE_cssSelector = 15, RULE_selectorPart = 16, RULE_simpleSelector = 17, 
+		RULE_typeSelector = 18, RULE_classSelector = 19, RULE_idSelector = 20, 
+		RULE_pseudoSelector = 21, RULE_attributeSelector = 22, RULE_cssDeclarations = 23, 
+		RULE_cssDeclaration = 24, RULE_cssValue = 25, RULE_cssValueAtom = 26, 
+		RULE_jinjaExpression = 27, RULE_jinjaExprBody = 28, RULE_jinjaBlock = 29, 
+		RULE_jinjaBlockInner = 30, RULE_forStart = 31, RULE_forEnd = 32, RULE_ifStart = 33, 
+		RULE_elifPart = 34, RULE_elsePart = 35, RULE_endIfPart = 36, RULE_setStmt = 37, 
+		RULE_simpleStmt = 38, RULE_jinjaBlockExpr = 39, RULE_jinjaComment = 40;
 	private static String[] makeRuleNames() {
 		return new String[] {
 			"template", "contentItem", "htmlElement", "htmlVoidElement", "htmlNormalElement", 
 			"htmlAttribute", "htmlAttributeValue", "dqValue", "sqValue", "htmlAttrValueItem", 
-			"htmlText", "cssStyleBlock", "cssBody", "cssRule", "cssSelector", "cssDeclarations", 
-			"cssDeclaration", "jinjaExpression", "jinjaExprBody", "jinjaBlock", "jinjaBlockInner", 
-			"forStart", "forEnd", "ifStart", "elifPart", "elsePart", "endIfPart", 
-			"setStmt", "simpleStmt", "jinjaBlockExpr", "jinjaComment"
+			"htmlText", "cssStyleBlock", "cssRules", "cssRule", "cssSelectorList", 
+			"cssSelector", "selectorPart", "simpleSelector", "typeSelector", "classSelector", 
+			"idSelector", "pseudoSelector", "attributeSelector", "cssDeclarations", 
+			"cssDeclaration", "cssValue", "cssValueAtom", "jinjaExpression", "jinjaExprBody", 
+			"jinjaBlock", "jinjaBlockInner", "forStart", "forEnd", "ifStart", "elifPart", 
+			"elsePart", "endIfPart", "setStmt", "simpleStmt", "jinjaBlockExpr", "jinjaComment"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -62,12 +68,12 @@ public class WebParser extends Parser {
 		return new String[] {
 			null, null, null, null, "'<!--'", null, null, "'</'", "'<'", null, null, 
 			null, null, null, null, null, "'/>'", "'>'", null, "'-->'", null, null, 
-			null, null, "'{'", "'}'", null, "';'", "'!important'", null, null, null, 
-			null, null, null, null, null, null, null, null, null, null, null, "'}}'", 
-			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, "'%}'", "'for'", "'in'", "'endfor'", "'if'", "'elif'", "'else'", 
-			"'endif'", "'set'", null, null, null, null, null, null, null, null, null, 
-			null, null, null, null, "'#}'"
+			null, null, "'{'", "'}'", null, null, null, "';'", null, null, null, 
+			null, null, null, "'#'", null, null, null, null, "'-'", null, null, null, 
+			null, null, null, null, null, "'}}'", null, null, null, null, null, null, 
+			null, null, null, null, null, null, null, "'%}'", "'for'", "'in'", "'endfor'", 
+			"'if'", "'elif'", "'else'", "'endif'", "'set'", null, null, null, null, 
+			null, null, null, null, null, null, null, null, null, "'#}'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -78,20 +84,20 @@ public class WebParser extends Parser {
 			"TEXT", "WS", "HTML_IDENTIFIER", "EQUALS", "HTML_WS", "HTML_ATTR_VALUE_OPEN_DQ", 
 			"HTML_ATTR_VALUE_OPEN_SQ", "HTML_TAG_SELF_CLOSE", "HTML_TAG_CLOSE", "HTML_OTHER", 
 			"HTML_COMMENT_CLOSE", "HTML_COMMENT_TEXT", "HTML_COMMENT_WS", "CSS_STYLE_CLOSE", 
-			"CSS_WS", "CSS_BRACE_OPEN", "CSS_BLOCK_END", "CSS_COLON", "CSS_SEMICOLON", 
-			"CSS_IMPORTANT", "CSS_CLASS", "CSS_ID", "CSS_PSEUDO", "CSS_SELECTOR", 
-			"CSS_PROPERTY", "CSS_VALUE", "CSS_BLOCK_OTHER", "JINJA_EXPR_OPEN_IN_ATTR", 
-			"JINJA_BLOCK_OPEN_IN_ATTR", "JINJA_COMMENT_OPEN_IN_ATTR", "HTML_ATTR_VALUE_CLOSE_DQ", 
-			"HTML_ATTR_VALUE_CLOSE_SQ", "HTML_ATTR_VALUE_TEXT", "HTML_ATTR_VALUE_WS", 
-			"JINJA_EXPR_CLOSE", "JINJA_IDENT", "JINJA_NUMBER", "JINJA_STRING", "JINJA_OP", 
-			"JINJA_DOT", "JINJA_COMMA", "JINJA_COLON", "JINJA_LP", "JINJA_RP", "JINJA_LB", 
-			"JINJA_RB", "JINJA_WS", "JINJA_OTHER", "JINJA_BLOCK_CLOSE", "JINJA_FOR", 
-			"JINJA_IN", "JINJA_ENDFOR", "JINJA_IF", "JINJA_ELIF", "JINJA_ELSE", "JINJA_ENDIF", 
-			"JINJA_SET", "JINJA_BLOCK_IDENT", "JINJA_BLOCK_NUMBER", "JINJA_BLOCK_STRING", 
-			"JINJA_BLOCK_EQ", "JINJA_BLOCK_DOT", "JINJA_BLOCK_COMMA", "JINJA_BLOCK_COLON", 
-			"JINJA_BLOCK_LP", "JINJA_BLOCK_RP", "JINJA_BLOCK_LB", "JINJA_BLOCK_RB", 
-			"JINJA_BLOCK_WS", "JINJA_BLOCK_OTHER", "JINJA_COMMENT_CLOSE", "JINJA_COMMENT_TEXT", 
-			"JINJA_COMMENT_WS"
+			"CSS_WS", "CSS_LBRACE", "CSS_RBRACE", "CSS_LBRACK", "CSS_RBRACK", "CSS_COLON", 
+			"CSS_SEMI", "CSS_COMMA", "CSS_EQUAL", "CSS_LP", "CSS_RP", "CSS_DOT", 
+			"CSS_COLOR_HEX", "CSS_HASH", "CSS_IDENT", "CSS_NUMBER", "CSS_UNIT", "CSS_STRING", 
+			"CSS_MINUS", "CSS_OTHER", "JINJA_EXPR_OPEN_IN_ATTR", "JINJA_BLOCK_OPEN_IN_ATTR", 
+			"JINJA_COMMENT_OPEN_IN_ATTR", "HTML_ATTR_VALUE_CLOSE_DQ", "HTML_ATTR_VALUE_CLOSE_SQ", 
+			"HTML_ATTR_VALUE_TEXT", "HTML_ATTR_VALUE_WS", "JINJA_EXPR_CLOSE", "JINJA_IDENT", 
+			"JINJA_NUMBER", "JINJA_STRING", "JINJA_OP", "JINJA_DOT", "JINJA_COMMA", 
+			"JINJA_COLON", "JINJA_LP", "JINJA_RP", "JINJA_LB", "JINJA_RB", "JINJA_WS", 
+			"JINJA_OTHER", "JINJA_BLOCK_CLOSE", "JINJA_FOR", "JINJA_IN", "JINJA_ENDFOR", 
+			"JINJA_IF", "JINJA_ELIF", "JINJA_ELSE", "JINJA_ENDIF", "JINJA_SET", "JINJA_BLOCK_IDENT", 
+			"JINJA_BLOCK_NUMBER", "JINJA_BLOCK_STRING", "JINJA_BLOCK_EQ", "JINJA_BLOCK_DOT", 
+			"JINJA_BLOCK_COMMA", "JINJA_BLOCK_COLON", "JINJA_BLOCK_LP", "JINJA_BLOCK_RP", 
+			"JINJA_BLOCK_LB", "JINJA_BLOCK_RB", "JINJA_BLOCK_WS", "JINJA_BLOCK_OTHER", 
+			"JINJA_COMMENT_CLOSE", "JINJA_COMMENT_TEXT", "JINJA_COMMENT_WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -190,21 +196,21 @@ public class WebParser extends Parser {
 			_localctx = new TemplateNodeContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(65);
+			setState(85);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 846L) != 0)) {
 				{
 				{
-				setState(62);
+				setState(82);
 				contentItem();
 				}
 				}
-				setState(67);
+				setState(87);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(68);
+			setState(88);
 			match(EOF);
 			}
 		}
@@ -356,14 +362,14 @@ public class WebParser extends Parser {
 		ContentItemContext _localctx = new ContentItemContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_contentItem);
 		try {
-			setState(76);
+			setState(96);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case CSS_STYLE_TAG:
 				_localctx = new ContentCssStyleContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(70);
+				setState(90);
 				cssStyleBlock();
 				}
 				break;
@@ -371,7 +377,7 @@ public class WebParser extends Parser {
 				_localctx = new ContentHtmlElementContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(71);
+				setState(91);
 				htmlElement();
 				}
 				break;
@@ -379,7 +385,7 @@ public class WebParser extends Parser {
 				_localctx = new ContentHtmlTextContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(72);
+				setState(92);
 				htmlText();
 				}
 				break;
@@ -387,7 +393,7 @@ public class WebParser extends Parser {
 				_localctx = new ContentJinjaExpressionContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(73);
+				setState(93);
 				jinjaExpression();
 				}
 				break;
@@ -395,7 +401,7 @@ public class WebParser extends Parser {
 				_localctx = new ContentJinjaBlockContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(74);
+				setState(94);
 				jinjaBlock();
 				}
 				break;
@@ -403,7 +409,7 @@ public class WebParser extends Parser {
 				_localctx = new ContentJinjaCommentContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(75);
+				setState(95);
 				jinjaComment();
 				}
 				break;
@@ -479,14 +485,14 @@ public class WebParser extends Parser {
 		HtmlElementContext _localctx = new HtmlElementContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_htmlElement);
 		try {
-			setState(80);
+			setState(100);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
 			case 1:
 				_localctx = new HtmlElementVoidContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(78);
+				setState(98);
 				htmlVoidElement();
 				}
 				break;
@@ -494,7 +500,7 @@ public class WebParser extends Parser {
 				_localctx = new HtmlElementNormalContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(79);
+				setState(99);
 				htmlNormalElement();
 				}
 				break;
@@ -558,25 +564,25 @@ public class WebParser extends Parser {
 			_localctx = new VoidElementNodeContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(82);
+			setState(102);
 			match(HTML_OPEN);
-			setState(83);
+			setState(103);
 			match(HTML_IDENTIFIER);
-			setState(87);
+			setState(107);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==HTML_IDENTIFIER) {
 				{
 				{
-				setState(84);
+				setState(104);
 				htmlAttribute();
 				}
 				}
-				setState(89);
+				setState(109);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(90);
+			setState(110);
 			match(HTML_TAG_SELF_CLOSE);
 			}
 		}
@@ -651,45 +657,45 @@ public class WebParser extends Parser {
 			_localctx = new NormalElementNodeContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(92);
+			setState(112);
 			match(HTML_OPEN);
-			setState(93);
+			setState(113);
 			match(HTML_IDENTIFIER);
-			setState(97);
+			setState(117);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==HTML_IDENTIFIER) {
 				{
 				{
-				setState(94);
+				setState(114);
 				htmlAttribute();
 				}
 				}
-				setState(99);
+				setState(119);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(100);
+			setState(120);
 			match(HTML_TAG_CLOSE);
-			setState(104);
+			setState(124);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 846L) != 0)) {
 				{
 				{
-				setState(101);
+				setState(121);
 				contentItem();
 				}
 				}
-				setState(106);
+				setState(126);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(107);
+			setState(127);
 			match(HTML_CLOSE_OPEN);
-			setState(108);
+			setState(128);
 			match(HTML_IDENTIFIER);
-			setState(109);
+			setState(129);
 			match(HTML_TAG_CLOSE);
 			}
 		}
@@ -761,18 +767,18 @@ public class WebParser extends Parser {
 		HtmlAttributeContext _localctx = new HtmlAttributeContext(_ctx, getState());
 		enterRule(_localctx, 10, RULE_htmlAttribute);
 		try {
-			setState(115);
+			setState(135);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
 			case 1:
 				_localctx = new HtmlAttributeAssignmentContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(111);
+				setState(131);
 				match(HTML_IDENTIFIER);
-				setState(112);
+				setState(132);
 				match(EQUALS);
-				setState(113);
+				setState(133);
 				htmlAttributeValue();
 				}
 				break;
@@ -780,7 +786,7 @@ public class WebParser extends Parser {
 				_localctx = new HtmlAttributeBooleanContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(114);
+				setState(134);
 				match(HTML_IDENTIFIER);
 				}
 				break;
@@ -854,14 +860,14 @@ public class WebParser extends Parser {
 		HtmlAttributeValueContext _localctx = new HtmlAttributeValueContext(_ctx, getState());
 		enterRule(_localctx, 12, RULE_htmlAttributeValue);
 		try {
-			setState(119);
+			setState(139);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case HTML_ATTR_VALUE_OPEN_DQ:
 				_localctx = new AttrDoubleQuotedContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(117);
+				setState(137);
 				dqValue();
 				}
 				break;
@@ -869,7 +875,7 @@ public class WebParser extends Parser {
 				_localctx = new AttrSingleQuotedContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(118);
+				setState(138);
 				sqValue();
 				}
 				break;
@@ -934,23 +940,23 @@ public class WebParser extends Parser {
 			_localctx = new DoubleQuotedValueContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(121);
+			setState(141);
 			match(HTML_ATTR_VALUE_OPEN_DQ);
-			setState(125);
+			setState(145);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 2199023255566L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 281474976710670L) != 0)) {
 				{
 				{
-				setState(122);
+				setState(142);
 				htmlAttrValueItem();
 				}
 				}
-				setState(127);
+				setState(147);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(128);
+			setState(148);
 			match(HTML_ATTR_VALUE_CLOSE_DQ);
 			}
 		}
@@ -1011,23 +1017,23 @@ public class WebParser extends Parser {
 			_localctx = new SingleQuotedValueContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(130);
+			setState(150);
 			match(HTML_ATTR_VALUE_OPEN_SQ);
-			setState(134);
+			setState(154);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 2199023255566L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 281474976710670L) != 0)) {
 				{
 				{
-				setState(131);
+				setState(151);
 				htmlAttrValueItem();
 				}
 				}
-				setState(136);
+				setState(156);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(137);
+			setState(157);
 			match(HTML_ATTR_VALUE_CLOSE_SQ);
 			}
 		}
@@ -1137,14 +1143,14 @@ public class WebParser extends Parser {
 		HtmlAttrValueItemContext _localctx = new HtmlAttrValueItemContext(_ctx, getState());
 		enterRule(_localctx, 18, RULE_htmlAttrValueItem);
 		try {
-			setState(143);
+			setState(163);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case HTML_ATTR_VALUE_TEXT:
 				_localctx = new AttrTextNodeContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(139);
+				setState(159);
 				match(HTML_ATTR_VALUE_TEXT);
 				}
 				break;
@@ -1152,7 +1158,7 @@ public class WebParser extends Parser {
 				_localctx = new AttrJinjaExpressionNodeContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(140);
+				setState(160);
 				jinjaExpression();
 				}
 				break;
@@ -1160,7 +1166,7 @@ public class WebParser extends Parser {
 				_localctx = new AttrJinjaBlockNodeContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(141);
+				setState(161);
 				jinjaBlock();
 				}
 				break;
@@ -1168,7 +1174,7 @@ public class WebParser extends Parser {
 				_localctx = new AttrJinjaCommentNodeContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(142);
+				setState(162);
 				jinjaComment();
 				}
 				break;
@@ -1225,7 +1231,7 @@ public class WebParser extends Parser {
 			_localctx = new HtmlTextNodeContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(145);
+			setState(165);
 			match(TEXT);
 			}
 		}
@@ -1255,8 +1261,8 @@ public class WebParser extends Parser {
 	@SuppressWarnings("CheckReturnValue")
 	public static class CssStyleNodeContext extends CssStyleBlockContext {
 		public TerminalNode CSS_STYLE_TAG() { return getToken(WebParser.CSS_STYLE_TAG, 0); }
-		public CssBodyContext cssBody() {
-			return getRuleContext(CssBodyContext.class,0);
+		public CssRulesContext cssRules() {
+			return getRuleContext(CssRulesContext.class,0);
 		}
 		public TerminalNode CSS_STYLE_CLOSE() { return getToken(WebParser.CSS_STYLE_CLOSE, 0); }
 		public CssStyleNodeContext(CssStyleBlockContext ctx) { copyFrom(ctx); }
@@ -1282,11 +1288,11 @@ public class WebParser extends Parser {
 			_localctx = new CssStyleNodeContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(147);
+			setState(167);
 			match(CSS_STYLE_TAG);
-			setState(148);
-			cssBody();
-			setState(149);
+			setState(168);
+			cssRules();
+			setState(169);
 			match(CSS_STYLE_CLOSE);
 			}
 		}
@@ -1302,81 +1308,60 @@ public class WebParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class CssBodyContext extends ParserRuleContext {
-		public CssBodyContext(ParserRuleContext parent, int invokingState) {
+	public static class CssRulesContext extends ParserRuleContext {
+		public CssRulesContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_cssBody; }
+		@Override public int getRuleIndex() { return RULE_cssRules; }
 	 
-		public CssBodyContext() { }
-		public void copyFrom(CssBodyContext ctx) {
+		public CssRulesContext() { }
+		public void copyFrom(CssRulesContext ctx) {
 			super.copyFrom(ctx);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
-	public static class CssBodyNodeContext extends CssBodyContext {
+	public static class CssRulesNodeContext extends CssRulesContext {
 		public List<CssRuleContext> cssRule() {
 			return getRuleContexts(CssRuleContext.class);
 		}
 		public CssRuleContext cssRule(int i) {
 			return getRuleContext(CssRuleContext.class,i);
 		}
-		public List<TerminalNode> CSS_BLOCK_OTHER() { return getTokens(WebParser.CSS_BLOCK_OTHER); }
-		public TerminalNode CSS_BLOCK_OTHER(int i) {
-			return getToken(WebParser.CSS_BLOCK_OTHER, i);
-		}
-		public CssBodyNodeContext(CssBodyContext ctx) { copyFrom(ctx); }
+		public CssRulesNodeContext(CssRulesContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).enterCssBodyNode(this);
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).enterCssRulesNode(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).exitCssBodyNode(this);
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).exitCssRulesNode(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WebParserVisitor ) return ((WebParserVisitor<? extends T>)visitor).visitCssBodyNode(this);
+			if ( visitor instanceof WebParserVisitor ) return ((WebParserVisitor<? extends T>)visitor).visitCssRulesNode(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final CssBodyContext cssBody() throws RecognitionException {
-		CssBodyContext _localctx = new CssBodyContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_cssBody);
+	public final CssRulesContext cssRules() throws RecognitionException {
+		CssRulesContext _localctx = new CssRulesContext(_ctx, getState());
+		enterRule(_localctx, 24, RULE_cssRules);
 		int _la;
 		try {
-			_localctx = new CssBodyNodeContext(_localctx);
+			_localctx = new CssRulesNodeContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(155);
+			setState(174);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 42412802048L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 223673843712L) != 0)) {
 				{
-				setState(153);
-				_errHandler.sync(this);
-				switch (_input.LA(1)) {
-				case CSS_CLASS:
-				case CSS_ID:
-				case CSS_PSEUDO:
-				case CSS_SELECTOR:
-					{
-					setState(151);
-					cssRule();
-					}
-					break;
-				case CSS_BLOCK_OTHER:
-					{
-					setState(152);
-					match(CSS_BLOCK_OTHER);
-					}
-					break;
-				default:
-					throw new NoViableAltException(this);
+				{
+				setState(171);
+				cssRule();
 				}
 				}
-				setState(157);
+				setState(176);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -1407,14 +1392,14 @@ public class WebParser extends Parser {
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class CssRuleNodeContext extends CssRuleContext {
-		public CssSelectorContext cssSelector() {
-			return getRuleContext(CssSelectorContext.class,0);
+		public CssSelectorListContext cssSelectorList() {
+			return getRuleContext(CssSelectorListContext.class,0);
 		}
-		public TerminalNode CSS_BRACE_OPEN() { return getToken(WebParser.CSS_BRACE_OPEN, 0); }
+		public TerminalNode CSS_LBRACE() { return getToken(WebParser.CSS_LBRACE, 0); }
 		public CssDeclarationsContext cssDeclarations() {
 			return getRuleContext(CssDeclarationsContext.class,0);
 		}
-		public TerminalNode CSS_BLOCK_END() { return getToken(WebParser.CSS_BLOCK_END, 0); }
+		public TerminalNode CSS_RBRACE() { return getToken(WebParser.CSS_RBRACE, 0); }
 		public CssRuleNodeContext(CssRuleContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -1438,14 +1423,93 @@ public class WebParser extends Parser {
 			_localctx = new CssRuleNodeContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(158);
-			cssSelector();
-			setState(159);
-			match(CSS_BRACE_OPEN);
-			setState(160);
+			setState(177);
+			cssSelectorList();
+			setState(178);
+			match(CSS_LBRACE);
+			setState(179);
 			cssDeclarations();
-			setState(161);
-			match(CSS_BLOCK_END);
+			setState(180);
+			match(CSS_RBRACE);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class CssSelectorListContext extends ParserRuleContext {
+		public CssSelectorListContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_cssSelectorList; }
+	 
+		public CssSelectorListContext() { }
+		public void copyFrom(CssSelectorListContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class CssSelectorListNodeContext extends CssSelectorListContext {
+		public List<CssSelectorContext> cssSelector() {
+			return getRuleContexts(CssSelectorContext.class);
+		}
+		public CssSelectorContext cssSelector(int i) {
+			return getRuleContext(CssSelectorContext.class,i);
+		}
+		public List<TerminalNode> CSS_COMMA() { return getTokens(WebParser.CSS_COMMA); }
+		public TerminalNode CSS_COMMA(int i) {
+			return getToken(WebParser.CSS_COMMA, i);
+		}
+		public CssSelectorListNodeContext(CssSelectorListContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).enterCssSelectorListNode(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).exitCssSelectorListNode(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WebParserVisitor ) return ((WebParserVisitor<? extends T>)visitor).visitCssSelectorListNode(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final CssSelectorListContext cssSelectorList() throws RecognitionException {
+		CssSelectorListContext _localctx = new CssSelectorListContext(_ctx, getState());
+		enterRule(_localctx, 28, RULE_cssSelectorList);
+		int _la;
+		try {
+			_localctx = new CssSelectorListNodeContext(_localctx);
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(182);
+			cssSelector();
+			setState(187);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			while (_la==CSS_COMMA) {
+				{
+				{
+				setState(183);
+				match(CSS_COMMA);
+				setState(184);
+				cssSelector();
+				}
+				}
+				setState(189);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -1472,119 +1536,615 @@ public class WebParser extends Parser {
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
-	public static class SelectorSimpleNodeContext extends CssSelectorContext {
-		public TerminalNode CSS_SELECTOR() { return getToken(WebParser.CSS_SELECTOR, 0); }
-		public SelectorSimpleNodeContext(CssSelectorContext ctx) { copyFrom(ctx); }
+	public static class CssSelectorNodeContext extends CssSelectorContext {
+		public List<SelectorPartContext> selectorPart() {
+			return getRuleContexts(SelectorPartContext.class);
+		}
+		public SelectorPartContext selectorPart(int i) {
+			return getRuleContext(SelectorPartContext.class,i);
+		}
+		public List<TerminalNode> CSS_WS() { return getTokens(WebParser.CSS_WS); }
+		public TerminalNode CSS_WS(int i) {
+			return getToken(WebParser.CSS_WS, i);
+		}
+		public CssSelectorNodeContext(CssSelectorContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).enterSelectorSimpleNode(this);
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).enterCssSelectorNode(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).exitSelectorSimpleNode(this);
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).exitCssSelectorNode(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WebParserVisitor ) return ((WebParserVisitor<? extends T>)visitor).visitSelectorSimpleNode(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
-	public static class SelectorPseudoNodeContext extends CssSelectorContext {
-		public TerminalNode CSS_PSEUDO() { return getToken(WebParser.CSS_PSEUDO, 0); }
-		public SelectorPseudoNodeContext(CssSelectorContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).enterSelectorPseudoNode(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).exitSelectorPseudoNode(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WebParserVisitor ) return ((WebParserVisitor<? extends T>)visitor).visitSelectorPseudoNode(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
-	public static class SelectorIdNodeContext extends CssSelectorContext {
-		public TerminalNode CSS_ID() { return getToken(WebParser.CSS_ID, 0); }
-		public SelectorIdNodeContext(CssSelectorContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).enterSelectorIdNode(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).exitSelectorIdNode(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WebParserVisitor ) return ((WebParserVisitor<? extends T>)visitor).visitSelectorIdNode(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
-	public static class SelectorClassNodeContext extends CssSelectorContext {
-		public TerminalNode CSS_CLASS() { return getToken(WebParser.CSS_CLASS, 0); }
-		public SelectorClassNodeContext(CssSelectorContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).enterSelectorClassNode(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).exitSelectorClassNode(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WebParserVisitor ) return ((WebParserVisitor<? extends T>)visitor).visitSelectorClassNode(this);
+			if ( visitor instanceof WebParserVisitor ) return ((WebParserVisitor<? extends T>)visitor).visitCssSelectorNode(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
 	public final CssSelectorContext cssSelector() throws RecognitionException {
 		CssSelectorContext _localctx = new CssSelectorContext(_ctx, getState());
-		enterRule(_localctx, 28, RULE_cssSelector);
+		enterRule(_localctx, 30, RULE_cssSelector);
+		int _la;
 		try {
-			setState(167);
+			_localctx = new CssSelectorNodeContext(_localctx);
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(190);
+			selectorPart();
+			setState(199);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			while (_la==CSS_WS) {
+				{
+				{
+				setState(192); 
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				do {
+					{
+					{
+					setState(191);
+					match(CSS_WS);
+					}
+					}
+					setState(194); 
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+				} while ( _la==CSS_WS );
+				setState(196);
+				selectorPart();
+				}
+				}
+				setState(201);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class SelectorPartContext extends ParserRuleContext {
+		public SelectorPartContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_selectorPart; }
+	 
+		public SelectorPartContext() { }
+		public void copyFrom(SelectorPartContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class SelectorPartNodeContext extends SelectorPartContext {
+		public List<SimpleSelectorContext> simpleSelector() {
+			return getRuleContexts(SimpleSelectorContext.class);
+		}
+		public SimpleSelectorContext simpleSelector(int i) {
+			return getRuleContext(SimpleSelectorContext.class,i);
+		}
+		public SelectorPartNodeContext(SelectorPartContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).enterSelectorPartNode(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).exitSelectorPartNode(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WebParserVisitor ) return ((WebParserVisitor<? extends T>)visitor).visitSelectorPartNode(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final SelectorPartContext selectorPart() throws RecognitionException {
+		SelectorPartContext _localctx = new SelectorPartContext(_ctx, getState());
+		enterRule(_localctx, 32, RULE_selectorPart);
+		int _la;
+		try {
+			_localctx = new SelectorPartNodeContext(_localctx);
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(203); 
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			do {
+				{
+				{
+				setState(202);
+				simpleSelector();
+				}
+				}
+				setState(205); 
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 223673843712L) != 0) );
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class SimpleSelectorContext extends ParserRuleContext {
+		public SimpleSelectorContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_simpleSelector; }
+	 
+		public SimpleSelectorContext() { }
+		public void copyFrom(SimpleSelectorContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class ClassSelectorNodeContext extends SimpleSelectorContext {
+		public ClassSelectorContext classSelector() {
+			return getRuleContext(ClassSelectorContext.class,0);
+		}
+		public ClassSelectorNodeContext(SimpleSelectorContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).enterClassSelectorNode(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).exitClassSelectorNode(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WebParserVisitor ) return ((WebParserVisitor<? extends T>)visitor).visitClassSelectorNode(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class IdSelectorNodeContext extends SimpleSelectorContext {
+		public IdSelectorContext idSelector() {
+			return getRuleContext(IdSelectorContext.class,0);
+		}
+		public IdSelectorNodeContext(SimpleSelectorContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).enterIdSelectorNode(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).exitIdSelectorNode(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WebParserVisitor ) return ((WebParserVisitor<? extends T>)visitor).visitIdSelectorNode(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class AttributeSeNodeContext extends SimpleSelectorContext {
+		public AttributeSelectorContext attributeSelector() {
+			return getRuleContext(AttributeSelectorContext.class,0);
+		}
+		public AttributeSeNodeContext(SimpleSelectorContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).enterAttributeSeNode(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).exitAttributeSeNode(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WebParserVisitor ) return ((WebParserVisitor<? extends T>)visitor).visitAttributeSeNode(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class PseudoSelectorNodeContext extends SimpleSelectorContext {
+		public PseudoSelectorContext pseudoSelector() {
+			return getRuleContext(PseudoSelectorContext.class,0);
+		}
+		public PseudoSelectorNodeContext(SimpleSelectorContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).enterPseudoSelectorNode(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).exitPseudoSelectorNode(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WebParserVisitor ) return ((WebParserVisitor<? extends T>)visitor).visitPseudoSelectorNode(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class TypeSelectorNodeContext extends SimpleSelectorContext {
+		public TypeSelectorContext typeSelector() {
+			return getRuleContext(TypeSelectorContext.class,0);
+		}
+		public TypeSelectorNodeContext(SimpleSelectorContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).enterTypeSelectorNode(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).exitTypeSelectorNode(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WebParserVisitor ) return ((WebParserVisitor<? extends T>)visitor).visitTypeSelectorNode(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final SimpleSelectorContext simpleSelector() throws RecognitionException {
+		SimpleSelectorContext _localctx = new SimpleSelectorContext(_ctx, getState());
+		enterRule(_localctx, 34, RULE_simpleSelector);
+		try {
+			setState(212);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case CSS_SELECTOR:
-				_localctx = new SelectorSimpleNodeContext(_localctx);
+			case CSS_IDENT:
+				_localctx = new TypeSelectorNodeContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(163);
-				match(CSS_SELECTOR);
+				setState(207);
+				typeSelector();
 				}
 				break;
-			case CSS_CLASS:
-				_localctx = new SelectorClassNodeContext(_localctx);
+			case CSS_DOT:
+				_localctx = new ClassSelectorNodeContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(164);
-				match(CSS_CLASS);
+				setState(208);
+				classSelector();
 				}
 				break;
-			case CSS_ID:
-				_localctx = new SelectorIdNodeContext(_localctx);
+			case CSS_HASH:
+				_localctx = new IdSelectorNodeContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(165);
-				match(CSS_ID);
+				setState(209);
+				idSelector();
 				}
 				break;
-			case CSS_PSEUDO:
-				_localctx = new SelectorPseudoNodeContext(_localctx);
+			case CSS_COLON:
+				_localctx = new PseudoSelectorNodeContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(166);
-				match(CSS_PSEUDO);
+				setState(210);
+				pseudoSelector();
+				}
+				break;
+			case CSS_LBRACK:
+				_localctx = new AttributeSeNodeContext(_localctx);
+				enterOuterAlt(_localctx, 5);
+				{
+				setState(211);
+				attributeSelector();
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class TypeSelectorContext extends ParserRuleContext {
+		public TypeSelectorContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_typeSelector; }
+	 
+		public TypeSelectorContext() { }
+		public void copyFrom(TypeSelectorContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class TypeSelectorIdNodeContext extends TypeSelectorContext {
+		public TerminalNode CSS_IDENT() { return getToken(WebParser.CSS_IDENT, 0); }
+		public TypeSelectorIdNodeContext(TypeSelectorContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).enterTypeSelectorIdNode(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).exitTypeSelectorIdNode(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WebParserVisitor ) return ((WebParserVisitor<? extends T>)visitor).visitTypeSelectorIdNode(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final TypeSelectorContext typeSelector() throws RecognitionException {
+		TypeSelectorContext _localctx = new TypeSelectorContext(_ctx, getState());
+		enterRule(_localctx, 36, RULE_typeSelector);
+		try {
+			_localctx = new TypeSelectorIdNodeContext(_localctx);
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(214);
+			match(CSS_IDENT);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class ClassSelectorContext extends ParserRuleContext {
+		public ClassSelectorContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_classSelector; }
+	 
+		public ClassSelectorContext() { }
+		public void copyFrom(ClassSelectorContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class ClassSelectorIdNodeContext extends ClassSelectorContext {
+		public TerminalNode CSS_DOT() { return getToken(WebParser.CSS_DOT, 0); }
+		public TerminalNode CSS_IDENT() { return getToken(WebParser.CSS_IDENT, 0); }
+		public ClassSelectorIdNodeContext(ClassSelectorContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).enterClassSelectorIdNode(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).exitClassSelectorIdNode(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WebParserVisitor ) return ((WebParserVisitor<? extends T>)visitor).visitClassSelectorIdNode(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final ClassSelectorContext classSelector() throws RecognitionException {
+		ClassSelectorContext _localctx = new ClassSelectorContext(_ctx, getState());
+		enterRule(_localctx, 38, RULE_classSelector);
+		try {
+			_localctx = new ClassSelectorIdNodeContext(_localctx);
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(216);
+			match(CSS_DOT);
+			setState(217);
+			match(CSS_IDENT);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class IdSelectorContext extends ParserRuleContext {
+		public IdSelectorContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_idSelector; }
+	 
+		public IdSelectorContext() { }
+		public void copyFrom(IdSelectorContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class IdSelectorIdNodeContext extends IdSelectorContext {
+		public TerminalNode CSS_HASH() { return getToken(WebParser.CSS_HASH, 0); }
+		public TerminalNode CSS_IDENT() { return getToken(WebParser.CSS_IDENT, 0); }
+		public IdSelectorIdNodeContext(IdSelectorContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).enterIdSelectorIdNode(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).exitIdSelectorIdNode(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WebParserVisitor ) return ((WebParserVisitor<? extends T>)visitor).visitIdSelectorIdNode(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final IdSelectorContext idSelector() throws RecognitionException {
+		IdSelectorContext _localctx = new IdSelectorContext(_ctx, getState());
+		enterRule(_localctx, 40, RULE_idSelector);
+		try {
+			_localctx = new IdSelectorIdNodeContext(_localctx);
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(219);
+			match(CSS_HASH);
+			setState(220);
+			match(CSS_IDENT);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class PseudoSelectorContext extends ParserRuleContext {
+		public PseudoSelectorContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_pseudoSelector; }
+	 
+		public PseudoSelectorContext() { }
+		public void copyFrom(PseudoSelectorContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class PseudoSelectorIdNodeContext extends PseudoSelectorContext {
+		public TerminalNode CSS_COLON() { return getToken(WebParser.CSS_COLON, 0); }
+		public TerminalNode CSS_IDENT() { return getToken(WebParser.CSS_IDENT, 0); }
+		public PseudoSelectorIdNodeContext(PseudoSelectorContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).enterPseudoSelectorIdNode(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).exitPseudoSelectorIdNode(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WebParserVisitor ) return ((WebParserVisitor<? extends T>)visitor).visitPseudoSelectorIdNode(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final PseudoSelectorContext pseudoSelector() throws RecognitionException {
+		PseudoSelectorContext _localctx = new PseudoSelectorContext(_ctx, getState());
+		enterRule(_localctx, 42, RULE_pseudoSelector);
+		try {
+			_localctx = new PseudoSelectorIdNodeContext(_localctx);
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(222);
+			match(CSS_COLON);
+			setState(223);
+			match(CSS_IDENT);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class AttributeSelectorContext extends ParserRuleContext {
+		public AttributeSelectorContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_attributeSelector; }
+	 
+		public AttributeSelectorContext() { }
+		public void copyFrom(AttributeSelectorContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class AttributeSelectorNodeContext extends AttributeSelectorContext {
+		public TerminalNode CSS_LBRACK() { return getToken(WebParser.CSS_LBRACK, 0); }
+		public List<TerminalNode> CSS_IDENT() { return getTokens(WebParser.CSS_IDENT); }
+		public TerminalNode CSS_IDENT(int i) {
+			return getToken(WebParser.CSS_IDENT, i);
+		}
+		public TerminalNode CSS_EQUAL() { return getToken(WebParser.CSS_EQUAL, 0); }
+		public TerminalNode CSS_RBRACK() { return getToken(WebParser.CSS_RBRACK, 0); }
+		public TerminalNode CSS_STRING() { return getToken(WebParser.CSS_STRING, 0); }
+		public AttributeSelectorNodeContext(AttributeSelectorContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).enterAttributeSelectorNode(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).exitAttributeSelectorNode(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WebParserVisitor ) return ((WebParserVisitor<? extends T>)visitor).visitAttributeSelectorNode(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final AttributeSelectorContext attributeSelector() throws RecognitionException {
+		AttributeSelectorContext _localctx = new AttributeSelectorContext(_ctx, getState());
+		enterRule(_localctx, 44, RULE_attributeSelector);
+		int _la;
+		try {
+			_localctx = new AttributeSelectorNodeContext(_localctx);
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(225);
+			match(CSS_LBRACK);
+			setState(226);
+			match(CSS_IDENT);
+			setState(227);
+			match(CSS_EQUAL);
+			setState(228);
+			_la = _input.LA(1);
+			if ( !(_la==CSS_IDENT || _la==CSS_STRING) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
+			setState(229);
+			match(CSS_RBRACK);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1636,23 +2196,23 @@ public class WebParser extends Parser {
 
 	public final CssDeclarationsContext cssDeclarations() throws RecognitionException {
 		CssDeclarationsContext _localctx = new CssDeclarationsContext(_ctx, getState());
-		enterRule(_localctx, 30, RULE_cssDeclarations);
+		enterRule(_localctx, 46, RULE_cssDeclarations);
 		int _la;
 		try {
 			_localctx = new CssDeclarationsNodeContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(172);
+			setState(234);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==CSS_PROPERTY) {
+			while (_la==CSS_IDENT) {
 				{
 				{
-				setState(169);
+				setState(231);
 				cssDeclaration();
 				}
 				}
-				setState(174);
+				setState(236);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -1683,10 +2243,12 @@ public class WebParser extends Parser {
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class CssDeclarationNodeContext extends CssDeclarationContext {
-		public TerminalNode CSS_PROPERTY() { return getToken(WebParser.CSS_PROPERTY, 0); }
+		public TerminalNode CSS_IDENT() { return getToken(WebParser.CSS_IDENT, 0); }
 		public TerminalNode CSS_COLON() { return getToken(WebParser.CSS_COLON, 0); }
-		public TerminalNode CSS_VALUE() { return getToken(WebParser.CSS_VALUE, 0); }
-		public TerminalNode CSS_SEMICOLON() { return getToken(WebParser.CSS_SEMICOLON, 0); }
+		public CssValueContext cssValue() {
+			return getRuleContext(CssValueContext.class,0);
+		}
+		public TerminalNode CSS_SEMI() { return getToken(WebParser.CSS_SEMI, 0); }
 		public CssDeclarationNodeContext(CssDeclarationContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -1705,28 +2267,165 @@ public class WebParser extends Parser {
 
 	public final CssDeclarationContext cssDeclaration() throws RecognitionException {
 		CssDeclarationContext _localctx = new CssDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 32, RULE_cssDeclaration);
+		enterRule(_localctx, 48, RULE_cssDeclaration);
 		int _la;
 		try {
 			_localctx = new CssDeclarationNodeContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(175);
-			match(CSS_PROPERTY);
-			setState(176);
+			setState(237);
+			match(CSS_IDENT);
+			setState(238);
 			match(CSS_COLON);
-			setState(177);
-			match(CSS_VALUE);
-			setState(179);
+			setState(239);
+			cssValue();
+			setState(241);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==CSS_SEMICOLON) {
+			if (_la==CSS_SEMI) {
 				{
-				setState(178);
-				match(CSS_SEMICOLON);
+				setState(240);
+				match(CSS_SEMI);
 				}
 			}
 
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class CssValueContext extends ParserRuleContext {
+		public CssValueContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_cssValue; }
+	 
+		public CssValueContext() { }
+		public void copyFrom(CssValueContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class CssValueNodeContext extends CssValueContext {
+		public List<CssValueAtomContext> cssValueAtom() {
+			return getRuleContexts(CssValueAtomContext.class);
+		}
+		public CssValueAtomContext cssValueAtom(int i) {
+			return getRuleContext(CssValueAtomContext.class,i);
+		}
+		public CssValueNodeContext(CssValueContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).enterCssValueNode(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).exitCssValueNode(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WebParserVisitor ) return ((WebParserVisitor<? extends T>)visitor).visitCssValueNode(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final CssValueContext cssValue() throws RecognitionException {
+		CssValueContext _localctx = new CssValueContext(_ctx, getState());
+		enterRule(_localctx, 50, RULE_cssValue);
+		try {
+			int _alt;
+			_localctx = new CssValueNodeContext(_localctx);
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(244); 
+			_errHandler.sync(this);
+			_alt = 1;
+			do {
+				switch (_alt) {
+				case 1:
+					{
+					{
+					setState(243);
+					cssValueAtom();
+					}
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
+				}
+				setState(246); 
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,19,_ctx);
+			} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class CssValueAtomContext extends ParserRuleContext {
+		public TerminalNode CSS_COLOR_HEX() { return getToken(WebParser.CSS_COLOR_HEX, 0); }
+		public TerminalNode CSS_NUMBER() { return getToken(WebParser.CSS_NUMBER, 0); }
+		public TerminalNode CSS_UNIT() { return getToken(WebParser.CSS_UNIT, 0); }
+		public TerminalNode CSS_STRING() { return getToken(WebParser.CSS_STRING, 0); }
+		public TerminalNode CSS_IDENT() { return getToken(WebParser.CSS_IDENT, 0); }
+		public TerminalNode CSS_COMMA() { return getToken(WebParser.CSS_COMMA, 0); }
+		public TerminalNode CSS_LP() { return getToken(WebParser.CSS_LP, 0); }
+		public TerminalNode CSS_RP() { return getToken(WebParser.CSS_RP, 0); }
+		public TerminalNode CSS_MINUS() { return getToken(WebParser.CSS_MINUS, 0); }
+		public CssValueAtomContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_cssValueAtom; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).enterCssValueAtom(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WebParserListener ) ((WebParserListener)listener).exitCssValueAtom(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WebParserVisitor ) return ((WebParserVisitor<? extends T>)visitor).visitCssValueAtom(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final CssValueAtomContext cssValueAtom() throws RecognitionException {
+		CssValueAtomContext _localctx = new CssValueAtomContext(_ctx, getState());
+		enterRule(_localctx, 52, RULE_cssValueAtom);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(248);
+			_la = _input.LA(1);
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 4308925939712L) != 0)) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -1777,16 +2476,16 @@ public class WebParser extends Parser {
 
 	public final JinjaExpressionContext jinjaExpression() throws RecognitionException {
 		JinjaExpressionContext _localctx = new JinjaExpressionContext(_ctx, getState());
-		enterRule(_localctx, 34, RULE_jinjaExpression);
+		enterRule(_localctx, 54, RULE_jinjaExpression);
 		try {
 			_localctx = new JinjaExpressionNodeContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(181);
+			setState(250);
 			match(JINJA_EXPR_OPEN);
-			setState(182);
+			setState(251);
 			jinjaExprBody();
-			setState(183);
+			setState(252);
 			match(JINJA_EXPR_CLOSE);
 			}
 		}
@@ -1881,21 +2580,21 @@ public class WebParser extends Parser {
 
 	public final JinjaExprBodyContext jinjaExprBody() throws RecognitionException {
 		JinjaExprBodyContext _localctx = new JinjaExprBodyContext(_ctx, getState());
-		enterRule(_localctx, 36, RULE_jinjaExprBody);
+		enterRule(_localctx, 56, RULE_jinjaExprBody);
 		int _la;
 		try {
 			_localctx = new JinjaExprBodyNodeContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(188);
+			setState(257);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 108068798870847488L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & -4613937818241073152L) != 0)) {
 				{
 				{
-				setState(185);
+				setState(254);
 				_la = _input.LA(1);
-				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 108068798870847488L) != 0)) ) {
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & -4613937818241073152L) != 0)) ) {
 				_errHandler.recoverInline(this);
 				}
 				else {
@@ -1905,7 +2604,7 @@ public class WebParser extends Parser {
 				}
 				}
 				}
-				setState(190);
+				setState(259);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -1959,16 +2658,16 @@ public class WebParser extends Parser {
 
 	public final JinjaBlockContext jinjaBlock() throws RecognitionException {
 		JinjaBlockContext _localctx = new JinjaBlockContext(_ctx, getState());
-		enterRule(_localctx, 38, RULE_jinjaBlock);
+		enterRule(_localctx, 58, RULE_jinjaBlock);
 		try {
 			_localctx = new JinjaBlockNodeContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(191);
+			setState(260);
 			match(JINJA_BLOCK_OPEN);
-			setState(192);
+			setState(261);
 			jinjaBlockInner();
-			setState(193);
+			setState(262);
 			match(JINJA_BLOCK_CLOSE);
 			}
 		}
@@ -2158,16 +2857,16 @@ public class WebParser extends Parser {
 
 	public final JinjaBlockInnerContext jinjaBlockInner() throws RecognitionException {
 		JinjaBlockInnerContext _localctx = new JinjaBlockInnerContext(_ctx, getState());
-		enterRule(_localctx, 40, RULE_jinjaBlockInner);
+		enterRule(_localctx, 60, RULE_jinjaBlockInner);
 		try {
-			setState(203);
+			setState(272);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case JINJA_FOR:
 				_localctx = new BlockForStartNodeContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(195);
+				setState(264);
 				forStart();
 				}
 				break;
@@ -2175,7 +2874,7 @@ public class WebParser extends Parser {
 				_localctx = new BlockForEndNodeContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(196);
+				setState(265);
 				forEnd();
 				}
 				break;
@@ -2183,7 +2882,7 @@ public class WebParser extends Parser {
 				_localctx = new BlockIfStartNodeContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(197);
+				setState(266);
 				ifStart();
 				}
 				break;
@@ -2191,7 +2890,7 @@ public class WebParser extends Parser {
 				_localctx = new BlockElifNodeContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(198);
+				setState(267);
 				elifPart();
 				}
 				break;
@@ -2199,7 +2898,7 @@ public class WebParser extends Parser {
 				_localctx = new BlockElseNodeContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(199);
+				setState(268);
 				elsePart();
 				}
 				break;
@@ -2207,7 +2906,7 @@ public class WebParser extends Parser {
 				_localctx = new BlockEndIfNodeContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(200);
+				setState(269);
 				endIfPart();
 				}
 				break;
@@ -2215,7 +2914,7 @@ public class WebParser extends Parser {
 				_localctx = new BlockSetNodeContext(_localctx);
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(201);
+				setState(270);
 				setStmt();
 				}
 				break;
@@ -2223,7 +2922,7 @@ public class WebParser extends Parser {
 				_localctx = new BlockSimpleNodeContext(_localctx);
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(202);
+				setState(271);
 				simpleStmt();
 				}
 				break;
@@ -2282,41 +2981,41 @@ public class WebParser extends Parser {
 
 	public final ForStartContext forStart() throws RecognitionException {
 		ForStartContext _localctx = new ForStartContext(_ctx, getState());
-		enterRule(_localctx, 42, RULE_forStart);
+		enterRule(_localctx, 62, RULE_forStart);
 		int _la;
 		try {
 			_localctx = new ForStartNodeContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(205);
+			setState(274);
 			match(JINJA_FOR);
-			setState(209);
+			setState(278);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (((((_la - 47)) & ~0x3f) == 0 && ((1L << (_la - 47)) & 3220701185L) != 0)) {
+			while (((((_la - 54)) & ~0x3f) == 0 && ((1L << (_la - 54)) & 3220701185L) != 0)) {
 				{
 				{
-				setState(206);
+				setState(275);
 				jinjaBlockExpr();
 				}
 				}
-				setState(211);
+				setState(280);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(212);
+			setState(281);
 			match(JINJA_IN);
-			setState(216);
+			setState(285);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (((((_la - 47)) & ~0x3f) == 0 && ((1L << (_la - 47)) & 3220701185L) != 0)) {
+			while (((((_la - 54)) & ~0x3f) == 0 && ((1L << (_la - 54)) & 3220701185L) != 0)) {
 				{
 				{
-				setState(213);
+				setState(282);
 				jinjaBlockExpr();
 				}
 				}
-				setState(218);
+				setState(287);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -2366,12 +3065,12 @@ public class WebParser extends Parser {
 
 	public final ForEndContext forEnd() throws RecognitionException {
 		ForEndContext _localctx = new ForEndContext(_ctx, getState());
-		enterRule(_localctx, 44, RULE_forEnd);
+		enterRule(_localctx, 64, RULE_forEnd);
 		try {
 			_localctx = new ForEndNodeContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(219);
+			setState(288);
 			match(JINJA_ENDFOR);
 			}
 		}
@@ -2425,25 +3124,25 @@ public class WebParser extends Parser {
 
 	public final IfStartContext ifStart() throws RecognitionException {
 		IfStartContext _localctx = new IfStartContext(_ctx, getState());
-		enterRule(_localctx, 46, RULE_ifStart);
+		enterRule(_localctx, 66, RULE_ifStart);
 		int _la;
 		try {
 			_localctx = new IfStartNodeContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(221);
+			setState(290);
 			match(JINJA_IF);
-			setState(225);
+			setState(294);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (((((_la - 47)) & ~0x3f) == 0 && ((1L << (_la - 47)) & 3220701185L) != 0)) {
+			while (((((_la - 54)) & ~0x3f) == 0 && ((1L << (_la - 54)) & 3220701185L) != 0)) {
 				{
 				{
-				setState(222);
+				setState(291);
 				jinjaBlockExpr();
 				}
 				}
-				setState(227);
+				setState(296);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -2499,25 +3198,25 @@ public class WebParser extends Parser {
 
 	public final ElifPartContext elifPart() throws RecognitionException {
 		ElifPartContext _localctx = new ElifPartContext(_ctx, getState());
-		enterRule(_localctx, 48, RULE_elifPart);
+		enterRule(_localctx, 68, RULE_elifPart);
 		int _la;
 		try {
 			_localctx = new ElifPartNodeContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(228);
+			setState(297);
 			match(JINJA_ELIF);
-			setState(232);
+			setState(301);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (((((_la - 47)) & ~0x3f) == 0 && ((1L << (_la - 47)) & 3220701185L) != 0)) {
+			while (((((_la - 54)) & ~0x3f) == 0 && ((1L << (_la - 54)) & 3220701185L) != 0)) {
 				{
 				{
-				setState(229);
+				setState(298);
 				jinjaBlockExpr();
 				}
 				}
-				setState(234);
+				setState(303);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -2567,12 +3266,12 @@ public class WebParser extends Parser {
 
 	public final ElsePartContext elsePart() throws RecognitionException {
 		ElsePartContext _localctx = new ElsePartContext(_ctx, getState());
-		enterRule(_localctx, 50, RULE_elsePart);
+		enterRule(_localctx, 70, RULE_elsePart);
 		try {
 			_localctx = new ElsePartNodeContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(235);
+			setState(304);
 			match(JINJA_ELSE);
 			}
 		}
@@ -2620,12 +3319,12 @@ public class WebParser extends Parser {
 
 	public final EndIfPartContext endIfPart() throws RecognitionException {
 		EndIfPartContext _localctx = new EndIfPartContext(_ctx, getState());
-		enterRule(_localctx, 52, RULE_endIfPart);
+		enterRule(_localctx, 72, RULE_endIfPart);
 		try {
 			_localctx = new EndIfPartNodeContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(237);
+			setState(306);
 			match(JINJA_ENDIF);
 			}
 		}
@@ -2679,25 +3378,25 @@ public class WebParser extends Parser {
 
 	public final SetStmtContext setStmt() throws RecognitionException {
 		SetStmtContext _localctx = new SetStmtContext(_ctx, getState());
-		enterRule(_localctx, 54, RULE_setStmt);
+		enterRule(_localctx, 74, RULE_setStmt);
 		int _la;
 		try {
 			_localctx = new SetStmtNodeContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(239);
+			setState(308);
 			match(JINJA_SET);
-			setState(243);
+			setState(312);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (((((_la - 47)) & ~0x3f) == 0 && ((1L << (_la - 47)) & 3220701185L) != 0)) {
+			while (((((_la - 54)) & ~0x3f) == 0 && ((1L << (_la - 54)) & 3220701185L) != 0)) {
 				{
 				{
-				setState(240);
+				setState(309);
 				jinjaBlockExpr();
 				}
 				}
-				setState(245);
+				setState(314);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -2753,25 +3452,25 @@ public class WebParser extends Parser {
 
 	public final SimpleStmtContext simpleStmt() throws RecognitionException {
 		SimpleStmtContext _localctx = new SimpleStmtContext(_ctx, getState());
-		enterRule(_localctx, 56, RULE_simpleStmt);
+		enterRule(_localctx, 76, RULE_simpleStmt);
 		int _la;
 		try {
 			_localctx = new SimpleStmtNodeContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(246);
+			setState(315);
 			match(JINJA_BLOCK_IDENT);
-			setState(250);
+			setState(319);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (((((_la - 47)) & ~0x3f) == 0 && ((1L << (_la - 47)) & 3220701185L) != 0)) {
+			while (((((_la - 54)) & ~0x3f) == 0 && ((1L << (_la - 54)) & 3220701185L) != 0)) {
 				{
 				{
-				setState(247);
+				setState(316);
 				jinjaBlockExpr();
 				}
 				}
-				setState(252);
+				setState(321);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -2872,14 +3571,14 @@ public class WebParser extends Parser {
 
 	public final JinjaBlockExprContext jinjaBlockExpr() throws RecognitionException {
 		JinjaBlockExprContext _localctx = new JinjaBlockExprContext(_ctx, getState());
-		enterRule(_localctx, 58, RULE_jinjaBlockExpr);
+		enterRule(_localctx, 78, RULE_jinjaBlockExpr);
 		int _la;
 		try {
 			int _alt;
 			_localctx = new JinjaBlockExprNodeContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(254); 
+			setState(323); 
 			_errHandler.sync(this);
 			_alt = 1;
 			do {
@@ -2887,9 +3586,9 @@ public class WebParser extends Parser {
 				case 1:
 					{
 					{
-					setState(253);
+					setState(322);
 					_la = _input.LA(1);
-					if ( !(((((_la - 47)) & ~0x3f) == 0 && ((1L << (_la - 47)) & 3220701185L) != 0)) ) {
+					if ( !(((((_la - 54)) & ~0x3f) == 0 && ((1L << (_la - 54)) & 3220701185L) != 0)) ) {
 					_errHandler.recoverInline(this);
 					}
 					else {
@@ -2903,9 +3602,9 @@ public class WebParser extends Parser {
 				default:
 					throw new NoViableAltException(this);
 				}
-				setState(256); 
+				setState(325); 
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,24,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,28,_ctx);
 			} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 			}
 		}
@@ -2955,25 +3654,25 @@ public class WebParser extends Parser {
 
 	public final JinjaCommentContext jinjaComment() throws RecognitionException {
 		JinjaCommentContext _localctx = new JinjaCommentContext(_ctx, getState());
-		enterRule(_localctx, 60, RULE_jinjaComment);
+		enterRule(_localctx, 80, RULE_jinjaComment);
 		int _la;
 		try {
 			_localctx = new JinjaCommentNodeContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(258);
+			setState(327);
 			match(JINJA_COMMENT_OPEN);
-			setState(260);
+			setState(329);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==JINJA_COMMENT_TEXT) {
 				{
-				setState(259);
+				setState(328);
 				match(JINJA_COMMENT_TEXT);
 				}
 			}
 
-			setState(262);
+			setState(331);
 			match(JINJA_COMMENT_CLOSE);
 			}
 		}
@@ -2989,7 +3688,7 @@ public class WebParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001Q\u0109\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001X\u014e\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
 		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0002"+
@@ -2999,161 +3698,201 @@ public class WebParser extends Parser {
 		"\u0002\u0016\u0007\u0016\u0002\u0017\u0007\u0017\u0002\u0018\u0007\u0018"+
 		"\u0002\u0019\u0007\u0019\u0002\u001a\u0007\u001a\u0002\u001b\u0007\u001b"+
 		"\u0002\u001c\u0007\u001c\u0002\u001d\u0007\u001d\u0002\u001e\u0007\u001e"+
-		"\u0001\u0000\u0005\u0000@\b\u0000\n\u0000\f\u0000C\t\u0000\u0001\u0000"+
-		"\u0001\u0000\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
-		"\u0001\u0001\u0003\u0001M\b\u0001\u0001\u0002\u0001\u0002\u0003\u0002"+
-		"Q\b\u0002\u0001\u0003\u0001\u0003\u0001\u0003\u0005\u0003V\b\u0003\n\u0003"+
-		"\f\u0003Y\t\u0003\u0001\u0003\u0001\u0003\u0001\u0004\u0001\u0004\u0001"+
-		"\u0004\u0005\u0004`\b\u0004\n\u0004\f\u0004c\t\u0004\u0001\u0004\u0001"+
-		"\u0004\u0005\u0004g\b\u0004\n\u0004\f\u0004j\t\u0004\u0001\u0004\u0001"+
-		"\u0004\u0001\u0004\u0001\u0004\u0001\u0005\u0001\u0005\u0001\u0005\u0001"+
-		"\u0005\u0003\u0005t\b\u0005\u0001\u0006\u0001\u0006\u0003\u0006x\b\u0006"+
-		"\u0001\u0007\u0001\u0007\u0005\u0007|\b\u0007\n\u0007\f\u0007\u007f\t"+
-		"\u0007\u0001\u0007\u0001\u0007\u0001\b\u0001\b\u0005\b\u0085\b\b\n\b\f"+
-		"\b\u0088\t\b\u0001\b\u0001\b\u0001\t\u0001\t\u0001\t\u0001\t\u0003\t\u0090"+
-		"\b\t\u0001\n\u0001\n\u0001\u000b\u0001\u000b\u0001\u000b\u0001\u000b\u0001"+
-		"\f\u0001\f\u0005\f\u009a\b\f\n\f\f\f\u009d\t\f\u0001\r\u0001\r\u0001\r"+
-		"\u0001\r\u0001\r\u0001\u000e\u0001\u000e\u0001\u000e\u0001\u000e\u0003"+
-		"\u000e\u00a8\b\u000e\u0001\u000f\u0005\u000f\u00ab\b\u000f\n\u000f\f\u000f"+
-		"\u00ae\t\u000f\u0001\u0010\u0001\u0010\u0001\u0010\u0001\u0010\u0003\u0010"+
-		"\u00b4\b\u0010\u0001\u0011\u0001\u0011\u0001\u0011\u0001\u0011\u0001\u0012"+
-		"\u0005\u0012\u00bb\b\u0012\n\u0012\f\u0012\u00be\t\u0012\u0001\u0013\u0001"+
-		"\u0013\u0001\u0013\u0001\u0013\u0001\u0014\u0001\u0014\u0001\u0014\u0001"+
-		"\u0014\u0001\u0014\u0001\u0014\u0001\u0014\u0001\u0014\u0003\u0014\u00cc"+
-		"\b\u0014\u0001\u0015\u0001\u0015\u0005\u0015\u00d0\b\u0015\n\u0015\f\u0015"+
-		"\u00d3\t\u0015\u0001\u0015\u0001\u0015\u0005\u0015\u00d7\b\u0015\n\u0015"+
-		"\f\u0015\u00da\t\u0015\u0001\u0016\u0001\u0016\u0001\u0017\u0001\u0017"+
-		"\u0005\u0017\u00e0\b\u0017\n\u0017\f\u0017\u00e3\t\u0017\u0001\u0018\u0001"+
-		"\u0018\u0005\u0018\u00e7\b\u0018\n\u0018\f\u0018\u00ea\t\u0018\u0001\u0019"+
-		"\u0001\u0019\u0001\u001a\u0001\u001a\u0001\u001b\u0001\u001b\u0005\u001b"+
-		"\u00f2\b\u001b\n\u001b\f\u001b\u00f5\t\u001b\u0001\u001c\u0001\u001c\u0005"+
-		"\u001c\u00f9\b\u001c\n\u001c\f\u001c\u00fc\t\u001c\u0001\u001d\u0004\u001d"+
-		"\u00ff\b\u001d\u000b\u001d\f\u001d\u0100\u0001\u001e\u0001\u001e\u0003"+
-		"\u001e\u0105\b\u001e\u0001\u001e\u0001\u001e\u0001\u001e\u0000\u0000\u001f"+
-		"\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a"+
-		"\u001c\u001e \"$&(*,.02468:<\u0000\u0002\u0002\u0000,688\u0003\u0000/"+
-		"/BLNN\u0111\u0000A\u0001\u0000\u0000\u0000\u0002L\u0001\u0000\u0000\u0000"+
-		"\u0004P\u0001\u0000\u0000\u0000\u0006R\u0001\u0000\u0000\u0000\b\\\u0001"+
-		"\u0000\u0000\u0000\ns\u0001\u0000\u0000\u0000\fw\u0001\u0000\u0000\u0000"+
-		"\u000ey\u0001\u0000\u0000\u0000\u0010\u0082\u0001\u0000\u0000\u0000\u0012"+
-		"\u008f\u0001\u0000\u0000\u0000\u0014\u0091\u0001\u0000\u0000\u0000\u0016"+
-		"\u0093\u0001\u0000\u0000\u0000\u0018\u009b\u0001\u0000\u0000\u0000\u001a"+
-		"\u009e\u0001\u0000\u0000\u0000\u001c\u00a7\u0001\u0000\u0000\u0000\u001e"+
-		"\u00ac\u0001\u0000\u0000\u0000 \u00af\u0001\u0000\u0000\u0000\"\u00b5"+
-		"\u0001\u0000\u0000\u0000$\u00bc\u0001\u0000\u0000\u0000&\u00bf\u0001\u0000"+
-		"\u0000\u0000(\u00cb\u0001\u0000\u0000\u0000*\u00cd\u0001\u0000\u0000\u0000"+
-		",\u00db\u0001\u0000\u0000\u0000.\u00dd\u0001\u0000\u0000\u00000\u00e4"+
-		"\u0001\u0000\u0000\u00002\u00eb\u0001\u0000\u0000\u00004\u00ed\u0001\u0000"+
-		"\u0000\u00006\u00ef\u0001\u0000\u0000\u00008\u00f6\u0001\u0000\u0000\u0000"+
-		":\u00fe\u0001\u0000\u0000\u0000<\u0102\u0001\u0000\u0000\u0000>@\u0003"+
-		"\u0002\u0001\u0000?>\u0001\u0000\u0000\u0000@C\u0001\u0000\u0000\u0000"+
-		"A?\u0001\u0000\u0000\u0000AB\u0001\u0000\u0000\u0000BD\u0001\u0000\u0000"+
-		"\u0000CA\u0001\u0000\u0000\u0000DE\u0005\u0000\u0000\u0001E\u0001\u0001"+
-		"\u0000\u0000\u0000FM\u0003\u0016\u000b\u0000GM\u0003\u0004\u0002\u0000"+
-		"HM\u0003\u0014\n\u0000IM\u0003\"\u0011\u0000JM\u0003&\u0013\u0000KM\u0003"+
-		"<\u001e\u0000LF\u0001\u0000\u0000\u0000LG\u0001\u0000\u0000\u0000LH\u0001"+
-		"\u0000\u0000\u0000LI\u0001\u0000\u0000\u0000LJ\u0001\u0000\u0000\u0000"+
-		"LK\u0001\u0000\u0000\u0000M\u0003\u0001\u0000\u0000\u0000NQ\u0003\u0006"+
-		"\u0003\u0000OQ\u0003\b\u0004\u0000PN\u0001\u0000\u0000\u0000PO\u0001\u0000"+
-		"\u0000\u0000Q\u0005\u0001\u0000\u0000\u0000RS\u0005\b\u0000\u0000SW\u0005"+
-		"\u000b\u0000\u0000TV\u0003\n\u0005\u0000UT\u0001\u0000\u0000\u0000VY\u0001"+
-		"\u0000\u0000\u0000WU\u0001\u0000\u0000\u0000WX\u0001\u0000\u0000\u0000"+
-		"XZ\u0001\u0000\u0000\u0000YW\u0001\u0000\u0000\u0000Z[\u0005\u0010\u0000"+
-		"\u0000[\u0007\u0001\u0000\u0000\u0000\\]\u0005\b\u0000\u0000]a\u0005\u000b"+
-		"\u0000\u0000^`\u0003\n\u0005\u0000_^\u0001\u0000\u0000\u0000`c\u0001\u0000"+
-		"\u0000\u0000a_\u0001\u0000\u0000\u0000ab\u0001\u0000\u0000\u0000bd\u0001"+
-		"\u0000\u0000\u0000ca\u0001\u0000\u0000\u0000dh\u0005\u0011\u0000\u0000"+
-		"eg\u0003\u0002\u0001\u0000fe\u0001\u0000\u0000\u0000gj\u0001\u0000\u0000"+
-		"\u0000hf\u0001\u0000\u0000\u0000hi\u0001\u0000\u0000\u0000ik\u0001\u0000"+
-		"\u0000\u0000jh\u0001\u0000\u0000\u0000kl\u0005\u0007\u0000\u0000lm\u0005"+
-		"\u000b\u0000\u0000mn\u0005\u0011\u0000\u0000n\t\u0001\u0000\u0000\u0000"+
-		"op\u0005\u000b\u0000\u0000pq\u0005\f\u0000\u0000qt\u0003\f\u0006\u0000"+
-		"rt\u0005\u000b\u0000\u0000so\u0001\u0000\u0000\u0000sr\u0001\u0000\u0000"+
-		"\u0000t\u000b\u0001\u0000\u0000\u0000ux\u0003\u000e\u0007\u0000vx\u0003"+
-		"\u0010\b\u0000wu\u0001\u0000\u0000\u0000wv\u0001\u0000\u0000\u0000x\r"+
-		"\u0001\u0000\u0000\u0000y}\u0005\u000e\u0000\u0000z|\u0003\u0012\t\u0000"+
-		"{z\u0001\u0000\u0000\u0000|\u007f\u0001\u0000\u0000\u0000}{\u0001\u0000"+
-		"\u0000\u0000}~\u0001\u0000\u0000\u0000~\u0080\u0001\u0000\u0000\u0000"+
-		"\u007f}\u0001\u0000\u0000\u0000\u0080\u0081\u0005\'\u0000\u0000\u0081"+
-		"\u000f\u0001\u0000\u0000\u0000\u0082\u0086\u0005\u000f\u0000\u0000\u0083"+
-		"\u0085\u0003\u0012\t\u0000\u0084\u0083\u0001\u0000\u0000\u0000\u0085\u0088"+
-		"\u0001\u0000\u0000\u0000\u0086\u0084\u0001\u0000\u0000\u0000\u0086\u0087"+
-		"\u0001\u0000\u0000\u0000\u0087\u0089\u0001\u0000\u0000\u0000\u0088\u0086"+
-		"\u0001\u0000\u0000\u0000\u0089\u008a\u0005(\u0000\u0000\u008a\u0011\u0001"+
-		"\u0000\u0000\u0000\u008b\u0090\u0005)\u0000\u0000\u008c\u0090\u0003\""+
-		"\u0011\u0000\u008d\u0090\u0003&\u0013\u0000\u008e\u0090\u0003<\u001e\u0000"+
-		"\u008f\u008b\u0001\u0000\u0000\u0000\u008f\u008c\u0001\u0000\u0000\u0000"+
-		"\u008f\u008d\u0001\u0000\u0000\u0000\u008f\u008e\u0001\u0000\u0000\u0000"+
-		"\u0090\u0013\u0001\u0000\u0000\u0000\u0091\u0092\u0005\t\u0000\u0000\u0092"+
-		"\u0015\u0001\u0000\u0000\u0000\u0093\u0094\u0005\u0006\u0000\u0000\u0094"+
-		"\u0095\u0003\u0018\f\u0000\u0095\u0096\u0005\u0016\u0000\u0000\u0096\u0017"+
-		"\u0001\u0000\u0000\u0000\u0097\u009a\u0003\u001a\r\u0000\u0098\u009a\u0005"+
-		"#\u0000\u0000\u0099\u0097\u0001\u0000\u0000\u0000\u0099\u0098\u0001\u0000"+
-		"\u0000\u0000\u009a\u009d\u0001\u0000\u0000\u0000\u009b\u0099\u0001\u0000"+
-		"\u0000\u0000\u009b\u009c\u0001\u0000\u0000\u0000\u009c\u0019\u0001\u0000"+
-		"\u0000\u0000\u009d\u009b\u0001\u0000\u0000\u0000\u009e\u009f\u0003\u001c"+
-		"\u000e\u0000\u009f\u00a0\u0005\u0018\u0000\u0000\u00a0\u00a1\u0003\u001e"+
-		"\u000f\u0000\u00a1\u00a2\u0005\u0019\u0000\u0000\u00a2\u001b\u0001\u0000"+
-		"\u0000\u0000\u00a3\u00a8\u0005 \u0000\u0000\u00a4\u00a8\u0005\u001d\u0000"+
-		"\u0000\u00a5\u00a8\u0005\u001e\u0000\u0000\u00a6\u00a8\u0005\u001f\u0000"+
-		"\u0000\u00a7\u00a3\u0001\u0000\u0000\u0000\u00a7\u00a4\u0001\u0000\u0000"+
-		"\u0000\u00a7\u00a5\u0001\u0000\u0000\u0000\u00a7\u00a6\u0001\u0000\u0000"+
-		"\u0000\u00a8\u001d\u0001\u0000\u0000\u0000\u00a9\u00ab\u0003 \u0010\u0000"+
-		"\u00aa\u00a9\u0001\u0000\u0000\u0000\u00ab\u00ae\u0001\u0000\u0000\u0000"+
-		"\u00ac\u00aa\u0001\u0000\u0000\u0000\u00ac\u00ad\u0001\u0000\u0000\u0000"+
-		"\u00ad\u001f\u0001\u0000\u0000\u0000\u00ae\u00ac\u0001\u0000\u0000\u0000"+
-		"\u00af\u00b0\u0005!\u0000\u0000\u00b0\u00b1\u0005\u001a\u0000\u0000\u00b1"+
-		"\u00b3\u0005\"\u0000\u0000\u00b2\u00b4\u0005\u001b\u0000\u0000\u00b3\u00b2"+
-		"\u0001\u0000\u0000\u0000\u00b3\u00b4\u0001\u0000\u0000\u0000\u00b4!\u0001"+
-		"\u0000\u0000\u0000\u00b5\u00b6\u0005\u0001\u0000\u0000\u00b6\u00b7\u0003"+
-		"$\u0012\u0000\u00b7\u00b8\u0005+\u0000\u0000\u00b8#\u0001\u0000\u0000"+
-		"\u0000\u00b9\u00bb\u0007\u0000\u0000\u0000\u00ba\u00b9\u0001\u0000\u0000"+
-		"\u0000\u00bb\u00be\u0001\u0000\u0000\u0000\u00bc\u00ba\u0001\u0000\u0000"+
-		"\u0000\u00bc\u00bd\u0001\u0000\u0000\u0000\u00bd%\u0001\u0000\u0000\u0000"+
-		"\u00be\u00bc\u0001\u0000\u0000\u0000\u00bf\u00c0\u0005\u0002\u0000\u0000"+
-		"\u00c0\u00c1\u0003(\u0014\u0000\u00c1\u00c2\u00059\u0000\u0000\u00c2\'"+
-		"\u0001\u0000\u0000\u0000\u00c3\u00cc\u0003*\u0015\u0000\u00c4\u00cc\u0003"+
-		",\u0016\u0000\u00c5\u00cc\u0003.\u0017\u0000\u00c6\u00cc\u00030\u0018"+
-		"\u0000\u00c7\u00cc\u00032\u0019\u0000\u00c8\u00cc\u00034\u001a\u0000\u00c9"+
-		"\u00cc\u00036\u001b\u0000\u00ca\u00cc\u00038\u001c\u0000\u00cb\u00c3\u0001"+
-		"\u0000\u0000\u0000\u00cb\u00c4\u0001\u0000\u0000\u0000\u00cb\u00c5\u0001"+
-		"\u0000\u0000\u0000\u00cb\u00c6\u0001\u0000\u0000\u0000\u00cb\u00c7\u0001"+
-		"\u0000\u0000\u0000\u00cb\u00c8\u0001\u0000\u0000\u0000\u00cb\u00c9\u0001"+
-		"\u0000\u0000\u0000\u00cb\u00ca\u0001\u0000\u0000\u0000\u00cc)\u0001\u0000"+
-		"\u0000\u0000\u00cd\u00d1\u0005:\u0000\u0000\u00ce\u00d0\u0003:\u001d\u0000"+
-		"\u00cf\u00ce\u0001\u0000\u0000\u0000\u00d0\u00d3\u0001\u0000\u0000\u0000"+
-		"\u00d1\u00cf\u0001\u0000\u0000\u0000\u00d1\u00d2\u0001\u0000\u0000\u0000"+
-		"\u00d2\u00d4\u0001\u0000\u0000\u0000\u00d3\u00d1\u0001\u0000\u0000\u0000"+
-		"\u00d4\u00d8\u0005;\u0000\u0000\u00d5\u00d7\u0003:\u001d\u0000\u00d6\u00d5"+
-		"\u0001\u0000\u0000\u0000\u00d7\u00da\u0001\u0000\u0000\u0000\u00d8\u00d6"+
-		"\u0001\u0000\u0000\u0000\u00d8\u00d9\u0001\u0000\u0000\u0000\u00d9+\u0001"+
-		"\u0000\u0000\u0000\u00da\u00d8\u0001\u0000\u0000\u0000\u00db\u00dc\u0005"+
-		"<\u0000\u0000\u00dc-\u0001\u0000\u0000\u0000\u00dd\u00e1\u0005=\u0000"+
-		"\u0000\u00de\u00e0\u0003:\u001d\u0000\u00df\u00de\u0001\u0000\u0000\u0000"+
-		"\u00e0\u00e3\u0001\u0000\u0000\u0000\u00e1\u00df\u0001\u0000\u0000\u0000"+
-		"\u00e1\u00e2\u0001\u0000\u0000\u0000\u00e2/\u0001\u0000\u0000\u0000\u00e3"+
-		"\u00e1\u0001\u0000\u0000\u0000\u00e4\u00e8\u0005>\u0000\u0000\u00e5\u00e7"+
-		"\u0003:\u001d\u0000\u00e6\u00e5\u0001\u0000\u0000\u0000\u00e7\u00ea\u0001"+
-		"\u0000\u0000\u0000\u00e8\u00e6\u0001\u0000\u0000\u0000\u00e8\u00e9\u0001"+
-		"\u0000\u0000\u0000\u00e91\u0001\u0000\u0000\u0000\u00ea\u00e8\u0001\u0000"+
-		"\u0000\u0000\u00eb\u00ec\u0005?\u0000\u0000\u00ec3\u0001\u0000\u0000\u0000"+
-		"\u00ed\u00ee\u0005@\u0000\u0000\u00ee5\u0001\u0000\u0000\u0000\u00ef\u00f3"+
-		"\u0005A\u0000\u0000\u00f0\u00f2\u0003:\u001d\u0000\u00f1\u00f0\u0001\u0000"+
-		"\u0000\u0000\u00f2\u00f5\u0001\u0000\u0000\u0000\u00f3\u00f1\u0001\u0000"+
-		"\u0000\u0000\u00f3\u00f4\u0001\u0000\u0000\u0000\u00f47\u0001\u0000\u0000"+
-		"\u0000\u00f5\u00f3\u0001\u0000\u0000\u0000\u00f6\u00fa\u0005B\u0000\u0000"+
-		"\u00f7\u00f9\u0003:\u001d\u0000\u00f8\u00f7\u0001\u0000\u0000\u0000\u00f9"+
-		"\u00fc\u0001\u0000\u0000\u0000\u00fa\u00f8\u0001\u0000\u0000\u0000\u00fa"+
-		"\u00fb\u0001\u0000\u0000\u0000\u00fb9\u0001\u0000\u0000\u0000\u00fc\u00fa"+
-		"\u0001\u0000\u0000\u0000\u00fd\u00ff\u0007\u0001\u0000\u0000\u00fe\u00fd"+
-		"\u0001\u0000\u0000\u0000\u00ff\u0100\u0001\u0000\u0000\u0000\u0100\u00fe"+
-		"\u0001\u0000\u0000\u0000\u0100\u0101\u0001\u0000\u0000\u0000\u0101;\u0001"+
-		"\u0000\u0000\u0000\u0102\u0104\u0005\u0003\u0000\u0000\u0103\u0105\u0005"+
-		"P\u0000\u0000\u0104\u0103\u0001\u0000\u0000\u0000\u0104\u0105\u0001\u0000"+
-		"\u0000\u0000\u0105\u0106\u0001\u0000\u0000\u0000\u0106\u0107\u0005O\u0000"+
-		"\u0000\u0107=\u0001\u0000\u0000\u0000\u001aALPWahsw}\u0086\u008f\u0099"+
-		"\u009b\u00a7\u00ac\u00b3\u00bc\u00cb\u00d1\u00d8\u00e1\u00e8\u00f3\u00fa"+
-		"\u0100\u0104";
+		"\u0002\u001f\u0007\u001f\u0002 \u0007 \u0002!\u0007!\u0002\"\u0007\"\u0002"+
+		"#\u0007#\u0002$\u0007$\u0002%\u0007%\u0002&\u0007&\u0002\'\u0007\'\u0002"+
+		"(\u0007(\u0001\u0000\u0005\u0000T\b\u0000\n\u0000\f\u0000W\t\u0000\u0001"+
+		"\u0000\u0001\u0000\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
+		"\u0001\u0001\u0001\u0003\u0001a\b\u0001\u0001\u0002\u0001\u0002\u0003"+
+		"\u0002e\b\u0002\u0001\u0003\u0001\u0003\u0001\u0003\u0005\u0003j\b\u0003"+
+		"\n\u0003\f\u0003m\t\u0003\u0001\u0003\u0001\u0003\u0001\u0004\u0001\u0004"+
+		"\u0001\u0004\u0005\u0004t\b\u0004\n\u0004\f\u0004w\t\u0004\u0001\u0004"+
+		"\u0001\u0004\u0005\u0004{\b\u0004\n\u0004\f\u0004~\t\u0004\u0001\u0004"+
+		"\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0005\u0001\u0005\u0001\u0005"+
+		"\u0001\u0005\u0003\u0005\u0088\b\u0005\u0001\u0006\u0001\u0006\u0003\u0006"+
+		"\u008c\b\u0006\u0001\u0007\u0001\u0007\u0005\u0007\u0090\b\u0007\n\u0007"+
+		"\f\u0007\u0093\t\u0007\u0001\u0007\u0001\u0007\u0001\b\u0001\b\u0005\b"+
+		"\u0099\b\b\n\b\f\b\u009c\t\b\u0001\b\u0001\b\u0001\t\u0001\t\u0001\t\u0001"+
+		"\t\u0003\t\u00a4\b\t\u0001\n\u0001\n\u0001\u000b\u0001\u000b\u0001\u000b"+
+		"\u0001\u000b\u0001\f\u0005\f\u00ad\b\f\n\f\f\f\u00b0\t\f\u0001\r\u0001"+
+		"\r\u0001\r\u0001\r\u0001\r\u0001\u000e\u0001\u000e\u0001\u000e\u0005\u000e"+
+		"\u00ba\b\u000e\n\u000e\f\u000e\u00bd\t\u000e\u0001\u000f\u0001\u000f\u0004"+
+		"\u000f\u00c1\b\u000f\u000b\u000f\f\u000f\u00c2\u0001\u000f\u0005\u000f"+
+		"\u00c6\b\u000f\n\u000f\f\u000f\u00c9\t\u000f\u0001\u0010\u0004\u0010\u00cc"+
+		"\b\u0010\u000b\u0010\f\u0010\u00cd\u0001\u0011\u0001\u0011\u0001\u0011"+
+		"\u0001\u0011\u0001\u0011\u0003\u0011\u00d5\b\u0011\u0001\u0012\u0001\u0012"+
+		"\u0001\u0013\u0001\u0013\u0001\u0013\u0001\u0014\u0001\u0014\u0001\u0014"+
+		"\u0001\u0015\u0001\u0015\u0001\u0015\u0001\u0016\u0001\u0016\u0001\u0016"+
+		"\u0001\u0016\u0001\u0016\u0001\u0016\u0001\u0017\u0005\u0017\u00e9\b\u0017"+
+		"\n\u0017\f\u0017\u00ec\t\u0017\u0001\u0018\u0001\u0018\u0001\u0018\u0001"+
+		"\u0018\u0003\u0018\u00f2\b\u0018\u0001\u0019\u0004\u0019\u00f5\b\u0019"+
+		"\u000b\u0019\f\u0019\u00f6\u0001\u001a\u0001\u001a\u0001\u001b\u0001\u001b"+
+		"\u0001\u001b\u0001\u001b\u0001\u001c\u0005\u001c\u0100\b\u001c\n\u001c"+
+		"\f\u001c\u0103\t\u001c\u0001\u001d\u0001\u001d\u0001\u001d\u0001\u001d"+
+		"\u0001\u001e\u0001\u001e\u0001\u001e\u0001\u001e\u0001\u001e\u0001\u001e"+
+		"\u0001\u001e\u0001\u001e\u0003\u001e\u0111\b\u001e\u0001\u001f\u0001\u001f"+
+		"\u0005\u001f\u0115\b\u001f\n\u001f\f\u001f\u0118\t\u001f\u0001\u001f\u0001"+
+		"\u001f\u0005\u001f\u011c\b\u001f\n\u001f\f\u001f\u011f\t\u001f\u0001 "+
+		"\u0001 \u0001!\u0001!\u0005!\u0125\b!\n!\f!\u0128\t!\u0001\"\u0001\"\u0005"+
+		"\"\u012c\b\"\n\"\f\"\u012f\t\"\u0001#\u0001#\u0001$\u0001$\u0001%\u0001"+
+		"%\u0005%\u0137\b%\n%\f%\u013a\t%\u0001&\u0001&\u0005&\u013e\b&\n&\f&\u0141"+
+		"\t&\u0001\'\u0004\'\u0144\b\'\u000b\'\f\'\u0145\u0001(\u0001(\u0003(\u014a"+
+		"\b(\u0001(\u0001(\u0001(\u0000\u0000)\u0000\u0002\u0004\u0006\b\n\f\u000e"+
+		"\u0010\u0012\u0014\u0016\u0018\u001a\u001c\u001e \"$&(*,.02468:<>@BDF"+
+		"HJLNP\u0000\u0004\u0002\u0000%%((\u0004\u0000\u001e\u001e !##%)\u0002"+
+		"\u00003=??\u0003\u000066ISUU\u0151\u0000U\u0001\u0000\u0000\u0000\u0002"+
+		"`\u0001\u0000\u0000\u0000\u0004d\u0001\u0000\u0000\u0000\u0006f\u0001"+
+		"\u0000\u0000\u0000\bp\u0001\u0000\u0000\u0000\n\u0087\u0001\u0000\u0000"+
+		"\u0000\f\u008b\u0001\u0000\u0000\u0000\u000e\u008d\u0001\u0000\u0000\u0000"+
+		"\u0010\u0096\u0001\u0000\u0000\u0000\u0012\u00a3\u0001\u0000\u0000\u0000"+
+		"\u0014\u00a5\u0001\u0000\u0000\u0000\u0016\u00a7\u0001\u0000\u0000\u0000"+
+		"\u0018\u00ae\u0001\u0000\u0000\u0000\u001a\u00b1\u0001\u0000\u0000\u0000"+
+		"\u001c\u00b6\u0001\u0000\u0000\u0000\u001e\u00be\u0001\u0000\u0000\u0000"+
+		" \u00cb\u0001\u0000\u0000\u0000\"\u00d4\u0001\u0000\u0000\u0000$\u00d6"+
+		"\u0001\u0000\u0000\u0000&\u00d8\u0001\u0000\u0000\u0000(\u00db\u0001\u0000"+
+		"\u0000\u0000*\u00de\u0001\u0000\u0000\u0000,\u00e1\u0001\u0000\u0000\u0000"+
+		".\u00ea\u0001\u0000\u0000\u00000\u00ed\u0001\u0000\u0000\u00002\u00f4"+
+		"\u0001\u0000\u0000\u00004\u00f8\u0001\u0000\u0000\u00006\u00fa\u0001\u0000"+
+		"\u0000\u00008\u0101\u0001\u0000\u0000\u0000:\u0104\u0001\u0000\u0000\u0000"+
+		"<\u0110\u0001\u0000\u0000\u0000>\u0112\u0001\u0000\u0000\u0000@\u0120"+
+		"\u0001\u0000\u0000\u0000B\u0122\u0001\u0000\u0000\u0000D\u0129\u0001\u0000"+
+		"\u0000\u0000F\u0130\u0001\u0000\u0000\u0000H\u0132\u0001\u0000\u0000\u0000"+
+		"J\u0134\u0001\u0000\u0000\u0000L\u013b\u0001\u0000\u0000\u0000N\u0143"+
+		"\u0001\u0000\u0000\u0000P\u0147\u0001\u0000\u0000\u0000RT\u0003\u0002"+
+		"\u0001\u0000SR\u0001\u0000\u0000\u0000TW\u0001\u0000\u0000\u0000US\u0001"+
+		"\u0000\u0000\u0000UV\u0001\u0000\u0000\u0000VX\u0001\u0000\u0000\u0000"+
+		"WU\u0001\u0000\u0000\u0000XY\u0005\u0000\u0000\u0001Y\u0001\u0001\u0000"+
+		"\u0000\u0000Za\u0003\u0016\u000b\u0000[a\u0003\u0004\u0002\u0000\\a\u0003"+
+		"\u0014\n\u0000]a\u00036\u001b\u0000^a\u0003:\u001d\u0000_a\u0003P(\u0000"+
+		"`Z\u0001\u0000\u0000\u0000`[\u0001\u0000\u0000\u0000`\\\u0001\u0000\u0000"+
+		"\u0000`]\u0001\u0000\u0000\u0000`^\u0001\u0000\u0000\u0000`_\u0001\u0000"+
+		"\u0000\u0000a\u0003\u0001\u0000\u0000\u0000be\u0003\u0006\u0003\u0000"+
+		"ce\u0003\b\u0004\u0000db\u0001\u0000\u0000\u0000dc\u0001\u0000\u0000\u0000"+
+		"e\u0005\u0001\u0000\u0000\u0000fg\u0005\b\u0000\u0000gk\u0005\u000b\u0000"+
+		"\u0000hj\u0003\n\u0005\u0000ih\u0001\u0000\u0000\u0000jm\u0001\u0000\u0000"+
+		"\u0000ki\u0001\u0000\u0000\u0000kl\u0001\u0000\u0000\u0000ln\u0001\u0000"+
+		"\u0000\u0000mk\u0001\u0000\u0000\u0000no\u0005\u0010\u0000\u0000o\u0007"+
+		"\u0001\u0000\u0000\u0000pq\u0005\b\u0000\u0000qu\u0005\u000b\u0000\u0000"+
+		"rt\u0003\n\u0005\u0000sr\u0001\u0000\u0000\u0000tw\u0001\u0000\u0000\u0000"+
+		"us\u0001\u0000\u0000\u0000uv\u0001\u0000\u0000\u0000vx\u0001\u0000\u0000"+
+		"\u0000wu\u0001\u0000\u0000\u0000x|\u0005\u0011\u0000\u0000y{\u0003\u0002"+
+		"\u0001\u0000zy\u0001\u0000\u0000\u0000{~\u0001\u0000\u0000\u0000|z\u0001"+
+		"\u0000\u0000\u0000|}\u0001\u0000\u0000\u0000}\u007f\u0001\u0000\u0000"+
+		"\u0000~|\u0001\u0000\u0000\u0000\u007f\u0080\u0005\u0007\u0000\u0000\u0080"+
+		"\u0081\u0005\u000b\u0000\u0000\u0081\u0082\u0005\u0011\u0000\u0000\u0082"+
+		"\t\u0001\u0000\u0000\u0000\u0083\u0084\u0005\u000b\u0000\u0000\u0084\u0085"+
+		"\u0005\f\u0000\u0000\u0085\u0088\u0003\f\u0006\u0000\u0086\u0088\u0005"+
+		"\u000b\u0000\u0000\u0087\u0083\u0001\u0000\u0000\u0000\u0087\u0086\u0001"+
+		"\u0000\u0000\u0000\u0088\u000b\u0001\u0000\u0000\u0000\u0089\u008c\u0003"+
+		"\u000e\u0007\u0000\u008a\u008c\u0003\u0010\b\u0000\u008b\u0089\u0001\u0000"+
+		"\u0000\u0000\u008b\u008a\u0001\u0000\u0000\u0000\u008c\r\u0001\u0000\u0000"+
+		"\u0000\u008d\u0091\u0005\u000e\u0000\u0000\u008e\u0090\u0003\u0012\t\u0000"+
+		"\u008f\u008e\u0001\u0000\u0000\u0000\u0090\u0093\u0001\u0000\u0000\u0000"+
+		"\u0091\u008f\u0001\u0000\u0000\u0000\u0091\u0092\u0001\u0000\u0000\u0000"+
+		"\u0092\u0094\u0001\u0000\u0000\u0000\u0093\u0091\u0001\u0000\u0000\u0000"+
+		"\u0094\u0095\u0005.\u0000\u0000\u0095\u000f\u0001\u0000\u0000\u0000\u0096"+
+		"\u009a\u0005\u000f\u0000\u0000\u0097\u0099\u0003\u0012\t\u0000\u0098\u0097"+
+		"\u0001\u0000\u0000\u0000\u0099\u009c\u0001\u0000\u0000\u0000\u009a\u0098"+
+		"\u0001\u0000\u0000\u0000\u009a\u009b\u0001\u0000\u0000\u0000\u009b\u009d"+
+		"\u0001\u0000\u0000\u0000\u009c\u009a\u0001\u0000\u0000\u0000\u009d\u009e"+
+		"\u0005/\u0000\u0000\u009e\u0011\u0001\u0000\u0000\u0000\u009f\u00a4\u0005"+
+		"0\u0000\u0000\u00a0\u00a4\u00036\u001b\u0000\u00a1\u00a4\u0003:\u001d"+
+		"\u0000\u00a2\u00a4\u0003P(\u0000\u00a3\u009f\u0001\u0000\u0000\u0000\u00a3"+
+		"\u00a0\u0001\u0000\u0000\u0000\u00a3\u00a1\u0001\u0000\u0000\u0000\u00a3"+
+		"\u00a2\u0001\u0000\u0000\u0000\u00a4\u0013\u0001\u0000\u0000\u0000\u00a5"+
+		"\u00a6\u0005\t\u0000\u0000\u00a6\u0015\u0001\u0000\u0000\u0000\u00a7\u00a8"+
+		"\u0005\u0006\u0000\u0000\u00a8\u00a9\u0003\u0018\f\u0000\u00a9\u00aa\u0005"+
+		"\u0016\u0000\u0000\u00aa\u0017\u0001\u0000\u0000\u0000\u00ab\u00ad\u0003"+
+		"\u001a\r\u0000\u00ac\u00ab\u0001\u0000\u0000\u0000\u00ad\u00b0\u0001\u0000"+
+		"\u0000\u0000\u00ae\u00ac\u0001\u0000\u0000\u0000\u00ae\u00af\u0001\u0000"+
+		"\u0000\u0000\u00af\u0019\u0001\u0000\u0000\u0000\u00b0\u00ae\u0001\u0000"+
+		"\u0000\u0000\u00b1\u00b2\u0003\u001c\u000e\u0000\u00b2\u00b3\u0005\u0018"+
+		"\u0000\u0000\u00b3\u00b4\u0003.\u0017\u0000\u00b4\u00b5\u0005\u0019\u0000"+
+		"\u0000\u00b5\u001b\u0001\u0000\u0000\u0000\u00b6\u00bb\u0003\u001e\u000f"+
+		"\u0000\u00b7\u00b8\u0005\u001e\u0000\u0000\u00b8\u00ba\u0003\u001e\u000f"+
+		"\u0000\u00b9\u00b7\u0001\u0000\u0000\u0000\u00ba\u00bd\u0001\u0000\u0000"+
+		"\u0000\u00bb\u00b9\u0001\u0000\u0000\u0000\u00bb\u00bc\u0001\u0000\u0000"+
+		"\u0000\u00bc\u001d\u0001\u0000\u0000\u0000\u00bd\u00bb\u0001\u0000\u0000"+
+		"\u0000\u00be\u00c7\u0003 \u0010\u0000\u00bf\u00c1\u0005\u0017\u0000\u0000"+
+		"\u00c0\u00bf\u0001\u0000\u0000\u0000\u00c1\u00c2\u0001\u0000\u0000\u0000"+
+		"\u00c2\u00c0\u0001\u0000\u0000\u0000\u00c2\u00c3\u0001\u0000\u0000\u0000"+
+		"\u00c3\u00c4\u0001\u0000\u0000\u0000\u00c4\u00c6\u0003 \u0010\u0000\u00c5"+
+		"\u00c0\u0001\u0000\u0000\u0000\u00c6\u00c9\u0001\u0000\u0000\u0000\u00c7"+
+		"\u00c5\u0001\u0000\u0000\u0000\u00c7\u00c8\u0001\u0000\u0000\u0000\u00c8"+
+		"\u001f\u0001\u0000\u0000\u0000\u00c9\u00c7\u0001\u0000\u0000\u0000\u00ca"+
+		"\u00cc\u0003\"\u0011\u0000\u00cb\u00ca\u0001\u0000\u0000\u0000\u00cc\u00cd"+
+		"\u0001\u0000\u0000\u0000\u00cd\u00cb\u0001\u0000\u0000\u0000\u00cd\u00ce"+
+		"\u0001\u0000\u0000\u0000\u00ce!\u0001\u0000\u0000\u0000\u00cf\u00d5\u0003"+
+		"$\u0012\u0000\u00d0\u00d5\u0003&\u0013\u0000\u00d1\u00d5\u0003(\u0014"+
+		"\u0000\u00d2\u00d5\u0003*\u0015\u0000\u00d3\u00d5\u0003,\u0016\u0000\u00d4"+
+		"\u00cf\u0001\u0000\u0000\u0000\u00d4\u00d0\u0001\u0000\u0000\u0000\u00d4"+
+		"\u00d1\u0001\u0000\u0000\u0000\u00d4\u00d2\u0001\u0000\u0000\u0000\u00d4"+
+		"\u00d3\u0001\u0000\u0000\u0000\u00d5#\u0001\u0000\u0000\u0000\u00d6\u00d7"+
+		"\u0005%\u0000\u0000\u00d7%\u0001\u0000\u0000\u0000\u00d8\u00d9\u0005\""+
+		"\u0000\u0000\u00d9\u00da\u0005%\u0000\u0000\u00da\'\u0001\u0000\u0000"+
+		"\u0000\u00db\u00dc\u0005$\u0000\u0000\u00dc\u00dd\u0005%\u0000\u0000\u00dd"+
+		")\u0001\u0000\u0000\u0000\u00de\u00df\u0005\u001c\u0000\u0000\u00df\u00e0"+
+		"\u0005%\u0000\u0000\u00e0+\u0001\u0000\u0000\u0000\u00e1\u00e2\u0005\u001a"+
+		"\u0000\u0000\u00e2\u00e3\u0005%\u0000\u0000\u00e3\u00e4\u0005\u001f\u0000"+
+		"\u0000\u00e4\u00e5\u0007\u0000\u0000\u0000\u00e5\u00e6\u0005\u001b\u0000"+
+		"\u0000\u00e6-\u0001\u0000\u0000\u0000\u00e7\u00e9\u00030\u0018\u0000\u00e8"+
+		"\u00e7\u0001\u0000\u0000\u0000\u00e9\u00ec\u0001\u0000\u0000\u0000\u00ea"+
+		"\u00e8\u0001\u0000\u0000\u0000\u00ea\u00eb\u0001\u0000\u0000\u0000\u00eb"+
+		"/\u0001\u0000\u0000\u0000\u00ec\u00ea\u0001\u0000\u0000\u0000\u00ed\u00ee"+
+		"\u0005%\u0000\u0000\u00ee\u00ef\u0005\u001c\u0000\u0000\u00ef\u00f1\u0003"+
+		"2\u0019\u0000\u00f0\u00f2\u0005\u001d\u0000\u0000\u00f1\u00f0\u0001\u0000"+
+		"\u0000\u0000\u00f1\u00f2\u0001\u0000\u0000\u0000\u00f21\u0001\u0000\u0000"+
+		"\u0000\u00f3\u00f5\u00034\u001a\u0000\u00f4\u00f3\u0001\u0000\u0000\u0000"+
+		"\u00f5\u00f6\u0001\u0000\u0000\u0000\u00f6\u00f4\u0001\u0000\u0000\u0000"+
+		"\u00f6\u00f7\u0001\u0000\u0000\u0000\u00f73\u0001\u0000\u0000\u0000\u00f8"+
+		"\u00f9\u0007\u0001\u0000\u0000\u00f95\u0001\u0000\u0000\u0000\u00fa\u00fb"+
+		"\u0005\u0001\u0000\u0000\u00fb\u00fc\u00038\u001c\u0000\u00fc\u00fd\u0005"+
+		"2\u0000\u0000\u00fd7\u0001\u0000\u0000\u0000\u00fe\u0100\u0007\u0002\u0000"+
+		"\u0000\u00ff\u00fe\u0001\u0000\u0000\u0000\u0100\u0103\u0001\u0000\u0000"+
+		"\u0000\u0101\u00ff\u0001\u0000\u0000\u0000\u0101\u0102\u0001\u0000\u0000"+
+		"\u0000\u01029\u0001\u0000\u0000\u0000\u0103\u0101\u0001\u0000\u0000\u0000"+
+		"\u0104\u0105\u0005\u0002\u0000\u0000\u0105\u0106\u0003<\u001e\u0000\u0106"+
+		"\u0107\u0005@\u0000\u0000\u0107;\u0001\u0000\u0000\u0000\u0108\u0111\u0003"+
+		">\u001f\u0000\u0109\u0111\u0003@ \u0000\u010a\u0111\u0003B!\u0000\u010b"+
+		"\u0111\u0003D\"\u0000\u010c\u0111\u0003F#\u0000\u010d\u0111\u0003H$\u0000"+
+		"\u010e\u0111\u0003J%\u0000\u010f\u0111\u0003L&\u0000\u0110\u0108\u0001"+
+		"\u0000\u0000\u0000\u0110\u0109\u0001\u0000\u0000\u0000\u0110\u010a\u0001"+
+		"\u0000\u0000\u0000\u0110\u010b\u0001\u0000\u0000\u0000\u0110\u010c\u0001"+
+		"\u0000\u0000\u0000\u0110\u010d\u0001\u0000\u0000\u0000\u0110\u010e\u0001"+
+		"\u0000\u0000\u0000\u0110\u010f\u0001\u0000\u0000\u0000\u0111=\u0001\u0000"+
+		"\u0000\u0000\u0112\u0116\u0005A\u0000\u0000\u0113\u0115\u0003N\'\u0000"+
+		"\u0114\u0113\u0001\u0000\u0000\u0000\u0115\u0118\u0001\u0000\u0000\u0000"+
+		"\u0116\u0114\u0001\u0000\u0000\u0000\u0116\u0117\u0001\u0000\u0000\u0000"+
+		"\u0117\u0119\u0001\u0000\u0000\u0000\u0118\u0116\u0001\u0000\u0000\u0000"+
+		"\u0119\u011d\u0005B\u0000\u0000\u011a\u011c\u0003N\'\u0000\u011b\u011a"+
+		"\u0001\u0000\u0000\u0000\u011c\u011f\u0001\u0000\u0000\u0000\u011d\u011b"+
+		"\u0001\u0000\u0000\u0000\u011d\u011e\u0001\u0000\u0000\u0000\u011e?\u0001"+
+		"\u0000\u0000\u0000\u011f\u011d\u0001\u0000\u0000\u0000\u0120\u0121\u0005"+
+		"C\u0000\u0000\u0121A\u0001\u0000\u0000\u0000\u0122\u0126\u0005D\u0000"+
+		"\u0000\u0123\u0125\u0003N\'\u0000\u0124\u0123\u0001\u0000\u0000\u0000"+
+		"\u0125\u0128\u0001\u0000\u0000\u0000\u0126\u0124\u0001\u0000\u0000\u0000"+
+		"\u0126\u0127\u0001\u0000\u0000\u0000\u0127C\u0001\u0000\u0000\u0000\u0128"+
+		"\u0126\u0001\u0000\u0000\u0000\u0129\u012d\u0005E\u0000\u0000\u012a\u012c"+
+		"\u0003N\'\u0000\u012b\u012a\u0001\u0000\u0000\u0000\u012c\u012f\u0001"+
+		"\u0000\u0000\u0000\u012d\u012b\u0001\u0000\u0000\u0000\u012d\u012e\u0001"+
+		"\u0000\u0000\u0000\u012eE\u0001\u0000\u0000\u0000\u012f\u012d\u0001\u0000"+
+		"\u0000\u0000\u0130\u0131\u0005F\u0000\u0000\u0131G\u0001\u0000\u0000\u0000"+
+		"\u0132\u0133\u0005G\u0000\u0000\u0133I\u0001\u0000\u0000\u0000\u0134\u0138"+
+		"\u0005H\u0000\u0000\u0135\u0137\u0003N\'\u0000\u0136\u0135\u0001\u0000"+
+		"\u0000\u0000\u0137\u013a\u0001\u0000\u0000\u0000\u0138\u0136\u0001\u0000"+
+		"\u0000\u0000\u0138\u0139\u0001\u0000\u0000\u0000\u0139K\u0001\u0000\u0000"+
+		"\u0000\u013a\u0138\u0001\u0000\u0000\u0000\u013b\u013f\u0005I\u0000\u0000"+
+		"\u013c\u013e\u0003N\'\u0000\u013d\u013c\u0001\u0000\u0000\u0000\u013e"+
+		"\u0141\u0001\u0000\u0000\u0000\u013f\u013d\u0001\u0000\u0000\u0000\u013f"+
+		"\u0140\u0001\u0000\u0000\u0000\u0140M\u0001\u0000\u0000\u0000\u0141\u013f"+
+		"\u0001\u0000\u0000\u0000\u0142\u0144\u0007\u0003\u0000\u0000\u0143\u0142"+
+		"\u0001\u0000\u0000\u0000\u0144\u0145\u0001\u0000\u0000\u0000\u0145\u0143"+
+		"\u0001\u0000\u0000\u0000\u0145\u0146\u0001\u0000\u0000\u0000\u0146O\u0001"+
+		"\u0000\u0000\u0000\u0147\u0149\u0005\u0003\u0000\u0000\u0148\u014a\u0005"+
+		"W\u0000\u0000\u0149\u0148\u0001\u0000\u0000\u0000\u0149\u014a\u0001\u0000"+
+		"\u0000\u0000\u014a\u014b\u0001\u0000\u0000\u0000\u014b\u014c\u0005V\u0000"+
+		"\u0000\u014cQ\u0001\u0000\u0000\u0000\u001eU`dku|\u0087\u008b\u0091\u009a"+
+		"\u00a3\u00ae\u00bb\u00c2\u00c7\u00cd\u00d4\u00ea\u00f1\u00f6\u0101\u0110"+
+		"\u0116\u011d\u0126\u012d\u0138\u013f\u0145\u0149";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

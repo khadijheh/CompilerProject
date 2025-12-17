@@ -172,12 +172,12 @@ public interface WebParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCssStyleNode(WebParser.CssStyleNodeContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code CssBodyNode}
-	 * labeled alternative in {@link WebParser#cssBody}.
+	 * Visit a parse tree produced by the {@code CssRulesNode}
+	 * labeled alternative in {@link WebParser#cssRules}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCssBodyNode(WebParser.CssBodyNodeContext ctx);
+	T visitCssRulesNode(WebParser.CssRulesNodeContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code CssRuleNode}
 	 * labeled alternative in {@link WebParser#cssRule}.
@@ -186,33 +186,96 @@ public interface WebParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCssRuleNode(WebParser.CssRuleNodeContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code SelectorSimpleNode}
-	 * labeled alternative in {@link WebParser#cssSelector}.
+	 * Visit a parse tree produced by the {@code CssSelectorListNode}
+	 * labeled alternative in {@link WebParser#cssSelectorList}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSelectorSimpleNode(WebParser.SelectorSimpleNodeContext ctx);
+	T visitCssSelectorListNode(WebParser.CssSelectorListNodeContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code SelectorClassNode}
+	 * Visit a parse tree produced by the {@code CssSelectorNode}
 	 * labeled alternative in {@link WebParser#cssSelector}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSelectorClassNode(WebParser.SelectorClassNodeContext ctx);
+	T visitCssSelectorNode(WebParser.CssSelectorNodeContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code SelectorIdNode}
-	 * labeled alternative in {@link WebParser#cssSelector}.
+	 * Visit a parse tree produced by the {@code SelectorPartNode}
+	 * labeled alternative in {@link WebParser#selectorPart}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSelectorIdNode(WebParser.SelectorIdNodeContext ctx);
+	T visitSelectorPartNode(WebParser.SelectorPartNodeContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code SelectorPseudoNode}
-	 * labeled alternative in {@link WebParser#cssSelector}.
+	 * Visit a parse tree produced by the {@code TypeSelectorNode}
+	 * labeled alternative in {@link WebParser#simpleSelector}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSelectorPseudoNode(WebParser.SelectorPseudoNodeContext ctx);
+	T visitTypeSelectorNode(WebParser.TypeSelectorNodeContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ClassSelectorNode}
+	 * labeled alternative in {@link WebParser#simpleSelector}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitClassSelectorNode(WebParser.ClassSelectorNodeContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code IdSelectorNode}
+	 * labeled alternative in {@link WebParser#simpleSelector}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdSelectorNode(WebParser.IdSelectorNodeContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code PseudoSelectorNode}
+	 * labeled alternative in {@link WebParser#simpleSelector}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPseudoSelectorNode(WebParser.PseudoSelectorNodeContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code AttributeSeNode}
+	 * labeled alternative in {@link WebParser#simpleSelector}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAttributeSeNode(WebParser.AttributeSeNodeContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code TypeSelectorIdNode}
+	 * labeled alternative in {@link WebParser#typeSelector}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTypeSelectorIdNode(WebParser.TypeSelectorIdNodeContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ClassSelectorIdNode}
+	 * labeled alternative in {@link WebParser#classSelector}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitClassSelectorIdNode(WebParser.ClassSelectorIdNodeContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code IdSelectorIdNode}
+	 * labeled alternative in {@link WebParser#idSelector}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdSelectorIdNode(WebParser.IdSelectorIdNodeContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code PseudoSelectorIdNode}
+	 * labeled alternative in {@link WebParser#pseudoSelector}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPseudoSelectorIdNode(WebParser.PseudoSelectorIdNodeContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code AttributeSelectorNode}
+	 * labeled alternative in {@link WebParser#attributeSelector}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAttributeSelectorNode(WebParser.AttributeSelectorNodeContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code CssDeclarationsNode}
 	 * labeled alternative in {@link WebParser#cssDeclarations}.
@@ -227,6 +290,19 @@ public interface WebParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitCssDeclarationNode(WebParser.CssDeclarationNodeContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code CssValueNode}
+	 * labeled alternative in {@link WebParser#cssValue}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCssValueNode(WebParser.CssValueNodeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WebParser#cssValueAtom}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCssValueAtom(WebParser.CssValueAtomContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code JinjaExpressionNode}
 	 * labeled alternative in {@link WebParser#jinjaExpression}.
