@@ -1,10 +1,11 @@
 package ast.web.css;
 
 import ast.base.BaseNode;
+import ast.base.ASTNode;
 import visitor.ASTVisitor;
 
-public abstract class CssStyleNode extends BaseNode {
-    private CssBodyNode body;
+public class CssStyleNode extends BaseNode {
+    private final CssBodyNode body;
 
     public CssStyleNode(CssBodyNode body, int line, int column) {
         super(line, column);
@@ -15,6 +16,7 @@ public abstract class CssStyleNode extends BaseNode {
 
     @Override
     public <T> T accept(ASTVisitor<T> visitor) {
-        return visitor.visit(this.getBody());
+        return visitor.visit(this);
     }
+
 }

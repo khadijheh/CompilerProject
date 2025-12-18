@@ -14,12 +14,25 @@ import java.util.*;
 public class WebVisitor extends WebParserBaseVisitor<ASTNode> {
     public ASTNode visitTemplateNode(WebParser.TemplateNodeContext ctx) {
         List<ContentItemNode> contentNodes = new ArrayList<>();
+
         for (var child : ctx.contentItem()) {
             ASTNode node = visit(child);
-            if (node instanceof ContentItemNode) {
-                contentNodes.add((ContentItemNode) node);
+
+            if (node instanceof ContentItemNode content) {
+                contentNodes.add(content);
+            }
+            // ✅ هذا هو الحل
+            else if (node instanceof CssStyleNode css) {
+                contentNodes.add(
+                        new ContentCssStyle(
+                                css,
+                                css.getLine(),
+                                css.getColumn()
+                        )
+                );
             }
         }
+
         return new TemplateNode(
                 contentNodes,
                 ctx.start.getLine(),
@@ -40,7 +53,6 @@ public class WebVisitor extends WebParserBaseVisitor<ASTNode> {
         }
         return null;
     }
-
 
     @Override
     public ASTNode visitContentHtmlElement(WebParser.ContentHtmlElementContext ctx) {
@@ -77,7 +89,6 @@ public class WebVisitor extends WebParserBaseVisitor<ASTNode> {
 
         return null;
     }
-
 
     @Override
     public ASTNode visitBlockForStartNode(WebParser.BlockForStartNodeContext ctx) {
@@ -201,7 +212,6 @@ public class WebVisitor extends WebParserBaseVisitor<ASTNode> {
         };
     }
 
-
     @Override
     public ASTNode visitHtmlAttributeAssignment(WebParser.HtmlAttributeAssignmentContext ctx) {
         BaseNode valueNode = (BaseNode) visit(ctx.htmlAttributeValue());
@@ -232,18 +242,6 @@ public class WebVisitor extends WebParserBaseVisitor<ASTNode> {
     @Override
     public ASTNode visitAttrSingleQuoted(WebParser.AttrSingleQuotedContext ctx) {
         return visit(ctx.sqValue());
-    }
-
-    @Override
-    public ASTNode visitCssDeclarationNode(WebParser.CssDeclarationNodeContext ctx) {
-        String property = ctx.CSS_PROPERTY().getText();
-        ASTNode valueNode = visit(ctx.CSS_VALUE()); // زيارة قيمة الـ CSS
-        return new CssDeclarationNode(
-                property,
-                valueNode.toString(),
-                ctx.start.getLine(),
-                ctx.start.getCharPositionInLine()
-        );
     }
 
 
@@ -492,83 +490,188 @@ public class WebVisitor extends WebParserBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitCssStyleNode(WebParser.CssStyleNodeContext ctx) {
-        CssBodyNode body = (CssBodyNode) visit(ctx.cssBody());
-        return new CssStyleNode(body, ctx.start.getLine(), ctx.start.getCharPositionInLine()) {
-        };
-    }
+        System.out.println("CSS STYLE VISITED");
 
-    @Override
-    public ASTNode visitCssBodyNode(WebParser.CssBodyNodeContext ctx) {
-        List<BaseNode> rules = new ArrayList<>();
-        for (var rule : ctx.cssRule()) {
-            ASTNode node = visit(rule);
-            if (node instanceof BaseNode) {
-                rules.add((BaseNode) node);
-            }
+        ASTNode rulesNode = visit(ctx.cssRules());
+        if (rulesNode instanceof CssBodyNode body) {
+            return new CssStyleNode(body, ctx.start.getLine(), ctx.start.getCharPositionInLine());
         }
-        return new CssBodyNode(rules, ctx.start.getLine(), ctx.start.getCharPositionInLine()) {
-        };
+        return null;
     }
 
     @Override
     public ASTNode visitCssRuleNode(WebParser.CssRuleNodeContext ctx) {
-        BaseNode selector = (BaseNode) visit(ctx.cssSelector());
+        ASTNode selectorListNode = visit(ctx.cssSelectorList());
+        ASTNode declarationsNode = visit(ctx.cssDeclarations());
 
-        List<CssDeclarationNode> declarations = new ArrayList<>();
-        for (var child : ctx.cssDeclarations().children) {
+        if (selectorListNode instanceof CssSelectorListNode selectors &&
+                declarationsNode instanceof CssBodyNode declarations) {
+            return new CssRuleNode(selectors, declarations, ctx.start.getLine(), ctx.start.getCharPositionInLine());
+        }
+        return null;
+    }
+
+    @Override
+    public ASTNode visitCssSelectorListNode(WebParser.CssSelectorListNodeContext ctx) {
+        List<CssSelectorNode> selectors = new ArrayList<>();
+        for (var child : ctx.cssSelector()) {
             ASTNode node = visit(child);
-            if (node instanceof CssDeclarationNode) {
-                declarations.add((CssDeclarationNode) node);
+            if (node instanceof CssSelectorNode sel) {
+                selectors.add(sel);
+            }
+        }
+        return new CssSelectorListNode(selectors, ctx.start.getLine(), ctx.start.getCharPositionInLine());
+    }
+
+    @Override
+    public ASTNode visitCssSelectorNode(WebParser.CssSelectorNodeContext ctx) {
+        List<ASTNode> parts = new ArrayList<>();
+        for (var partCtx : ctx.selectorPart()) {
+            ASTNode node = visit(partCtx);
+            if (node != null) {
+                parts.add(node);
+            }
+        }
+        return new CssSelectorNode(parts, ctx.start.getLine(), ctx.start.getCharPositionInLine());
+    }
+
+    @Override
+    public ASTNode visitSelectorPartNode(WebParser.SelectorPartNodeContext ctx) {
+
+        List<BaseNode> simpleSelectors = new ArrayList<>();
+
+        for (var child : ctx.simpleSelector()) {
+            ASTNode node = visit(child);
+
+            if (node instanceof BaseNode baseNode) {
+                simpleSelectors.add(baseNode);
             }
         }
 
-        return new CssRuleNode(selector, declarations, ctx.start.getLine(), ctx.start.getCharPositionInLine()) {
-        };
+        return new SelectorPartNode(
+                simpleSelectors,
+                ctx.start.getLine(),
+                ctx.start.getCharPositionInLine()
+        );
+    }
+
+
+    @Override
+    public ASTNode visitTypeSelectorNode(WebParser.TypeSelectorNodeContext ctx) {
+        return new TypeSelectorNode(ctx.getText(), ctx.start.getLine(), ctx.start.getCharPositionInLine());
     }
 
     @Override
-    public ASTNode visitSelectorSimpleNode(WebParser.SelectorSimpleNodeContext ctx) {
-        return new SelectorSimpleNode(ctx.getText(), ctx.start.getLine(), ctx.start.getCharPositionInLine()) {
-        };
+    public ASTNode visitClassSelectorNode(WebParser.ClassSelectorNodeContext ctx) {
+        return new ClassSelectorNode(ctx.getText(), ctx.start.getLine(), ctx.start.getCharPositionInLine());
     }
 
     @Override
-    public ASTNode visitSelectorClassNode(WebParser.SelectorClassNodeContext ctx) {
-        return new SelectorClassNode(ctx.getText(), ctx.start.getLine(), ctx.start.getCharPositionInLine()) {
-        };
+    public ASTNode visitIdSelectorNode(WebParser.IdSelectorNodeContext ctx) {
+        return new IdSelectorNode(ctx.getText(), ctx.start.getLine(), ctx.start.getCharPositionInLine());
     }
 
     @Override
-    public ASTNode visitSelectorIdNode(WebParser.SelectorIdNodeContext ctx) {
-        return new SelectorIdNode(ctx.getText(), ctx.start.getLine(), ctx.start.getCharPositionInLine()) {
-        };
+    public ASTNode visitPseudoSelectorNode(WebParser.PseudoSelectorNodeContext ctx) {
+        return new PseudoSelectorNode(ctx.getText(), ctx.start.getLine(), ctx.start.getCharPositionInLine());
     }
 
     @Override
-    public ASTNode visitSelectorPseudoNode(WebParser.SelectorPseudoNodeContext ctx) {
-        String text = ctx.getText();
-        String pseudoClass = text;
-        String pseudoElement = null;
-        if (text.contains("::")) {
-            String[] parts = text.split("::", 2);
-            pseudoClass = parts[0];
-            pseudoElement = parts[1];
-        }
-        return new SelectorPseudoNode(pseudoClass, pseudoElement, ctx.start.getLine(), ctx.start.getCharPositionInLine()) {
-        };
+    public ASTNode visitAttributeSelectorNode(WebParser.AttributeSelectorNodeContext ctx) {
+        return new AttributeSelectorNode(
+                ctx.CSS_IDENT(0).getText(), // attribute name
+                ctx.getChildCount() > 4 ? ctx.getChild(3).getText() : null, // value (CSS_STRING or CSS_IDENT)
+                ctx.start.getLine(),
+                ctx.start.getCharPositionInLine()
+        );
     }
 
     @Override
     public ASTNode visitCssDeclarationsNode(WebParser.CssDeclarationsNodeContext ctx) {
         List<CssDeclarationNode> declarations = new ArrayList<>();
-        for (var child : ctx.children) {
-            ASTNode node = visit(child);
-            if (node instanceof CssDeclarationNode) {
-                declarations.add((CssDeclarationNode) node);
+        for (var declCtx : ctx.cssDeclaration()) {
+            ASTNode node = visit(declCtx);
+            if (node instanceof CssDeclarationNode decl) {
+                declarations.add(decl);
             }
         }
-        return new CssBodyNode(new ArrayList<>(declarations), ctx.start.getLine(), ctx.start.getCharPositionInLine()) {
-        };
+        return new CssBodyNode(declarations, ctx.start.getLine(), ctx.start.getCharPositionInLine());
+    }
+
+    @Override
+    public ASTNode visitCssDeclarationNode(WebParser.CssDeclarationNodeContext ctx) {
+        String property = ctx.CSS_IDENT().getText();
+        ASTNode valueNode = visit(ctx.cssValue());
+        return new CssDeclarationNode(property, valueNode, ctx.start.getLine(), ctx.start.getCharPositionInLine());
+    }
+    @Override
+    public ASTNode visitCssValueNode(WebParser.CssValueNodeContext ctx) {
+
+        List<BaseNode> atoms = new ArrayList<>();
+
+        for (var atomCtx : ctx.cssValueAtom()) {
+            ASTNode node = visit(atomCtx);
+            if (node instanceof BaseNode baseNode) {
+                atoms.add(baseNode);
+            }
+        }
+
+        return new CssValueNode(
+                atoms,
+                ctx.start.getLine(),
+                ctx.start.getCharPositionInLine()
+        );
+    }
+
+    @Override
+    public ASTNode visitContentCssStyle(WebParser.ContentCssStyleContext ctx) {
+        // كل ContentCssStyle يحتوي على CssStyleNode
+        System.out.println("CONTENT CSS");
+
+        ASTNode node = visit(ctx.cssStyleBlock());
+        if (node instanceof CssStyleNode cssStyle) {
+            return new ContentCssStyle(cssStyle, ctx.start.getLine(), ctx.start.getCharPositionInLine());
+        }
+        return null;
+    }
+    @Override
+    public ASTNode visitCssRulesNode(WebParser.CssRulesNodeContext ctx) {
+        List<CssRuleNode> rules = new ArrayList<>();
+        for (var child : ctx.cssRule()) {
+            ASTNode node = visit(child);
+            if (node instanceof CssRuleNode rule) {
+                rules.add(rule);
+            }
+        }
+        return new CssBodyNode(rules, ctx.start.getLine(), ctx.start.getCharPositionInLine());
+    }
+    @Override
+    public ASTNode visitAttributeSeNode(WebParser.AttributeSeNodeContext ctx) {
+        // افترض أنه يمثل AttributeSelector مع ID
+        String attrName = ctx.getChild(0).getText();
+        String attrValue = ctx.children.size() > 1 ? ctx.getChild(1).getText() : null;
+        return new AttributeSelectorNode(attrName, attrValue, ctx.start.getLine(), ctx.start.getCharPositionInLine());
+    }
+    @Override
+    public ASTNode visitTypeSelectorIdNode(WebParser.TypeSelectorIdNodeContext ctx) {
+        return new TypeSelectorNode(ctx.CSS_IDENT().getText(), ctx.start.getLine(), ctx.start.getCharPositionInLine());
+    }
+    @Override
+    public ASTNode visitClassSelectorIdNode(WebParser.ClassSelectorIdNodeContext ctx) {
+        return new ClassSelectorNode(ctx.CSS_IDENT().getText(), ctx.start.getLine(), ctx.start.getCharPositionInLine());
+    }
+    @Override
+    public ASTNode visitIdSelectorIdNode(WebParser.IdSelectorIdNodeContext ctx) {
+        return new IdSelectorNode(ctx.CSS_IDENT().getText(), ctx.start.getLine(), ctx.start.getCharPositionInLine());
+    }
+    @Override
+    public ASTNode visitPseudoSelectorIdNode(WebParser.PseudoSelectorIdNodeContext ctx) {
+        return new PseudoSelectorNode(ctx.CSS_IDENT().getText(), ctx.start.getLine(), ctx.start.getCharPositionInLine());
+    }
+    @Override
+    public ASTNode visitCssValueAtom(WebParser.CssValueAtomContext ctx) {
+        // قيمة فردية في CSS (مثل #FFF, 10px, 'hello')
+        return new CssValueAtomNode(ctx.getText(), ctx.start.getLine(), ctx.start.getCharPositionInLine());
     }
 
 }

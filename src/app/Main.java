@@ -22,11 +22,11 @@ import static org.antlr.v4.runtime.CharStreams.fromFileName;
 public class Main {
     public static void main(String[] args) {
         try {
-            buildAndPrintPython("FileOfTest/flask_app.txt");
+//            buildAndPrintPython("FileOfTest/flask_app.txt");
             List<String> webFiles = List.of(
-                    "FileOfTest/home.txt",
-                    "FileOfTest/addProductHtml.txt",
-                    "FileOfTest/product_details.txt"
+                    "FileOfTest/home.txt"
+//                    "FileOfTest/addProductHtml.txt",
+//                    "FileOfTest/product_details.txt"
             );
 
             for (String file : webFiles) {

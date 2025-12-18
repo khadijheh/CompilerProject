@@ -1,5 +1,6 @@
 package visitor;
 
+import ast.base.ASTNode;
 import ast.base.BaseNode;
 import ast.python.expressions.*;
 import ast.python.statements.*;
@@ -649,6 +650,22 @@ public class PrinterVisitor implements ASTVisitor<Void> {
         printlnNode("TextNode: \"" + node.getText() + "\"", node.getLine());
         return null;
     }
+
+    @Override
+    public Void visit(CssStyleNode node) {
+        if (node == null) return null;
+
+        printlnNode("CSS Style", node.getLine());
+        indent++;
+        if (node.getBody() != null) {
+            node.getBody().accept(this); // زيارة محتوى body
+        }
+        indent--;
+        return null;
+    }
+
+
+
     private String collectAttrValue(List<BaseNode> nodes) {
         StringBuilder sb = new StringBuilder();
 
@@ -700,8 +717,10 @@ public class PrinterVisitor implements ASTVisitor<Void> {
 
     @Override
     public Void visit(CssDeclarationNode node) {
-        String value = node.getValue() != null ? node.getValue().toString() : "";
-        printlnNode("CssDecl: " + node.getProperty() + " = " + value, node.getLine());
+        printlnNode("CssDecl: " + node.getProperty() + " = ", node.getLine());
+        indent++;
+        if (node.getValue() != null) node.getValue().accept(this);
+        indent--;
         return null;
     }
 
@@ -840,60 +859,176 @@ public class PrinterVisitor implements ASTVisitor<Void> {
         return null;
     }
 
-    // ==================== CSS ====================
+// ==================== CSS ====================
+
     @Override
-    public Void visit(CssStyleNode node) {
-        printlnNode("CssStyle:", node.getLine());
+    public Void visit(ContentCssStyle node) {
+        if (node == null) return null;
+
+        printlnNode("ContentCssStyle", node.getLine());
         indent++;
-        node.getBody().accept(this);
+        node.getCssStyle().accept(this);
+        indent--;
+
+        return null;
+    }
+    @Override
+    public Void visit(CssBodyNode node) {
+        if (node == null) return null;
+
+        printlnNode("CssBody", node.getLine());
+        indent++;
+
+        if (node.getChildren() != null) {
+            for (BaseNode child : node.getChildren()) {
+                if (child != null) {
+                    child.accept(this);
+                }
+            }
+        }
+
         indent--;
         return null;
     }
 
-    @Override
-    public Void visit(CssBodyNode node) {
-        printlnNode("CssBody:", node.getLine());
-        indent++;
-        for (BaseNode rule : node.getRules()) rule.accept(this);
-        indent--;
-        return null;
-    }
+
 
     @Override
     public Void visit(CssRuleNode node) {
-        printlnNode("CssRule:", node.getLine());
+        if (node == null) return null;
+
+        printlnNode("CssRule", node.getLine());
         indent++;
-        node.getSelector().accept(this);
-        for (CssDeclarationNode decl : node.getDeclarations()) decl.accept(this);
+
+        // selectors
+        if (node.getSelectors() != null) {
+            println("Selectors:");
+            indent++;
+            node.getSelectors().accept(this);
+            indent--;
+        }
+
+        // declarations (body)
+        if (node.getDeclarations() != null) {
+            println("Declarations:");
+            indent++;
+            node.getDeclarations().accept(this);
+            indent--;
+        }
+
         indent--;
         return null;
     }
 
     @Override
-    public Void visit(SelectorSimpleNode node) {
-        printlnNode("Selector: " + node.getSelector(), node.getLine());
+    public Void visit(CssSelectorListNode node) {
+        if (node == null) return null;
+
+        printlnNode("SelectorList", node.getLine());
+        indent++;
+        visitList(node.getSelectors());
+        indent--;
+
         return null;
     }
 
     @Override
-    public Void visit(SelectorClassNode node) {
-        printlnNode("SelectorClass: " + node.getClassName(), node.getLine());
+    public Void visit(CssSelectorNode node) {
+        if (node == null) return null;
+
+        printlnNode("CssSelector", node.getLine());
+        indent++;
+
+        if (node.getParts() != null && !node.getParts().isEmpty()) {
+            for (ASTNode part : node.getParts()) {
+                if (part != null) {
+                    part.accept(this);
+                }
+            }
+        }
+
+        indent--;
         return null;
     }
 
     @Override
-    public Void visit(SelectorIdNode node) {
-        printlnNode("SelectorId: " + node.getId(), node.getLine());
+    public Void visit(SelectorPartNode node) {
+        if (node == null) return null;
+
+        printlnNode("SelectorPart", node.getLine());
+        indent++;
+
+        if (node.getSimpleSelectors() != null && !node.getSimpleSelectors().isEmpty()) {
+            visitList(node.getSimpleSelectors());
+        }
+
+        indent--;
+        return null;
+    }
+
+
+// -------- Simple Selectors --------
+
+    @Override
+    public Void visit(TypeSelectorNode node) {
+        printlnNode("TypeSelector: " + node.getName(), node.getLine());
         return null;
     }
 
     @Override
-    public Void visit(SelectorPseudoNode node) {
-        if (node.getPseudoElement() != null)
-            printlnNode("SelectorPseudo: " + node.getPseudoClass() + "::" + node.getPseudoElement(), node.getLine());
-        else
-            printlnNode("SelectorPseudo: " + node.getPseudoClass(), node.getLine());
+    public Void visit(ClassSelectorNode node) {
+        printlnNode("ClassSelector: ." + node.getClassName(), node.getLine());
         return null;
     }
 
+    @Override
+    public Void visit(IdSelectorNode node) {
+        printlnNode("IdSelector: #" + node.getIdName(), node.getLine());
+        return null;
+    }
+
+    @Override
+    public Void visit(PseudoSelectorNode node) {
+        printlnNode("PseudoSelector: :" + node.getPseudo(), node.getLine());
+        return null;
+    }
+    @Override
+    public Void visit(AttributeSelectorNode node) {
+        if (node.getValue() != null) {
+            printlnNode(
+                    "AttributeSelector: [" +
+                            node.getAttribute() + "=" +
+                            node.getValue() + "]",
+                    node.getLine()
+            );
+        } else {
+            printlnNode(
+                    "AttributeSelector: [" + node.getAttribute() + "]",
+                    node.getLine()
+            );
+        }
+        return null;
+    }
+
+// -------- Declarations & Values --------
+
+    @Override
+    public Void visit(CssValueNode node) {
+        if (node == null) return null;
+
+        printlnNode("CssValue", node.getLine());
+        indent++;
+
+        visitList(node.getAtoms());
+
+        indent--;
+        return null;
+    }
+
+
+    @Override
+    public Void visit(CssValueAtomNode node) {
+        printlnNode("ValueAtom: " + node.getValue(), node.getLine());
+        return null;
+    }
 }

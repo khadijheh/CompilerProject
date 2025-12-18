@@ -68,11 +68,19 @@ public interface ASTVisitor<T> {
     T visit(CssStyleNode node);
     T visit(CssBodyNode node);
     T visit(CssRuleNode node);
-    T visit(SelectorSimpleNode node);
-    T visit(SelectorClassNode node);
-    T visit(SelectorIdNode node);
-    T visit(SelectorPseudoNode node);
-    T visit(CssDeclarationNode node);
+    T visit(CssSelectorListNode cssSelectorListNode);
+    T visit(CssSelectorNode cssSelectorNode);
+    T visit(SelectorPartNode selectorPartNode);
+    T visit(TypeSelectorNode typeSelectorNode);
+    T visit(AttributeSelectorNode attributeSelectorNode);
+    T visit(CssDeclarationNode cssDeclarationNode);
+    T visit(CssValueNode cssValueNode);
+    T visit(ClassSelectorNode classSelectorNode);
+    T visit(IdSelectorNode idSelectorNode);
+    T visit(PseudoSelectorNode pseudoSelectorNode);
+    T visit(CssValueAtomNode cssValueAtomNode);
+    T visit(ContentCssStyle contentCssStyle);
+
 
     // Jinja
     T visit(JinjaExpressionNode node);
@@ -88,15 +96,10 @@ public interface ASTVisitor<T> {
     T visit(WebSimpleStmtNode node);
     T visit(JinjaBlockExprNode node);
     T visit(JinjaCommentNode node);
-
     T visit(ArgListNode argListNode);
-
     T visit(AssignNode assignNode);
-
     T visit(ContinueNode continueNode);
-
     T visit(BreakNode breakNode);
-
     T visit(PassNode passNode);
 
     //T visit(SimpleStmtNode simpleStmtNode);
