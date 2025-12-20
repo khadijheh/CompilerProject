@@ -12,11 +12,9 @@ import org.antlr.v4.runtime.misc.Pair;
     java.util.LinkedList<Token> tokens = new java.util.LinkedList<>();
     int opened = 0;
 
-    // *****************************************************************
-    // تم التعديل لحل مشكلة NullPointerException (يتم توفير مصدر الرمز)
-    // *****************************************************************
+
     Token createToken(int type, String text) {
-        // نستخدم Pair و this (_input) لربط الرمز بمصدره، وهو أمر ضروري لآلية معالجة الأخطاء
+
         CommonToken t = new CommonToken(
             new org.antlr.v4.runtime.misc.Pair<TokenSource, CharStream>(this, _input),
             type,
@@ -26,12 +24,12 @@ import org.antlr.v4.runtime.misc.Pair;
         );
         t.setText(text);
 
-        // تعيين السطر والموضع لتحسين تقارير الأخطاء
-       t.setLine(getLine()); // <--- تم التعديل
-       t.setCharPositionInLine(getCharPositionInLine()); // <--- تم التعديل
+
+       t.setLine(getLine());
+       t.setCharPositionInLine(getCharPositionInLine());
         return t;
     }
-    // *****************************************************************
+
 
     @Override
     public Token nextToken() {
@@ -73,33 +71,37 @@ import org.antlr.v4.runtime.misc.Pair;
 }
 
 // ------------------ NEWLINE + INDENT/DEDENT ------------------
+
 NEWLINE
     : ('\r'? '\n' | '\r')
       {
           if (opened > 0) { skip(); return; }
 
-          int indent = 0, pos = 1;
+          int pos = 1;
+          int indent = 0;
           boolean isBlankOrComment = false;
 
           while (true) {
               int c = _input.LA(pos);
               if (c == ' ') indent++;
               else if (c == '\t') indent += 8 - (indent % 8);
-              else if (c == '#' || c == '\r' || c == '\n' || c == IntStream.EOF) { isBlankOrComment = true; break; }
-              else break;
+              else if (c == '#' || c == '\r' || c == '\n' || c == IntStream.EOF) {
+                  isBlankOrComment = true;
+                  break;
+              } else break;
               pos++;
           }
 
           if (isBlankOrComment) {
-              for (int i = 1; i < pos; i++) _input.consume(); // تم التعديل إلى i=1
+              for (int i = 1; i < pos; i++) _input.consume();
               skip();
               return;
           }
 
+
           tokens.add(createToken(NEWLINE, getText()));
 
           int prevIndent = indents.isEmpty() ? 0 : indents.peek();
-
           if (indent > prevIndent) {
               indents.push(indent);
               tokens.add(createToken(INDENT, ""));
@@ -110,55 +112,11 @@ NEWLINE
               }
           }
 
-          for (int i = 1; i < pos; i++) _input.consume(); // تم التعديل إلى i=1
+          for (int i = 1; i < pos; i++) _input.consume();
 
-          skip();
+
       }
     ;
-// ------------------ NEWLINE + INDENT/DEDENT ------------------
-//NEWLINE
-//    : ('\r'? '\n' | '\r')
-//      {
-//          if (opened > 0) { skip(); return; }
-//
-//          int indent = 0, pos = 1;
-//          boolean isBlankOrComment = false;
-//
-//          while (true) {
-//              int c = _input.LA(pos);
-//              if (c == ' ') indent++;
-//              else if (c == '\t') indent += 8 - (indent % 8);
-//              else if (c == '#' || c == '\r' || c == '\n' || c == IntStream.EOF) { isBlankOrComment = true; break; }
-//              else break;
-//              pos++;
-//          }
-//
-//          if (isBlankOrComment) {
-//              for (int i = 1; i < pos; i++) _input.consume();
-//              skip();
-//              return;
-//          }
-//
-//          tokens.add(createToken(NEWLINE, getText()));
-//
-//          int prevIndent = indents.isEmpty() ? 0 : indents.peek();
-//
-//          if (indent > prevIndent) {
-//              indents.push(indent);
-//              tokens.add(createToken(INDENT, ""));
-//          } else if (indent < prevIndent) {
-//              while (!indents.isEmpty() && indents.peek() > indent) {
-//                  indents.pop();
-//                  tokens.add(createToken(DEDENT, ""));
-//              }
-//          }
-//
-//          for (int i = 1; i < pos; i++) _input.consume();
-//
-//          // أهم سطر
-//          skip();
-//      }
-//    ;
 
 
 

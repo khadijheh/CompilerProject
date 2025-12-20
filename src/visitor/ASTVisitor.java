@@ -102,5 +102,7 @@ public interface ASTVisitor<T> {
     T visit(BreakNode breakNode);
     T visit(PassNode passNode);
 
+    T visit(DecoratorArgsNode decoratorArgsNode);
+
     //T visit(SimpleStmtNode simpleStmtNode);
 }

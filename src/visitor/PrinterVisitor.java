@@ -20,6 +20,7 @@ public class PrinterVisitor implements ASTVisitor<Void> {
         if (line >= 0) System.out.println(text + " (line: " + line + ")");
         else System.out.println(text);
     }
+
     private int indent = 0;
 
     private void printIndent() {
@@ -53,13 +54,21 @@ public class PrinterVisitor implements ASTVisitor<Void> {
     @Override
     public Void visit(DecoratorNode node) {
         if (node == null) return null;
-        println("DecoratorNode: " + node.getName() + " (line " + node.getLine() + ")");
+
+        println("DecoratorNode: " + node.getName() +
+                " (line " + node.getLine() + ")");
+
         indent++;
-        visitList(node.getArgs());
-        visitList(node.getNamedArgs());
+
+        // زيارة عقدة DecoratorArgsNode (إن وجدت)
+        if (node.getArgs() != null) {
+            node.getArgs().accept(this);
+        }
+
         indent--;
         return null;
     }
+
 
     @Override
     public Void visit(DecoratedDefNode node) {
@@ -98,6 +107,32 @@ public class PrinterVisitor implements ASTVisitor<Void> {
         indent--;
         return null;
     }
+    @Override
+    public Void visit(DecoratorArgsNode node) {
+        if (node == null) return null;
+
+        println("DecoratorArgs:");
+        indent++;
+
+        if (node.getPositional() != null && !node.getPositional().isEmpty()) {
+            println("Positional Args:");
+            indent++;
+            for (ExprNode expr : node.getPositional()) {
+                if (expr != null) expr.accept(this);
+            }
+            indent--;
+        }
+
+        if (node.getNamed() != null) {
+            println("Named Args:");
+            indent++;
+            node.getNamed().accept(this);
+            indent--;
+        }
+
+        indent--;
+        return null;
+    }
 
 
     @Override
@@ -109,7 +144,7 @@ public class PrinterVisitor implements ASTVisitor<Void> {
     @Override
     public Void visit(SimpleStmtLineNode node) {
         if (node == null || node.getStatements() == null || node.getStatements().isEmpty()) {
-            return null; //  تجاهل العقدة الفارغة
+            return null;
         }
         visitList(node.getStatements());
         return null;
@@ -565,6 +600,9 @@ public class PrinterVisitor implements ASTVisitor<Void> {
         println("PassNode (line " + node.getLine() + ")");
         return null;
     }
+
+
+
     // ==================== Template ====================
     @Override
     public Void visit(TemplateNode node) {
@@ -607,8 +645,7 @@ public class PrinterVisitor implements ASTVisitor<Void> {
                     textBuffer.append(" ");
                 }
                 textBuffer.append(textNode.getText());
-            }
-            else {
+            } else {
                 // اطبع النص المتجمع قبل أي عنصر آخر
                 if (!textBuffer.isEmpty()) {
                     printlnNode("Text: " + textBuffer.toString(), c.getLine());
@@ -640,7 +677,7 @@ public class PrinterVisitor implements ASTVisitor<Void> {
     @Override
     public Void visit(ContentHtmlText node) {
         if (node == null) return null;
-        printlnNode("Text: " + node.getText() , node.getLine());
+        printlnNode("Text: " + node.getText(), node.getLine());
         return null;
     }
 
@@ -658,12 +695,11 @@ public class PrinterVisitor implements ASTVisitor<Void> {
         printlnNode("CSS Style", node.getLine());
         indent++;
         if (node.getBody() != null) {
-            node.getBody().accept(this); // زيارة محتوى body
+            node.getBody().accept(this);
         }
         indent--;
         return null;
     }
-
 
 
     private String collectAttrValue(List<BaseNode> nodes) {
@@ -672,19 +708,30 @@ public class PrinterVisitor implements ASTVisitor<Void> {
         for (BaseNode n : nodes) {
             if (n instanceof AttrTextNode t) {
                 sb.append(t.getText());
-            }
-            else if (n instanceof AttrJinjaExpressionNode j) {
+            } else if (n instanceof AttrJinjaExpressionNode j) {
                 sb.append(j.getExpression().getBody().getExpression());
-            }
-            else if (n instanceof AttrJinjaBlockNode b) {
+            } else if (n instanceof AttrJinjaBlockNode b) {
                 sb.append("[JINJA_BLOCK]");
             }
         }
         return sb.toString();
     }
-    @Override public Void visit(DoubleQuotedValue node) { return null; }
-    @Override public Void visit(SingleQuotedValue node) { return null; }
-    @Override public Void visit(AttrTextNode node) { return null; }
+
+    @Override
+    public Void visit(DoubleQuotedValue node) {
+        return null;
+    }
+
+    @Override
+    public Void visit(SingleQuotedValue node) {
+        return null;
+    }
+
+    @Override
+    public Void visit(AttrTextNode node) {
+        return null;
+    }
+
     @Override
     public Void visit(AttrJinjaExpressionNode node) {
         printlnNode(
@@ -693,7 +740,11 @@ public class PrinterVisitor implements ASTVisitor<Void> {
         );
         return null;
     }
-    @Override public Void visit(AttrJinjaBlockNode node) { return null; }
+
+    @Override
+    public Void visit(AttrJinjaBlockNode node) {
+        return null;
+    }
 
     @Override
     public Void visit(HtmlAttributeAssignment node) {
@@ -703,7 +754,7 @@ public class PrinterVisitor implements ASTVisitor<Void> {
 
         if (node.getValue() instanceof DoubleQuotedValue dq) {
             value = collectAttrValue(dq.getContent());
-            printlnNode("Attr: " + node.getName() + " = " + value , node.getLine());
+            printlnNode("Attr: " + node.getName() + " = " + value, node.getLine());
         } else if (node.getValue() instanceof SingleQuotedValue sq) {
             value = collectAttrValue(sq.getContent());
             printlnNode("Attr: " + node.getName() + " = '" + value + "'", node.getLine());
@@ -714,15 +765,6 @@ public class PrinterVisitor implements ASTVisitor<Void> {
         return null;
     }
 
-
-    @Override
-    public Void visit(CssDeclarationNode node) {
-        printlnNode("CssDecl: " + node.getProperty() + " = ", node.getLine());
-        indent++;
-        if (node.getValue() != null) node.getValue().accept(this);
-        indent--;
-        return null;
-    }
 
     @Override
     public Void visit(WebSimpleStmtNode node) {
@@ -776,6 +818,7 @@ public class PrinterVisitor implements ASTVisitor<Void> {
         printlnNode("JinjaExpr: " + node.getBody().getExpression(), node.getLine());
         return null;
     }
+
     @Override
     public Void visit(JinjaBlockNode node) {
         if (node == null) return null;
@@ -872,6 +915,7 @@ public class PrinterVisitor implements ASTVisitor<Void> {
 
         return null;
     }
+
     @Override
     public Void visit(CssBodyNode node) {
         if (node == null) return null;
@@ -890,7 +934,6 @@ public class PrinterVisitor implements ASTVisitor<Void> {
         indent--;
         return null;
     }
-
 
 
     @Override
@@ -992,6 +1035,7 @@ public class PrinterVisitor implements ASTVisitor<Void> {
         printlnNode("PseudoSelector: :" + node.getPseudo(), node.getLine());
         return null;
     }
+
     @Override
     public Void visit(AttributeSelectorNode node) {
         if (node.getValue() != null) {
@@ -1014,17 +1058,37 @@ public class PrinterVisitor implements ASTVisitor<Void> {
 
     @Override
     public Void visit(CssValueNode node) {
-        if (node == null) return null;
+        StringBuilder value = new StringBuilder();
+        BaseNode prevAtom = null;
 
-        printlnNode("CssValue", node.getLine());
-        indent++;
+        for (BaseNode atom : node.getAtoms()) {
+            if (atom instanceof CssValueAtomNode atomNode) {
+                String text = atomNode.getValue();
 
-        visitList(node.getAtoms());
+                if (prevAtom != null) {
+                    String prevText = prevAtom instanceof CssValueAtomNode pa ? pa.getValue() : "";
+                    if (!prevText.equals("(") && !prevText.equals(",") && !text.equals(")") && !text.equals(",")) {
+                        value.append(" ");
+                    }
+                }
 
-        indent--;
+                value.append(text);
+                prevAtom = atom;
+            }
+        }
+
+        printlnNode("CssValue: " + value.toString(), node.getLine());
         return null;
     }
 
+    @Override
+    public Void visit(CssDeclarationNode node) {
+        printlnNode("CssDecl: " + node.getProperty() + " = ", node.getLine());
+        indent++;
+        if (node.getValue() != null) node.getValue().accept(this);
+        indent--;
+        return null;
+    }
 
     @Override
     public Void visit(CssValueAtomNode node) {

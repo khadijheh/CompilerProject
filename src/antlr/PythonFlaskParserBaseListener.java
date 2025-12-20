@@ -29,6 +29,18 @@ public class PythonFlaskParserBaseListener implements PythonFlaskParserListener 
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterDecoratedDefNode(PythonFlaskParser.DecoratedDefNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDecoratedDefNode(PythonFlaskParser.DecoratedDefNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterDecoratorNode(PythonFlaskParser.DecoratorNodeContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -60,18 +72,6 @@ public class PythonFlaskParserBaseListener implements PythonFlaskParserListener 
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitNamedDecoratorArgsNode(PythonFlaskParser.NamedDecoratorArgsNodeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterDecoratedDefNode(PythonFlaskParser.DecoratedDefNodeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitDecoratedDefNode(PythonFlaskParser.DecoratedDefNodeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

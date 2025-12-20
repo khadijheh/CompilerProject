@@ -5,30 +5,24 @@ import ast.base.*;
 import ast.python.statements.*;
 import ast.python.expressions.*;
 import ast.python.other.*;
+import org.antlr.v4.runtime.tree.ParseTree;
+
 import java.util.*;
 
 public class PythonVisitor extends PythonFlaskParserBaseVisitor<ASTNode> {
-    private final List<DecoratorNode> pendingDecorators = new ArrayList<>();
-
+    @Override
     public ASTNode visitFileInputNode(PythonFlaskParser.FileInputNodeContext ctx) {
-
-        List<BaseNode> statements = new ArrayList<>();
+        List<BaseNode> elements = new ArrayList<>();
         for (var child : ctx.children) {
-            ASTNode node = null;
+                ASTNode node = visit(child);
+                if (node instanceof BaseNode bn) {
+                    elements.add(bn);
 
-            if (child instanceof PythonFlaskParser.StmtContext ||
-                    child instanceof PythonFlaskParser.Decorated_defContext) {
-
-                node = visit(child);
-            }
-
-            if (node instanceof BaseNode) {
-                statements.add((BaseNode) node);
             }
         }
 
         return new FileInputNode(
-                statements,
+                elements,
                 ctx.start.getLine(),
                 ctx.start.getCharPositionInLine()
         );
@@ -116,9 +110,15 @@ public class PythonVisitor extends PythonFlaskParserBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitIndex(PythonFlaskParser.IndexContext ctx) {
-        if (ctx == null || ctx.expr() == null) return null;
-        return visit(ctx.expr());
+        ExprNode indexExpr = (ExprNode) visit(ctx.expr());
+        return new IndexNode(
+                null,
+                indexExpr,
+                ctx.start.getLine(),
+                ctx.start.getCharPositionInLine()
+        );
     }
+
 
     @Override
     public ASTNode visitAtom(PythonFlaskParser.AtomContext ctx) {
@@ -287,7 +287,7 @@ public class PythonVisitor extends PythonFlaskParserBaseVisitor<ASTNode> {
             if (ctx.dottedName() != null) {
                 for (PythonFlaskParser.DottedNameContext dnCtx : ctx.dottedName()) {
                     if (dnCtx == null) continue;
-                    imports.add(dnCtx.getText());
+                    imports.add(dnCtx.getText().trim());
                 }
             }
             return new ImportStmtNode(null, imports, false,
@@ -436,7 +436,6 @@ public class PythonVisitor extends PythonFlaskParserBaseVisitor<ASTNode> {
         };
     }
 
-
     @Override
     public ASTNode visitParameterListNode(PythonFlaskParser.ParameterListNodeContext ctx) {
         List<String> parameters = new ArrayList<>();
@@ -448,8 +447,6 @@ public class PythonVisitor extends PythonFlaskParserBaseVisitor<ASTNode> {
                 ctx.start != null ? ctx.start.getLine() : -1,
                 ctx.start != null ? ctx.start.getCharPositionInLine() : -1);
     }
-
-
 
     @Override
     public ASTNode visitCompound_stmt(PythonFlaskParser.Compound_stmtContext ctx) {
@@ -482,25 +479,6 @@ public class PythonVisitor extends PythonFlaskParserBaseVisitor<ASTNode> {
     }
 
 
-    @Override
-    public ASTNode visitCompoundStmtNode(PythonFlaskParser.CompoundStmtNodeContext ctx) {
-        if (ctx == null || ctx.getChildCount() == 0) return null;
-
-        ASTNode visited = visit(ctx.getChild(0));
-        if (!(visited instanceof BaseNode)) return null;
-        BaseNode stmt = (BaseNode) visited;
-        if (stmt instanceof ClassDefNode
-                || stmt instanceof FunctionDefNode
-                || stmt instanceof DecoratedDefNode) {
-            return stmt;
-        }
-
-        // ✅ أي BaseNode آخر نغلفه بـ CompoundStmtNode
-        return stmt == null ? null : new CompoundStmtNode(stmt,
-                ctx.start != null ? ctx.start.getLine() : -1,
-                ctx.start != null ? ctx.start.getCharPositionInLine() : -1);
-    }
-
 
     @Override
     public ASTNode visitSimpleStmtLineNode(PythonFlaskParser.SimpleStmtLineNodeContext ctx) {
@@ -521,7 +499,6 @@ public class PythonVisitor extends PythonFlaskParserBaseVisitor<ASTNode> {
         };
     }
 
-
     @Override
     public ASTNode visitNamedDecoratorArgsNode(PythonFlaskParser.NamedDecoratorArgsNodeContext ctx) {
         List<String> names = new ArrayList<>();
@@ -539,7 +516,6 @@ public class PythonVisitor extends PythonFlaskParserBaseVisitor<ASTNode> {
                 ctx.start != null ? ctx.start.getCharPositionInLine() : -1) {
         };
     }
-
 
     public ASTNode visitSmall_stmt(PythonFlaskParser.Small_stmtContext ctx) {
         if (ctx == null) return null;
@@ -589,7 +565,6 @@ public class PythonVisitor extends PythonFlaskParserBaseVisitor<ASTNode> {
 
         return null;
     }
-
 
     @Override
     public ASTNode visitContinue_stmt(PythonFlaskParser.Continue_stmtContext ctx) {
@@ -672,7 +647,7 @@ public class PythonVisitor extends PythonFlaskParserBaseVisitor<ASTNode> {
         List<String> imports = new ArrayList<>();
         if (ctx != null && ctx.NAME() != null) {
             for (var token : ctx.NAME()) {
-                imports.add(token.getText());
+                imports.add(token.getText().trim());
             }
         }
         return new ImportStmtNode(null, imports, false,
@@ -680,133 +655,46 @@ public class PythonVisitor extends PythonFlaskParserBaseVisitor<ASTNode> {
                 ctx.start != null ? ctx.start.getCharPositionInLine() : -1) {
         };
     }
-
-
     @Override
     public ASTNode visitDecoratedDefNode(PythonFlaskParser.DecoratedDefNodeContext ctx) {
         List<DecoratorNode> decorators = new ArrayList<>();
-        for (PythonFlaskParser.DecoratorContext decCtx : ctx.decorator()) {
-            DecoratorNode dec = (DecoratorNode) visit(decCtx);
-            if (dec != null) decorators.add(dec);
+
+        for (var dctx : ctx.decorator()) {
+            decorators.add((DecoratorNode) visit(dctx));
         }
-
-        BaseNode definition = ctx.function_def() != null ? (BaseNode) visit(ctx.function_def())
-                : ctx.class_def() != null ? (BaseNode) visit(ctx.class_def())
-                : null;
-
-        if (definition == null) return null;
-
+        FunctionDefNode func = null;
+        if (ctx.function_def() != null) {
+            func = (FunctionDefNode) visit(ctx.function_def());
+        } else {
+            func = new FunctionDefNode("<missing NAME>", new ParameterListNode(new ArrayList<>(), ctx.start.getLine(), ctx.start.getCharPositionInLine()), new ArrayList<>(), ctx.start.getLine(), ctx.start.getCharPositionInLine());
+        }
         return new DecoratedDefNode(
                 decorators,
-                definition,
-                ctx.start != null ? ctx.start.getLine() : -1,
-                ctx.start != null ? ctx.start.getCharPositionInLine() : -1
+                func,
+                ctx.start.getLine(),
+                ctx.start.getCharPositionInLine()
         );
     }
 
-    @Override
-    public ASTNode visitDecoratorNode(PythonFlaskParser.DecoratorNodeContext ctx) {
-        if (ctx == null) return null;
-        String decoratorName;
-        if (ctx.dottedName() != null) {
-            ASTNode base = visit(ctx.dottedName());
-            if (base instanceof NameNode nn) {
-                decoratorName = nn.getName();
-            } else if (base instanceof StringNode sn) {
-                decoratorName = sn.getValue();
-            } else {
-                decoratorName = ctx.dottedName().getText();
-            }
-        } else {
-            decoratorName = ctx.getChild(1).getText(); // fallback
-        }
-
-        List<ExprNode> positionalArgs = new ArrayList<>();
-        List<NamedDecoratorArgsNode> namedArgs = new ArrayList<>();
-
-        if (ctx.decoratorArgs() != null) {
-            PythonFlaskParser.DecoratorArgsContext argsCtx = ctx.decoratorArgs();
-
-            if (argsCtx.expr() != null) {
-                for (var exprCtx : argsCtx.expr()) {
-                    positionalArgs.add((ExprNode) visit(exprCtx));
-                }
-            }
-
-            if (argsCtx.namedDecoratorArgs() != null) {
-                NamedDecoratorArgsNode namedNode = (NamedDecoratorArgsNode) visit(argsCtx.namedDecoratorArgs());
-                if (namedNode != null) {
-                    namedArgs.add(namedNode);
-                }
-            }
-        }
-
-        return new DecoratorNode(
-                decoratorName,
-                positionalArgs,
-                namedArgs,
-                ctx.start != null ? ctx.start.getLine() : -1,
-                ctx.start != null ? ctx.start.getCharPositionInLine() : -1
-        );
-    }
-
-
-    @Override
-    public ASTNode visitDottedName(PythonFlaskParser.DottedNameContext ctx) {
-        if (ctx == null) return null;
-        return new StringNode(ctx.getText(), ctx.start != null ? ctx.start.getLine() : -1, ctx.start != null ? ctx.start.getCharPositionInLine() : -1);
-    }
-
-
-    @Override
-    public ASTNode visitDecoratorArgs(PythonFlaskParser.DecoratorArgsContext ctx) {
-        List<String> names = new ArrayList<>();
-        List<ExprNode> values = new ArrayList<>();
-
-        if (ctx == null) return new NamedDecoratorArgsNode(names, values, -1, -1);
-
-        if (ctx.expr() != null && !ctx.expr().isEmpty()) {
-            for (var exprCtx : ctx.expr()) {
-                values.add((ExprNode) visit(exprCtx));
-                names.add(null);
-            }
-        }
-
-        // حالة namedDecoratorArgs
-        if (ctx.namedDecoratorArgs() != null) {
-            NamedDecoratorArgsNode namedNode = (NamedDecoratorArgsNode) visit(ctx.namedDecoratorArgs());
-            names.addAll(namedNode.getNames());
-            values.addAll(namedNode.getValues());
-        }
-
-        return new NamedDecoratorArgsNode(
-                names,
-                values,
-                ctx.start != null ? ctx.start.getLine() : -1,
-                ctx.start != null ? ctx.start.getCharPositionInLine() : -1
-        );
-    }
     @Override
     public ASTNode visitFunctionDefNode(PythonFlaskParser.FunctionDefNodeContext ctx) {
         if (ctx == null) return null;
 
-        String name = ctx.NAME() != null ? ctx.NAME().getText() : "";
+        String name = ctx.NAME() != null ? ctx.NAME().getText() : "<missing NAME>";
 
         ParameterListNode params = ctx.parameterList() != null
                 ? (ParameterListNode) visit(ctx.parameterList())
-                : null;
+                : new ParameterListNode(new ArrayList<>(), ctx.start.getLine(), ctx.start.getCharPositionInLine());
 
         List<BaseNode> body = extractSuiteStatements(ctx.suite());
 
-        FunctionDefNode func = new FunctionDefNode(
+        return new FunctionDefNode(
                 name,
                 params,
                 body,
                 ctx.start.getLine(),
                 ctx.start.getCharPositionInLine()
         );
-
-        return func;  // لا حاجة للتعامل مع pendingDecorators هنا
     }
 
     @Override
@@ -831,7 +719,51 @@ public class PythonVisitor extends PythonFlaskParserBaseVisitor<ASTNode> {
                 body,
                 ctx.start.getLine(),
                 ctx.start.getCharPositionInLine()
-        ); // لا حاجة للتعامل مع pendingDecorators هنا
+        );
+    }
+
+    @Override
+    public ASTNode visitDecoratorNode(PythonFlaskParser.DecoratorNodeContext ctx) {
+        String decoratorName = ctx.dottedName().getText().trim();
+        DecoratorArgsNode argsNode = null;
+
+        if (ctx.decoratorArgs() != null) {
+            ASTNode args = visit(ctx.decoratorArgs());
+            if (args instanceof DecoratorArgsNode dan) {
+                argsNode = dan;
+            }
+        }
+
+        return new DecoratorNode(
+                decoratorName,
+                argsNode,
+                ctx.start.getLine(),
+                ctx.start.getCharPositionInLine()
+        );
+    }
+
+    @Override
+    public ASTNode visitDecoratorArgs(PythonFlaskParser.DecoratorArgsContext ctx) {
+        List<ExprNode> positional = new ArrayList<>();
+        NamedDecoratorArgsNode named = null;
+
+        if (ctx.expr() != null) {
+            for (var exprCtx : ctx.expr()) {
+                ExprNode node = (ExprNode) visit(exprCtx);
+                if (node != null) positional.add(node);
+            }
+        }
+
+        if (ctx.namedDecoratorArgs() != null) {
+            named = (NamedDecoratorArgsNode) visit(ctx.namedDecoratorArgs());
+        }
+
+        return new DecoratorArgsNode(
+                positional,
+                named,
+                ctx.start != null ? ctx.start.getLine() : -1,
+                ctx.start != null ? ctx.start.getCharPositionInLine() : -1
+        );
     }
 
 }

@@ -18,6 +18,13 @@ public interface PythonFlaskParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFileInputNode(PythonFlaskParser.FileInputNodeContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code DecoratedDefNode}
+	 * labeled alternative in {@link PythonFlaskParser#decorated_def}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDecoratedDefNode(PythonFlaskParser.DecoratedDefNodeContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code DecoratorNode}
 	 * labeled alternative in {@link PythonFlaskParser#decorator}.
 	 * @param ctx the parse tree
@@ -37,13 +44,6 @@ public interface PythonFlaskParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitNamedDecoratorArgsNode(PythonFlaskParser.NamedDecoratorArgsNodeContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code DecoratedDefNode}
-	 * labeled alternative in {@link PythonFlaskParser#decorated_def}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDecoratedDefNode(PythonFlaskParser.DecoratedDefNodeContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code SimpleStmtNode}
 	 * labeled alternative in {@link PythonFlaskParser#stmt}.

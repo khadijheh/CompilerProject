@@ -20,6 +20,18 @@ public interface PythonFlaskParserListener extends ParseTreeListener {
 	 */
 	void exitFileInputNode(PythonFlaskParser.FileInputNodeContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code DecoratedDefNode}
+	 * labeled alternative in {@link PythonFlaskParser#decorated_def}.
+	 * @param ctx the parse tree
+	 */
+	void enterDecoratedDefNode(PythonFlaskParser.DecoratedDefNodeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code DecoratedDefNode}
+	 * labeled alternative in {@link PythonFlaskParser#decorated_def}.
+	 * @param ctx the parse tree
+	 */
+	void exitDecoratedDefNode(PythonFlaskParser.DecoratedDefNodeContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code DecoratorNode}
 	 * labeled alternative in {@link PythonFlaskParser#decorator}.
 	 * @param ctx the parse tree
@@ -53,18 +65,6 @@ public interface PythonFlaskParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitNamedDecoratorArgsNode(PythonFlaskParser.NamedDecoratorArgsNodeContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code DecoratedDefNode}
-	 * labeled alternative in {@link PythonFlaskParser#decorated_def}.
-	 * @param ctx the parse tree
-	 */
-	void enterDecoratedDefNode(PythonFlaskParser.DecoratedDefNodeContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code DecoratedDefNode}
-	 * labeled alternative in {@link PythonFlaskParser#decorated_def}.
-	 * @param ctx the parse tree
-	 */
-	void exitDecoratedDefNode(PythonFlaskParser.DecoratedDefNodeContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code SimpleStmtNode}
 	 * labeled alternative in {@link PythonFlaskParser#stmt}.

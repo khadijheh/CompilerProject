@@ -21,7 +21,7 @@ public class WebVisitor extends WebParserBaseVisitor<ASTNode> {
             if (node instanceof ContentItemNode content) {
                 contentNodes.add(content);
             }
-            // ✅ هذا هو الحل
+
             else if (node instanceof CssStyleNode css) {
                 contentNodes.add(
                         new ContentCssStyle(
@@ -668,9 +668,9 @@ public class WebVisitor extends WebParserBaseVisitor<ASTNode> {
     public ASTNode visitPseudoSelectorIdNode(WebParser.PseudoSelectorIdNodeContext ctx) {
         return new PseudoSelectorNode(ctx.CSS_IDENT().getText(), ctx.start.getLine(), ctx.start.getCharPositionInLine());
     }
+
     @Override
     public ASTNode visitCssValueAtom(WebParser.CssValueAtomContext ctx) {
-        // قيمة فردية في CSS (مثل #FFF, 10px, 'hello')
         return new CssValueAtomNode(ctx.getText(), ctx.start.getLine(), ctx.start.getCharPositionInLine());
     }
 

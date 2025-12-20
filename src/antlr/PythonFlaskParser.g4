@@ -19,22 +19,22 @@ file_input
 // ---------------------------
 // Decorators
 // ---------------------------
+decorated_def
+    : decorator+ (NEWLINE)* function_def                  #DecoratedDefNode
+    ;
 decorator
-    : AT dottedName (LPAREN decoratorArgs? RPAREN)? NEWLINE   #DecoratorNode
+    : AT dottedName (LPAREN decoratorArgs? RPAREN)? NEWLINE    #DecoratorNode
     ;
 
 decoratorArgs
-    : expr (COMMA expr)* (COMMA namedDecoratorArgs)?
-    | namedDecoratorArgs
+    : namedDecoratorArgs
+    | expr (COMMA expr)* (COMMA namedDecoratorArgs)?
     ;
 
 namedDecoratorArgs
     : NAME ASSIGN expr (COMMA NAME ASSIGN expr)*              #NamedDecoratorArgsNode
     ;
 
-decorated_def
-    : decorator+ (function_def | class_def)                   #DecoratedDefNode
-    ;
 
 // ---------------------------
 // Statements
@@ -88,7 +88,6 @@ compound_stmt
     : if_stmt
     | while_stmt
     | for_stmt
-    | function_def
     | class_def
     | with_stmt
     ;
