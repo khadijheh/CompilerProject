@@ -32,6 +32,8 @@ public class Symbol {
         DECORATOR,
          DECORATOR_KEYWORD,
         IMPORT,
+        URL_PATTERN,
+        TEMPLATE_REF,
         JINJA_EXPRESSION,
         FORM_FIELD,
         UNKNOWN

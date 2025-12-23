@@ -19,6 +19,69 @@ public class SymbolTable {
         this.symbolReferences = new HashMap<>();
     }
 
+    public void allocate() {
+        scopeStack.clear();
+        allScopes.clear();
+        symbolReferences.clear();
+
+        globalScope = new Scope("global", Scope.ScopeType.GLOBAL, null);
+        currentScope = globalScope;
+
+        scopeStack.push(globalScope);
+        allScopes.add(globalScope);
+    }
+    public void free() {
+        scopeStack.clear();
+        allScopes.clear();
+        symbolReferences.clear();
+        currentScope = null;
+        globalScope = null;
+    }
+
+    public boolean insert(String name,
+                          Symbol.SymbolType type,
+                          int line,
+                          int column,
+                          Object value) {
+        return defineSymbol(name, type, line, column, value);
+    }
+
+
+    public Symbol lookup(String name) {
+        if (currentScope == null) {
+            return null;
+        }
+        return currentScope.resolveRecursively(name);
+    }
+
+
+    public boolean setAttribute(String symbolName, String key, Object value) {
+        Symbol symbol = lookup(symbolName);
+        if (symbol == null) {
+            return false;
+        }
+        symbol.setAttribute(key, value);
+        return true;
+    }
+    public Object getAttribute(String symbolName, String key) {
+        Symbol symbol = lookup(symbolName);
+        if (symbol == null) {
+            return null;
+        }
+        return symbol.getAttribute(key);
+    }
+
+
+    public boolean exists(String name) {
+        return lookup(name) != null;
+    }
+
+
+    public Symbol.SymbolType getSymbolType(String name) {
+        Symbol symbol = lookup(name);
+        return (symbol != null) ? symbol.getType() : null;
+    }
+
     public void enterScope(String name, Scope.ScopeType type) {
         Scope newScope = new Scope(name, type, currentScope);
         currentScope = newScope;
@@ -33,9 +96,6 @@ public class SymbolTable {
         }
     }
 
-    public boolean defineSymbol(String name, Symbol.SymbolType type, int line, int column) {
-        return defineSymbol(name, type, line, column, null);
-    }
 
     public boolean defineSymbol(String name, Symbol.SymbolType type, int line, int column, Object value) {
         Symbol symbol = new Symbol(name, type, line, column, value);
@@ -45,24 +105,12 @@ public class SymbolTable {
         return currentScope.define(symbol);
     }
 
-    public Symbol resolve(String name) {
-        return currentScope.resolveRecursively(name);
-    }
-
-    public Symbol resolveFromGlobal(String name) {
-        return globalScope.resolveRecursively(name);
-    }
-
     public Symbol resolveInCurrentScope(String name) {
         return currentScope.resolve(name);
     }
 
     public List<Symbol> findAllSymbols(String name) {
         return symbolReferences.getOrDefault(name, new ArrayList<>());
-    }
-
-    public Scope getCurrentScope() {
-        return currentScope;
     }
 
     public Scope getGlobalScope() {
@@ -81,19 +129,7 @@ public class SymbolTable {
         return total;
     }
 
-    public int getTotalSymbolsRecursive() {
-        return globalScope.getTotalSymbols();
-    }
 
-    public void reset() {
-        this.globalScope = new Scope("global", Scope.ScopeType.GLOBAL, null);
-        this.currentScope = globalScope;
-        this.scopeStack.clear();
-        this.scopeStack.push(globalScope);
-        this.allScopes.clear();
-        this.allScopes.add(globalScope);
-        this.symbolReferences.clear();
-    }
 
     @Override
     public String toString() {
@@ -125,52 +161,7 @@ public class SymbolTable {
         }
     }
 
-    public String toSummary() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("====== SYMBOL TABLE SUMMARY ======\n");
 
-        Map<Symbol.SymbolType, Integer> typeCount = new HashMap<>();
-        for (Scope scope : allScopes) {
-            for (Symbol symbol : scope.getSymbols().values()) {
-                typeCount.merge(symbol.getType(), 1, Integer::sum);
-            }
-        }
 
-        sb.append("Symbol Types:\n");
-        typeCount.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .forEach(entry ->
-                        sb.append("  ").append(entry.getKey()).append(": ").append(entry.getValue()).append("\n"));
 
-        sb.append("\nScope Types:\n");
-        Map<Scope.ScopeType, Integer> scopeTypeCount = new HashMap<>();
-        for (Scope scope : allScopes) {
-            scopeTypeCount.merge(scope.getType(), 1, Integer::sum);
-        }
-
-        scopeTypeCount.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .forEach(entry ->
-                        sb.append("  ").append(entry.getKey()).append(": ").append(entry.getValue()).append("\n"));
-
-        return sb.toString();
-    }
-
-    public String searchSymbol(String name) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Search Results for '").append(name).append("':\n");
-
-        List<Symbol> allMatches = findAllSymbols(name);
-        if (allMatches.isEmpty()) {
-            sb.append("  No symbols found\n");
-        } else {
-            sb.append("  Found ").append(allMatches.size()).append(" occurrence(s):\n");
-            for (int i = 0; i < allMatches.size(); i++) {
-                Symbol sym = allMatches.get(i);
-                sb.append("  ").append(i + 1).append(". ").append(sym).append("\n");
-            }
-        }
-
-        return sb.toString();
-    }
 }

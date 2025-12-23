@@ -376,12 +376,34 @@ public class SymbolTableVisitor implements ASTVisitor<Void> {
     @Override
     public Void visit(CallNode node) {
         setPosition(node);
+
+        String functionName = null;
+
+        if (node.getFunction() instanceof NameNode) {
+            functionName = ((NameNode) node.getFunction()).getName();
+        } else if (node.getFunction() instanceof AttributeNode) {
+            functionName = ((AttributeNode) node.getFunction()).getAttribute();
+        }
+
         if (node.getFunction() != null) {
             node.getFunction().accept(this);
         }
-
         if (node.getArgs() != null) {
-            for (ExprNode arg : node.getArgs()) {
+            for (int i = 0; i < node.getArgs().size(); i++) {
+                ExprNode arg = node.getArgs().get(i);
+
+                if (arg instanceof StringNode) {
+                    String value = ((StringNode) arg).getValue();
+
+                    if ("render_template".equals(functionName) && i == 0) {
+
+                        defineSymbol(value, Symbol.SymbolType.TEMPLATE_REF);
+                    }
+                    else if ("redirect".equals(functionName) && i == 0) {
+
+                        defineSymbol("Redirect to: " + value , Symbol.SymbolType.URL_PATTERN);
+                    }
+                }
                 if (arg != null) {
                     arg.accept(this);
                 }
@@ -391,8 +413,10 @@ public class SymbolTableVisitor implements ASTVisitor<Void> {
         if (node.getNamedArgs() != null) {
             node.getNamedArgs().accept(this);
         }
+
         return null;
     }
+
 
     @Override
     public Void visit(BinaryOpNode node) {
@@ -450,6 +474,15 @@ public class SymbolTableVisitor implements ASTVisitor<Void> {
     public Void visit(IndexNode node) {
         setPosition(node);
         if (node.getObject() != null) node.getObject().accept(this);
+
+        if (node.getIndex() instanceof StringNode) {
+            String key = getNodeName((StringNode) node.getIndex(), "getValue");
+            if (key != null) {
+
+                defineSymbol(key, Symbol.SymbolType.VARIABLE);
+            }
+        }
+
         if (node.getIndex() != null) node.getIndex().accept(this);
         return null;
     }
@@ -594,13 +627,50 @@ public class SymbolTableVisitor implements ASTVisitor<Void> {
     }
 
     @Override
-    public Void visit(DecoratorNode node) {
+    public Void visit(NamedDecoratorArgsNode node) {
         setPosition(node);
 
+        try {
+            Method getNamesMethod = node.getClass().getMethod("getNames");
+            Method getValuesMethod = node.getClass().getMethod("getValues");
+
+            Object namesResult = getNamesMethod.invoke(node);
+            Object valuesResult = getValuesMethod.invoke(node);
+
+            if (namesResult instanceof List && valuesResult instanceof List) {
+                List<?> names = (List<?>) namesResult;
+                List<?> values = (List<?>) valuesResult;
+
+                for (int i = 0; i < Math.min(names.size(), values.size()); i++) {
+                    if (names.get(i) instanceof String) {
+                        defineSymbol((String) names.get(i),
+                                Symbol.SymbolType.DECORATOR_KEYWORD);
+                    }
+
+                    if (values.get(i) instanceof ExprNode) {
+                        ((ExprNode) values.get(i)).accept(this);
+                    }
+                }
+            }
+        } catch (Exception ignored) {}
+
+        return null;
+    }
+
+    @Override
+    public Void visit(DecoratorNode node) {
+        setPosition(node);
         String decoratorName = getNodeName(node, "getName");
 
         if (decoratorName != null) {
-            defineSymbol(decoratorName, Symbol.SymbolType.DECORATOR);
+            if (symbolTable.resolveInCurrentScope(decoratorName) != null) {
+
+                String uniqueName = decoratorName + " (" + currentLine + ")";
+                defineSymbol(uniqueName, Symbol.SymbolType.DECORATOR);
+            } else {
+
+                defineSymbol(decoratorName, Symbol.SymbolType.DECORATOR);
+            }
         }
 
         if (node.getArgs() != null) {
@@ -611,62 +681,29 @@ public class SymbolTableVisitor implements ASTVisitor<Void> {
     }
 
     @Override
-    public Void visit(NamedDecoratorArgsNode node) {
-        setPosition(node);
-
-        try {
-            List<String> names = node.getNames();
-            List<ExprNode> values = node.getValues();
-
-            if (names != null && values != null) {
-                for (int i = 0; i < Math.min(names.size(), values.size()); i++) {
-                    String name = names.get(i);
-                    ExprNode value = values.get(i);
-
-                    // تعريف اسم المعطى
-                    defineSymbol(name, Symbol.SymbolType.DECORATOR_KEYWORD);
-
-                    // معالجة القيمة
-                    if (value != null) {
-                        value.accept(this);
-
-                        // استخراج الرموز من القيم النصية
-                        if (value instanceof StringNode) {
-                            StringNode strNode = (StringNode) value;
-                            String strValue = getNodeName(strNode, "getValue");
-                            if (strValue != null) {
-                                // تعريف القيم مثل 'GET', 'POST'
-                                defineSymbol(strValue, Symbol.SymbolType.VARIABLE);
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (Exception ignored) {}
-
-        return null;
-    }
-    @Override
     public Void visit(DecoratorArgsNode node) {
         setPosition(node);
 
-        System.out.println("DEBUG: Visiting DecoratorArgsNode at line " + currentLine);
-
-        // معالجة positional arguments
         List<ExprNode> positional = node.getPositional();
         if (positional != null) {
-            System.out.println("DEBUG: Decorator has " + positional.size() + " positional arguments");
             for (ExprNode arg : positional) {
+
+                if (arg instanceof StringNode) {
+                    String value = getNodeName((StringNode) arg, "getValue");
+                    if (value != null) {
+
+                        defineSymbol(value, Symbol.SymbolType.URL_PATTERN);
+                    }
+                }
+
                 if (arg != null) {
                     arg.accept(this);
                 }
             }
         }
 
-        // معالجة named arguments
         NamedDecoratorArgsNode named = node.getNamed();
         if (named != null) {
-            System.out.println("DEBUG: Decorator has named arguments");
             named.accept(this);
         }
 
@@ -675,26 +712,18 @@ public class SymbolTableVisitor implements ASTVisitor<Void> {
 
     @Override
     public Void visit(DecoratedDefNode node) {
-        setPosition(node);
 
-        // الحصول على الديكوراتورات
         List<DecoratorNode> decorators = node.getDecorators();
-
         if (decorators != null) {
-            System.out.println("DEBUG: Found " + decorators.size() + " decorator(s) at line " + currentLine);
-
             for (DecoratorNode decorator : decorators) {
                 if (decorator != null) {
-                    // استخراج اسم كل ديكوراتور
-                    String name = getNodeName(decorator, "getName");
-                    System.out.println("  - Processing decorator: " + name);
+                    setPosition(decorator);
                     decorator.accept(this);
                 }
             }
         }
-
-        // معالجة التعريف نفسه (function أو class)
         if (node.getDefinition() != null) {
+            setPosition(node.getDefinition());
             node.getDefinition().accept(this);
         }
 
@@ -867,7 +896,6 @@ public class SymbolTableVisitor implements ASTVisitor<Void> {
             }
         }
 
-        // لا نزور النصوص الثابتة كرموز
         if (node.getValue() != null && !(node.getValue() instanceof AttrTextNode)) {
             node.getValue().accept(this);
         }
@@ -954,7 +982,6 @@ public class SymbolTableVisitor implements ASTVisitor<Void> {
             return getNodeName((AttrTextNode) value, "getText");
         }
 
-        // DoubleQuotedValue / SingleQuotedValue
         try {
             Method getContent = value.getClass().getMethod("getContent");
             Object content = getContent.invoke(value);
@@ -1119,14 +1146,12 @@ public class SymbolTableVisitor implements ASTVisitor<Void> {
         return null;
     }
 
-    // في SymbolTableVisitor - تحسين visit(CssRuleNode)
     @Override
     public Void visit(CssRuleNode node) {
         setPosition(node);
         symbolTable.enterScope("css_rule", Scope.ScopeType.CSS_RULE);
 
         if (node.getSelectors() != null) {
-            // تحسين استخراج محددات CSS
             node.getSelectors().accept(this);
         }
 
@@ -1137,6 +1162,7 @@ public class SymbolTableVisitor implements ASTVisitor<Void> {
         symbolTable.exitScope();
         return null;
     }
+
     @Override
     public Void visit(CssSelectorListNode node) {
         setPosition(node);
@@ -1328,7 +1354,6 @@ public class SymbolTableVisitor implements ASTVisitor<Void> {
         setPosition(node);
         symbolTable.enterScope("jinja_for", Scope.ScopeType.LOOP);
 
-        // تعريف متغير الحلقة (product)
         try {
             Method getVariablesMethod = node.getClass().getMethod("getVariables");
             Object vars = getVariablesMethod.invoke(node);
@@ -1474,29 +1499,18 @@ public class SymbolTableVisitor implements ASTVisitor<Void> {
 
         String expr = expression.trim();
 
-        // استخراج استدعاءات الدوال مع معطياتها
-        Pattern functionPattern = Pattern.compile("([a-zA-Z_][a-zA-Z0-9_]*)\\(([^)]*)\\)");
+        Pattern functionPattern = Pattern.compile("\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\(");
         Matcher functionMatcher = functionPattern.matcher(expr);
-
         while (functionMatcher.find()) {
             String functionName = functionMatcher.group(1);
-            String args = functionMatcher.group(2);
-
             if (!functionName.isEmpty() && !isReservedWord(functionName)) {
                 defineSymbol(functionName, Symbol.SymbolType.BUILTIN_FUNCTION);
-
-                // استخراج المعطيات
-                if (args != null && !args.trim().isEmpty()) {
-                    extractSymbolsFromFunctionArgs(args);
-                }
             }
         }
 
-        // إزالة كل النصوص داخل الاقتباسات لتجنب استخراجها كمتغيرات
         String exprWithoutStrings = expr.replaceAll("'[^']*'", " ")
                 .replaceAll("\"[^\"]*\"", " ");
 
-        // Regex لاستخراج المتغيرات وattributes (مع تجاهل الدوال)
         Pattern variablePattern = Pattern.compile("\\b([a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z_][a-zA-Z0-9_]*)*)\\b");
         Matcher variableMatcher = variablePattern.matcher(exprWithoutStrings);
 
@@ -1504,7 +1518,6 @@ public class SymbolTableVisitor implements ASTVisitor<Void> {
             String symbol = variableMatcher.group(1);
             if (symbol.isEmpty() || isReservedWord(symbol)) continue;
 
-            // إذا كان يحتوي على dot، نعتبر الجزء الأول متغير والجزء الباقي attributes
             if (symbol.contains(".")) {
                 String[] parts = symbol.split("\\.");
                 defineSymbol(parts[0], Symbol.SymbolType.VARIABLE);
@@ -1520,26 +1533,6 @@ public class SymbolTableVisitor implements ASTVisitor<Void> {
         }
     }
 
-    private void extractSymbolsFromFunctionArgs(String args) {
-        // تقسيم المعطيات واستخراج الرموز منها
-        String[] argParts = args.split(",");
-        for (String arg : argParts) {
-            arg = arg.trim();
-            // إزالة الاقتباسات
-            arg = arg.replaceAll("^['\"]|['\"]$", "");
-
-            // استخراج الرموز من كل معطية
-            Pattern pattern = Pattern.compile("([a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z_][a-zA-Z0-9_]*)*)");
-            Matcher matcher = pattern.matcher(arg);
-
-            while (matcher.find()) {
-                String symbol = matcher.group(1);
-                if (!symbol.isEmpty() && !isReservedWord(symbol)) {
-                    defineSymbol(symbol, Symbol.SymbolType.VARIABLE);
-                }
-            }
-        }
-    }
     private boolean isFileLike(String value) {
         return value.matches(".(png|jpg|jpeg|gif|svg|css|js|ico|webp)$")
                 || value.contains("/")
